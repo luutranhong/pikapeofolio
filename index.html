@@ -1,1016 +1,687 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pikapeo folio</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Space Grotesk for Tech Cyber Feel -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: #030008;
-            color: #f3f4f6;
-            overflow-x: hidden;
-        }
-        .tech-mono {
-            font-family: 'Share Tech Mono', monospace;
-        }
-        /* Custom Glowing and Futuristic effects */
-        .neon-text-purple {
-            text-shadow: 0 0 10px rgba(168, 85, 247, 0.6), 0 0 20px rgba(168, 85, 247, 0.4);
-        }
-        .neon-text-pink {
-            text-shadow: 0 0 10px rgba(236, 72, 153, 0.6), 0 0 20px rgba(236, 72, 153, 0.4);
-        }
-        .neon-border {
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
-            border: 1px solid rgba(168, 85, 247, 0.4);
-        }
-        .neon-card-glow {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .neon-card-glow:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2), 0 0 20px rgba(236, 72, 153, 0.15);
-            border-color: rgba(236, 72, 153, 0.6);
-        }
-        /* Glassmorphism utility */
-        .glass-panel {
-            background: rgba(10, 5, 20, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #030008;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #6b21a8;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #db2777;
-        }
-        /* Futuristic grid background animation */
-        .grid-bg {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(168, 85, 247, 0.04) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(168, 85, 247, 0.04) 1px, transparent 1px);
-        }
-        /* Scanline animation */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 6px 100%;
-            z-index: 999;
-            pointer-events: none;
-            opacity: 0.35;
-        }
-        /* Interactive Glowing Cursor Trail simulation (subtle) */
-        .glow-sphere {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s;
-        }
-        /* Smooth reveal animation on scroll */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#09000f">
+  <title>NEON GRID // SYSTEM ONLINE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #ff6ec7;
+      --hot-pink: #ff2aac;
+      --pale-pink: #ffd2ef;
+      --purple-black: #09000f;
+      --panel: #16021e;
+      --shadow: #5c003f;
+      --glow: 0 0 5px var(--pink), 0 0 14px rgba(255, 110, 199, .72), 0 0 30px rgba(255, 42, 172, .35);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--pink);
+      background: var(--purple-black);
+      font-family: "VT323", "Courier New", monospace;
+      font-size: 1.25rem;
+      cursor: crosshair;
+    }
+
+    body.is-loading { overflow: hidden; }
+
+    a, button { cursor: pointer; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    ::selection {
+      color: var(--purple-black);
+      background: var(--pink);
+    }
+
+    /* Fixed CRT texture shared by both screens. */
+    .crt::before,
+    .crt::after {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      content: "";
+    }
+
+    .crt::before {
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 2px,
+        rgba(0, 0, 0, .35) 3px,
+        rgba(0, 0, 0, .35) 4px
+      );
+      opacity: .55;
+    }
+
+    .crt::after {
+      background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, .7) 125%);
+      animation: flicker .12s infinite alternate;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      background:
+        radial-gradient(circle at center, rgba(255, 42, 172, .10), transparent 38%),
+        #050008;
+      transition: opacity .55s steps(5, end), visibility .55s;
+    }
+
+    .loading-screen.is-hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .boot-terminal {
+      width: min(760px, 100%);
+      border: 4px double var(--pink);
+      padding: clamp(1rem, 4vw, 2.5rem);
+      background: rgba(9, 0, 15, .92);
+      box-shadow: var(--glow), inset 0 0 40px rgba(255, 42, 172, .08);
+      text-align: left;
+    }
+
+    .boot-kicker {
+      margin: 0 0 1rem;
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(.55rem, 2vw, .85rem);
+      line-height: 1.8;
+      text-shadow: var(--glow);
+    }
+
+    .boot-copy {
+      min-height: 6.2rem;
+      margin: 0 0 1.5rem;
+      color: var(--pale-pink);
+      line-height: 1.25;
+      text-shadow: 0 0 8px rgba(255, 110, 199, .75);
+    }
+
+    .cursor {
+      display: inline-block;
+      animation: blink .55s steps(1) infinite;
+    }
+
+    .loader-shell {
+      padding: 5px;
+      border: 3px solid var(--pink);
+      box-shadow: var(--glow);
+    }
+
+    .loader-track {
+      height: 24px;
+      overflow: hidden;
+      background: repeating-linear-gradient(90deg, #21001a 0 15px, #0a000b 15px 19px);
+    }
+
+    .loader-fill {
+      width: 0;
+      height: 100%;
+      background: repeating-linear-gradient(90deg, var(--pink) 0 15px, transparent 15px 19px);
+      filter: drop-shadow(0 0 8px var(--hot-pink));
+      transition: width .12s steps(2, end);
+    }
+
+    .loader-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: .65rem;
+      font-size: 1rem;
+      letter-spacing: .08em;
+    }
+
+    .main-page {
+      min-height: 100vh;
+      opacity: 0;
+      background:
+        linear-gradient(rgba(9, 0, 15, .12), rgba(9, 0, 15, .92)),
+        repeating-linear-gradient(90deg, rgba(255, 110, 199, .045) 0 1px, transparent 1px 64px),
+        repeating-linear-gradient(0deg, rgba(255, 110, 199, .045) 0 1px, transparent 1px 64px),
+        #09000f;
+      transform: scale(.985);
+      transition: opacity .65s steps(6, end), transform .65s steps(6, end);
+    }
+
+    .main-page.is-visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .ticker {
+      overflow: hidden;
+      border-bottom: 4px solid var(--pink);
+      background: var(--pink);
+      color: var(--purple-black);
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(.7rem, 2vw, 1rem);
+      white-space: nowrap;
+      box-shadow: 0 0 18px var(--hot-pink);
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 18s linear infinite;
+    }
+
+    .ticker span {
+      padding: .9rem 2.5rem;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 4rem;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      margin: 0;
+      color: var(--pale-pink);
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(1rem, 3.4vw, 2.1rem);
+      line-height: 1.5;
+      text-shadow: 3px 3px 0 var(--shadow), var(--glow);
+    }
+
+    .logo small {
+      display: block;
+      margin-top: .5rem;
+      color: var(--pink);
+      font-family: "VT323", monospace;
+      font-size: 1rem;
+      letter-spacing: .2em;
+    }
+
+    .status-light {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: var(--glow);
+      animation: blink 1.2s steps(1) infinite;
+    }
+
+    .system-time {
+      padding: .5rem .75rem;
+      border: 2px solid var(--pink);
+      box-shadow: 3px 3px 0 var(--shadow);
+    }
+
+    .nav-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-bottom: 1.5rem;
+      padding: .55rem;
+      border: 3px outset var(--pink);
+      background: #26051f;
+      box-shadow: var(--glow);
+    }
+
+    .nav-bar a {
+      flex: 1 1 140px;
+      padding: .65rem 1rem;
+      border: 2px solid transparent;
+      color: var(--pink);
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color .15s, background-color .15s, text-shadow .15s;
+    }
+
+    .nav-bar a:hover,
+    .nav-bar a:focus-visible {
+      outline: none;
+      color: var(--purple-black);
+      background: var(--pink);
+      box-shadow: inset 0 0 0 2px var(--pale-pink), 0 0 16px var(--pink);
+      text-shadow: none;
+    }
+
+    .desktop-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(260px, .65fr);
+      gap: 1.4rem;
+      align-items: start;
+    }
+
+    .window {
+      border: 4px ridge var(--pink);
+      background: rgba(20, 2, 26, .94);
+      box-shadow: 8px 8px 0 rgba(92, 0, 63, .75), var(--glow);
+    }
+
+    .window + .window { margin-top: 1.4rem; }
+
+    .title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 42px;
+      padding: .45rem .65rem;
+      border-bottom: 3px solid var(--pink);
+      background: var(--pink);
+      color: var(--purple-black);
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(.55rem, 1.8vw, .75rem);
+      line-height: 1.4;
+    }
+
+    .window-controls { display: flex; gap: .35rem; }
+
+    .window-control {
+      display: grid;
+      width: 24px;
+      height: 24px;
+      place-items: center;
+      border: 2px outset var(--purple-black);
+      background: var(--pale-pink);
+      color: var(--purple-black);
+      font-family: monospace;
+      font-size: .8rem;
+      font-weight: bold;
+    }
+
+    .window-content { padding: clamp(1rem, 3vw, 1.7rem); }
+
+    .hero {
+      position: relative;
+      min-height: 390px;
+      overflow: hidden;
+      display: grid;
+      align-content: center;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      position: absolute;
+      right: -15%;
+      bottom: -48%;
+      z-index: -2;
+      width: 78%;
+      aspect-ratio: 1;
+      border: 3px solid var(--pink);
+      border-radius: 50%;
+      box-shadow: inset 0 0 50px var(--hot-pink), 0 0 30px var(--pink);
+      content: "";
+    }
+
+    .hero::after {
+      position: absolute;
+      inset: auto -15% -35% -15%;
+      z-index: -1;
+      height: 58%;
+      background:
+        linear-gradient(to top, var(--purple-black), transparent 65%),
+        repeating-linear-gradient(90deg, rgba(255, 110, 199, .55) 0 2px, transparent 2px 55px),
+        repeating-linear-gradient(0deg, rgba(255, 110, 199, .55) 0 2px, transparent 2px 34px);
+      transform: perspective(220px) rotateX(55deg);
+      transform-origin: bottom;
+      content: "";
+    }
+
+    .eyebrow {
+      margin: 0 0 .7rem;
+      font-size: 1rem;
+      letter-spacing: .17em;
+    }
+
+    .hero h2 {
+      max-width: 720px;
+      margin: 0;
+      color: var(--pale-pink);
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(1.35rem, 5vw, 3.25rem);
+      line-height: 1.35;
+      text-shadow: 5px 5px 0 var(--shadow), var(--glow);
+    }
+
+    .hero p {
+      max-width: 610px;
+      margin: 1.4rem 0 1.8rem;
+      color: var(--pale-pink);
+      font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+      line-height: 1.25;
+    }
+
+    .pixel-button {
+      display: inline-block;
+      padding: .8rem 1rem;
+      border: 3px outset var(--pink);
+      color: var(--purple-black);
+      background: var(--pink);
+      box-shadow: 5px 5px 0 var(--shadow), var(--glow);
+      font-family: "Press Start 2P", monospace;
+      font-size: .7rem;
+      line-height: 1.5;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: transform .12s, box-shadow .12s;
+    }
+
+    .pixel-button:hover,
+    .pixel-button:focus-visible {
+      outline: 2px dashed var(--pale-pink);
+      outline-offset: 4px;
+      box-shadow: 2px 2px 0 var(--shadow), 0 0 25px var(--pink);
+      transform: translate(3px, 3px);
+    }
+
+    .directory-list {
+      display: grid;
+      gap: .75rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .directory-list li {
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      gap: .7rem;
+      align-items: center;
+      padding-bottom: .55rem;
+      border-bottom: 1px dashed rgba(255, 110, 199, .5);
+    }
+
+    .directory-list li::before { content: ">"; }
+
+    .directory-list span:last-child { color: var(--pale-pink); }
+
+    .meter {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: .75rem;
+      align-items: center;
+      margin: .9rem 0;
+    }
+
+    .meter-track {
+      height: 15px;
+      border: 2px solid var(--pink);
+      background: #09000f;
+    }
+
+    .meter-fill {
+      height: 100%;
+      background: repeating-linear-gradient(90deg, var(--pink) 0 8px, transparent 8px 11px);
+      filter: drop-shadow(0 0 5px var(--pink));
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: meter-in .8s steps(8, end) forwards;
+      animation-play-state: paused;
+    }
+
+    .main-page.is-visible .meter-fill { animation-play-state: running; }
+
+    .guestbook {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: .7rem;
+    }
+
+    .guestbook input {
+      min-width: 0;
+      border: 2px inset var(--pink);
+      padding: .65rem;
+      color: var(--pale-pink);
+      background: #09000f;
+      font: inherit;
+      caret-color: var(--pink);
+    }
+
+    .guestbook input:focus { outline: 2px solid var(--pale-pink); }
+
+    .guestbook button {
+      border: 3px outset var(--pink);
+      color: var(--purple-black);
+      background: var(--pink);
+      font: inherit;
+    }
+
+    .guestbook button:active { border-style: inset; }
+
+    .guestbook-message {
+      min-height: 1.5em;
+      margin: .8rem 0 0;
+      color: var(--pale-pink);
+    }
+
+    .footer {
+      margin-top: 1.6rem;
+      padding: 1rem;
+      border: 2px dashed var(--pink);
+      text-align: center;
+      text-shadow: var(--glow);
+    }
+
+    .glitch { animation: glitch .08s steps(2) 6; }
+
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes flicker { from { opacity: .92; } to { opacity: 1; } }
+    @keyframes meter-in { to { transform: scaleX(1); } }
+    @keyframes glitch {
+      0% { transform: translate(0); filter: none; }
+      25% { transform: translate(-6px, 2px); filter: hue-rotate(35deg); }
+      50% { transform: translate(7px, -2px); clip-path: inset(28% 0 38%); }
+      75% { transform: translate(-3px, 4px); clip-path: inset(62% 0 12%); }
+      100% { transform: translate(0); filter: none; }
+    }
+
+    @media (max-width: 780px) {
+      .topbar { grid-template-columns: 1fr auto; }
+      .status-light { display: none; }
+      .desktop-grid { grid-template-columns: 1fr; }
+      .hero { min-height: 430px; }
+      .system-time { font-size: 1rem; }
+      .directory-list li { grid-template-columns: 14px 1fr; }
+      .directory-list span:last-child { grid-column: 2; }
+    }
+
+    @media (max-width: 480px) {
+      .shell { width: min(100% - 1rem, 1180px); padding-top: 1rem; }
+      .topbar { gap: .6rem; }
+      .logo small { display: none; }
+      .window { box-shadow: 4px 4px 0 rgba(92, 0, 63, .75), var(--glow); }
+      .guestbook { grid-template-columns: 1fr; }
+      .ticker span { padding-inline: 1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
-<body class="grid-bg relative selection:bg-purple-600 selection:text-white">
-    <div class="scanlines"></div>
-    <div class="glow-sphere id-glow-sphere"></div>
+<body class="is-loading crt">
+  <section class="loading-screen" id="loadingScreen" aria-label="System loading" aria-live="polite">
+    <div class="boot-terminal" id="bootTerminal">
+      <p class="boot-kicker">NEON/OS 95 &copy; 1996 GRID SYSTEMS</p>
+      <p class="boot-copy" id="bootCopy">LOADING SYSTEMS...<span class="cursor">_</span><br>CHECKING DREAM MEMORY... OK<br>MOUNTING /NEON_GRID...</p>
+      <div class="loader-shell" aria-hidden="true">
+        <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
+      </div>
+      <div class="loader-meta"><span id="loaderStatus">PLEASE WAIT</span><span id="loaderPercent">0%</span></div>
+    </div>
+  </section>
 
-    <!-- 1. NAVIGATION HEADER -->
-    <nav class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-purple-900/30">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- Brand Logo (Secret Admin access trigger on click) -->
-            <div onclick="triggerAdminMode()" class="cursor-pointer select-none">
-                <span class="text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 hover:opacity-80 transition-opacity">PIKAPEO._</span>
-                <span class="tech-mono text-[9px] text-pink-500/80 block tracking-[0.2em] -mt-1 pl-1">LABS SYSTEM v4.5</span>
-            </div>
-
-            <!-- Main Nav Links -->
-            <div class="hidden md:flex items-center space-x-10 text-sm tracking-widest uppercase text-gray-400">
-                <a href="#about" class="hover:text-purple-400 transition-colors duration-300 relative group py-1">
-                    <span data-vi="[ GIỚI THIỆU ]" data-en="[ ABOUT ME ]">[ GIỚI THIỆU ]</span>
-                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-purple-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#work" class="hover:text-purple-400 transition-colors duration-300 relative group py-1">
-                    <span data-vi="[ DỰ ÁN ]" data-en="[ WORK ]">[ DỰ ÁN ]</span>
-                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-purple-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#ai-playground" class="hover:text-pink-400 transition-colors duration-300 relative group py-1 text-pink-500 font-medium">
-                    <span data-vi="⚡ AI PLAYGROUND" data-en="⚡ AI PLAYGROUND">⚡ AI PLAYGROUND</span>
-                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-pink-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-            </div>
-
-            <!-- Controls (Language toggle & Quick access) -->
-            <div class="flex items-center space-x-4">
-                <button onclick="toggleLanguage()" class="tech-mono text-xs px-3 py-1.5 border border-purple-500/40 rounded bg-purple-950/20 hover:bg-purple-800/30 transition-all flex items-center gap-1">
-                    <span class="text-pink-500 font-bold">🌐</span> <span id="lang-indicator">VI</span>
-                </button>
-                <a href="#ai-playground" class="tech-mono hidden sm:inline-block text-xs px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded font-medium shadow-lg shadow-purple-900/30 hover:shadow-pink-500/20 hover:scale-105 active:scale-95 transition-all duration-300">
-                    CONNECT AI
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- 2. HERO SECTION -->
-    <header class="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-6 overflow-hidden">
-        <!-- Abstract glowing elements in bg -->
-        <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-600/10 rounded-full filter blur-[120px] pointer-events-none"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-600/10 rounded-full filter blur-[150px] pointer-events-none"></div>
-
-        <div class="max-w-5xl mx-auto text-center relative z-10">
-            <div class="inline-flex items-center gap-2 px-3 py-1 border border-pink-500/30 rounded-full bg-pink-950/20 text-pink-400 text-xs tracking-widest uppercase mb-8 animate-pulse">
-                <span class="w-2 h-2 rounded-full bg-pink-500"></span>
-                <span data-vi="Hệ thống Portfolio Sáng tạo Tích hợp AI" data-en="AI-Integrated Creative System Activated">Hệ thống Portfolio Sáng tạo Tích hợp AI</span>
-            </div>
-
-            <h1 class="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight mb-8 uppercase leading-[1.05]">
-                <span class="block text-gray-500 text-xl sm:text-2xl tracking-[0.3em] font-light mb-4 text-center">FUTURE</span>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-500 neon-text-purple font-black">Pikapeo Lab</span>
-                <span class="block text-gray-200 mt-2 tracking-wide font-extrabold text-3xl sm:text-5xl md:text-6xl" data-vi="NGHỆ THUẬT TƯƠNG LAI" data-en="ART EXHIBITION">NGHỆ THUẬT TƯƠNG LAI</span>
-            </h1>
-
-            <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-12 font-light leading-relaxed" 
-               data-vi="Sự giao thoa hoàn hảo giữa tư duy thiết kế tối giản, chiều sâu không gian 3D cùng sức mạnh sáng tạo vượt trội của trí tuệ nhân tạo thế hệ mới."
-               data-en="The perfect integration of minimalist design thinking, surreal 3D space depth, and the computational creativity of modern artificial intelligence.">
-               Sự giao thoa hoàn hảo giữa tư duy thiết kế tối giản, chiều sâu không gian 3D cùng sức mạnh sáng tạo vượt trội của trí tuệ nhân tạo thế hệ mới.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#work" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded text-sm font-semibold tracking-widest uppercase transition-all duration-300 shadow-lg shadow-purple-900/30 hover:scale-105">
-                    <span data-vi="Khám Phá Tác Phẩm" data-en="Explore Projects">Khám Phá Tác Phẩm</span>
-                </a>
-                <a href="#about" class="w-full sm:w-auto px-8 py-4 border border-purple-500/40 hover:border-pink-500/60 rounded text-sm font-semibold tracking-widest uppercase transition-all duration-300 hover:bg-purple-950/20">
-                    <span data-vi="Giới Thiệu Bản Thân" data-en="About Me">Giới Thiệu Bản Thân</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Scroll down indicator -->
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs tracking-widest text-purple-400/60 tech-mono">
-            <span class="animate-bounce">▼</span>
-            <span class="uppercase">SCROLL</span>
-        </div>
-    </header>
-
-    <!-- 3. ABOUT ME & SKILLS SECTION -->
-    <section id="about" class="py-24 px-6 relative z-10 glass-panel border-t border-purple-950/40">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            
-            <!-- Left Portrait Box -->
-            <div class="lg:col-span-5 flex justify-center w-full reveal">
-                <div class="relative group max-w-sm w-full">
-                    <!-- Tech neon frames -->
-                    <div class="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
-                    <div class="relative bg-black border border-purple-500/30 p-4 rounded-xl">
-                        <!-- Upper Corners Tech details -->
-                        <div class="absolute top-2 left-2 tech-mono text-[8px] text-purple-400">SYS_ID: #7829X</div>
-                        <div class="absolute top-2 right-2 tech-mono text-[8px] text-pink-500 animate-pulse">● LIVE</div>
-                        
-                        <img src="asset/img/avatar.png" alt="Pikapeo Portrait" class="w-full rounded-lg grayscale hover:grayscale-0 transition-all duration-700 aspect-square object-cover mb-4 mt-4">
-                        
-                        <!-- Lower text frame -->
-                        <div class="border-t border-purple-900/40 pt-3 flex justify-between items-center text-[10px] tech-mono text-gray-400">
-                            <span>CO-CREATOR INVISION</span>
-                            <span>SYS_VER_4.5</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Profile Information -->
-            <div class="lg:col-span-7 flex flex-col justify-center reveal">
-                <div class="text-pink-500 tech-mono text-xs uppercase tracking-[0.25em] mb-3">// CO-CREATOR INVISION</div>
-                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-6" data-vi="Pikapeo là ai?" data-en="Who is Pikapeo?">Pikapeo là ai?</h2>
-                
-                <p class="text-gray-300 text-base sm:text-lg mb-8 font-light leading-relaxed" 
-                   data-vi="Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng."
-                   data-en="Hello! I am a passionate Graphic Designer specializing in molding future-oriented visual realms. I believe that design is not just a digital asset, but an immersive multisensory narrative crafted by glowing neon lights, deep spatial 3D realms, and dynamic kinetic motion.">
-                   Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng.
-                </p>
-
-                <!-- Statistics grid -->
-                <div class="grid grid-cols-3 gap-4 border-t border-b border-purple-900/30 py-6 mb-8 tech-mono">
-                    <div>
-                        <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">05+</div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Năm Kinh Nghiệm" data-en="Years of Exp">Năm Kinh Nghiệm</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">50+</div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Dự Án Hoàn Tất" data-en="Projects Done">Dự Án Hoàn Tất</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">99%</div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Khách Hài Lòng" data-en="Happy Clients">Khách Hài Lòng</div>
-                    </div>
-                </div>
-
-                <!-- Skill Tags inside tech containers -->
-                <div>
-                    <h3 class="text-xs uppercase tracking-widest text-purple-400 tech-mono mb-4" data-vi=">> BỘ KỸ NĂNG VÀ CÔNG CỤ" data-en=">> SKILLSETS & TOOLS">>> BỘ KỸ NĂNG VÀ CÔNG CỤ</h3>
-                    <div class="flex flex-wrap gap-2.5">
-                        <button onclick="selectSkill('Blender 3D')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Blender 3D</button>
-                        <button onclick="selectSkill('Premiere Pro')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Premiere Pro</button>
-                        <button onclick="selectSkill('Adobe After Effects')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">After Effects</button>
-                        <button onclick="selectSkill('Photoshop')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Photoshop</button>
-                        <button onclick="selectSkill('Illustrator')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Illustrator</button>
-                        <button onclick="selectSkill('Figma UI/UX')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-50₀/2₀ text-xs tech-mono text-purple-3₀ hover:border-pink-5₀/5₀ hover:bg-purple-9₀₀/2₀ transition-all duration-3₀₀">Figma UI/UX</button>
-                        <button onclick="selectSkill('Generative AI')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-pink-95₀/3₀ border border-pink-5₀/2₀ text-xs tech-mono text-pink-4₀ font-semibold hover:border-pink-4₀/8₀ hover:bg-pink-9₀₀/2₀ transition-all duration-3₀₀">Generative AI</button>
-                    </div>
-
-                    <!-- Interactive AI Skill Agent Widget -->
-                    <div class="border border-purple-5０/2０ rounded-xl p-4 bg-purple-9５０/1０ backdrop-blur-md flex items-start gap-3 mt-5 relative overflow-hidden">
-                        <!-- Neon background flare -->
-                        <div class="absolute -right-10 -bottom-10 w-24 h-24 bg-pink-500/10 rounded-full filter blur-xl pointer-events-none"></div>
-                        
-                        <!-- Skill AI Bot Avatar -->
-                        <div class="shrink-0 flex flex-col items-center gap-1.5">
-                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-lg shadow-lg shadow-purple-950/50 relative">
-                                <span class="animate-ping absolute inset-0 rounded-lg bg-pink-500/20"></span>
-                                🧠
-                            </div>
-                            <span class="tech-mono text-[8px] text-pink-400 tracking-wider">SKILL_BOT</span>
-                        </div>
-                        
-                        <!-- AI Skill Readout Screen -->
-                        <div class="flex-grow min-w-0">
-                            <div class="flex justify-between items-center mb-1.5 border-b border-purple-900/30 pb-1">
-                                <span class="tech-mono text-[9px] text-gray-400" id="skill-agent-status">// AGENT: WAITING_INPUT</span>
-                                <span class="tech-mono text-[9px] text-pink-500 animate-pulse">● READY</span>
-                            </div>
-                            <p id="skill-ai-readout" class="text-xs text-gray-300 leading-relaxed font-light" 
-                               data-vi="💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!"
-                               data-en="💡 Click any skill tag above, and the AI Skill Agent will instantly report how Pikapeo implements that tool in futuristic design pipelines!">
-                               💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!
-                            </p>
-                            
-                            <!-- Custom Query Input for specific skill questions -->
-                            <div class="mt-3 flex gap-1.5">
-                                <input type="text" id="skill-custom-query" class="flex-grow bg-black/40 border border-purple-500/25 px-2 py-1.5 rounded text-[11px] text-white focus:outline-none focus:border-pink-500 tech-mono placeholder:text-purple-950/80" placeholder="Hỏi thêm AI về chuyên môn này...">
-                                <button onclick="askCustomSkillQuery(event)" class="px-3 py-1.5 bg-purple-800/40 border border-purple-500/30 hover:border-pink-500/40 text-[10px] tech-mono text-purple-200 hover:text-white rounded transition-all uppercase font-bold shrink-0">ASK</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. SELECTED WORKS SECTION (DỰ ÁN NỔI BẬT) -->
-    <section id="work" class="py-24 px-6 relative z-10">
-        <div class="max-w-6xl mx-auto">
-            <!-- Header section of Works -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 reveal">
-                <div>
-                    <span class="text-pink-500 tech-mono text-xs uppercase tracking-[0.25em] mb-2">// PORTFOLIO SHOWCASE</span>
-                    <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white uppercase" data-vi="Tác Phẩm Nổi Bật" data-en="Selected Works">Tác Phẩm Nổi Bật</h2>
-                </div>
-                <!-- Categories filter -->
-                <div class="flex flex-wrap gap-2 mt-6 md:mt-0 tech-mono text-xs">
-                    <button onclick="filterProjects('all')" id="filter-btn-all" class="px-4 py-2 border border-purple-500/40 rounded bg-purple-600 text-white transition-all">ALL</button>
-                    <button onclick="filterProjects('3D')" id="filter-btn-3D" class="px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all">3D ART</button>
-                    <button onclick="filterProjects('Branding')" id="filter-btn-Branding" class="px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all">BRANDING</button>
-                    <button onclick="filterProjects('Motion')" id="filter-btn-Motion" class="px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all">MOTION</button>
-                </div>
-            </div>
-
-            <!-- Interactive projects container (Grid) -->
-            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
-                <!-- Projects will be rendered dynamically by JS -->
-            </div>
-
-            <!-- Secret Admin activation info & Trigger Button (Hidden by default, activated secretly) -->
-            <div id="admin-trigger-container" class="mt-16 text-center hidden">
-                <button onclick="toggleAdminPanel()" class="tech-mono text-xs px-6 py-3 border border-pink-500/40 rounded bg-pink-950/10 text-pink-400 hover:bg-pink-950/40 transition-all animate-pulse">
-                    [ QUẢN LÝ & THÊM DỰ ÁN CỦA BẠN ]
-                </button>
-            </div>
-
-            <!-- Interactive Project Admin panel (Only displays when unlocked) -->
-            <div id="admin-panel" class="mt-8 p-6 border border-purple-500/50 rounded-xl bg-black/90 glass-panel hidden">
-                <h3 class="text-xl font-bold text-purple-400 uppercase tech-mono mb-6 pb-2 border-b border-purple-900/30">🛠️ PORTFOLIO MANAGER (ADMIN ONLY)</h3>
-                
-                <form id="project-form" onsubmit="saveProject(event)" class="space-y-4 text-xs tech-mono">
-                    <input type="hidden" id="edit-index" value="-1">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-gray-400 uppercase mb-1">Tên Dự Án (Tiếng Việt)</label>
-                            <input type="text" id="title-vi" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 uppercase mb-1">Project Name (English)</label>
-                            <input type="text" id="title-en" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-gray-400 uppercase mb-1">Phân Loại (Category)</label>
-                            <select id="project-category" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500">
-                                <option value="Branding" class="bg-black">Branding</option>
-                                <option value="3D" class="bg-black">3D Art</option>
-                                <option value="Motion" class="bg-black">Motion Graphic</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 uppercase mb-1">Năm (Year)</label>
-                            <input type="text" id="project-year" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 uppercase mb-1">Link Dự án (Behance / Drive...)</label>
-                            <input type="url" id="project-link" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" placeholder="https://" required>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-gray-400 uppercase mb-1">Đường Dẫn Link Ảnh (Direct Image URL)</label>
-                        <input type="text" id="project-image" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" placeholder="https://i.ibb.co/... hoặc asset/img/tên_ảnh.jpg" required>
-                        <p class="text-[10px] text-pink-400/80 mt-1">⚠️ LƯU Ý: Không dùng link Facebook, hãy tải ảnh của bạn lên <a href="https://imgbb.com/" target="_blank" class="underline hover:text-pink-300 font-bold">ImgBB.com</a> và dán dòng "Direct Link" (Liên kết trực tiếp) vào đây để hiển thị thành công!</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-gray-400 uppercase mb-1">Mô tả dự án (Tiếng Việt)</label>
-                            <textarea id="desc-vi" rows="3" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 uppercase mb-1">Project Description (English)</label>
-                            <textarea id="desc-en" rows="3" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required></textarea>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 pt-2">
-                        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded font-bold hover:opacity-90 transition-all flex-grow">LƯU DỰ ÁN / SAVE PROJECT</button>
-                        <button type="button" onclick="resetForm()" class="px-4 py-2 border border-purple-500/40 rounded hover:bg-purple-950/20 transition-all">HỦY / RESET FORM</button>
-                    </div>
-                </form>
-
-                <div class="mt-8 border-t border-purple-900/30 pt-4">
-                    <h4 class="text-sm font-bold text-gray-300 mb-4 uppercase">Danh sách Dự án Hiện Tại (Quản lý nhanh):</h4>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-[11px] border-collapse border border-purple-900/30">
-                            <thead>
-                                <tr class="bg-purple-950/40 text-purple-300">
-                                    <th class="p-2 border border-purple-900/30">TÊN DỰ ÁN (VI)</th>
-                                    <th class="p-2 border border-purple-900/30">PHÂN LOẠI</th>
-                                    <th class="p-2 border border-purple-900/30">NĂM</th>
-                                    <th class="p-2 border border-purple-900/30">HÀNH ĐỘNG</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-projects-list">
-                                <!-- Rendered dynamically by JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-4 flex gap-2 justify-end">
-                        <button onclick="resetToDefaultTemplates()" class="px-4 py-2 bg-red-950/30 border border-red-500/40 text-red-400 rounded hover:bg-red-900/30 transition-all text-[11px]">
-                            [ Reset to Default Templates ]
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. AI PLAYGROUND SECTION -->
-    <section id="ai-playground" class="py-24 px-6 relative z-10 glass-panel border-t border-purple-950/45">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-12 reveal">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 border border-purple-500/30 rounded-full bg-purple-950/20 text-purple-300 text-xs tracking-widest uppercase mb-4 tech-mono">
-                    🤖 INTEGRATED SYSTEM AI
-                </div>
-                <h2 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 uppercase mb-4">AI Sân Chơi Sáng Tạo</h2>
-                <p class="max-w-2xl mx-auto text-gray-400 text-sm font-light" 
-                   data-vi="Trải nghiệm mô hình trí tuệ nhân tạo thế hệ mới tích hợp trực tiếp. Giao tiếp, đặt câu hỏi về giải pháp thiết kế hoặc sáng tạo kịch bản visual cùng AI."
-                   data-en="Immerse in our custom embedded generative AI ecosystem. Chat, seek UI/UX feedback, or brainstorm visual concepts directly in our sandbox.">
-                   Trải nghiệm mô hình trí tuệ nhân tạo thế hệ mới tích hợp trực tiếp. Giao tiếp, đặt câu hỏi về giải pháp thiết kế hoặc sáng tạo kịch bản visual cùng AI.
-                </p>
-            </div>
-
-            <!-- Interactive AI Chat Widget -->
-            <div class="border border-purple-500/35 rounded-2xl overflow-hidden shadow-2xl bg-black/80 flex flex-col h-[550px] reveal">
-                <!-- Header of Chatbox -->
-                <div class="bg-purple-950/35 border-b border-purple-900/30 px-6 py-4 flex justify-between items-center text-xs tech-mono">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
-                        <span class="text-gray-200">PIKAPEO_AI_BOT v3.0</span>
-                    </div>
-                    <!-- Secret Secure Key Access Trigger (Auto-Injected / Custom Key) -->
-                    <div class="flex items-center gap-2">
-                        <input type="password" id="custom-api-key" placeholder="SECURE ACCESS KEY..." class="bg-purple-950/40 border border-purple-500/20 px-2 py-1 rounded text-[10px] text-pink-400 focus:outline-none focus:border-pink-500 w-36 placeholder:text-purple-700">
-                        <a href="https://aistudio.google.com" target="_blank" class="px-2 py-1 bg-purple-800/40 hover:bg-pink-800/40 border border-purple-500/30 hover:border-pink-500/40 text-purple-300 hover:text-white rounded text-[10px] uppercase font-bold tracking-wider transition-all duration-300 flex items-center gap-1 shrink-0 animate-pulse">
-                            🔑 LẤY KEY MIỄN PHÍ?
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Chat Messages Screen -->
-                <div id="ai-chat-messages" class="flex-grow overflow-y-auto p-6 space-y-4 text-sm text-gray-300">
-                    <!-- Default Bot Greeting -->
-                    <div class="flex gap-3 max-w-[85%]">
-                        <div class="w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center font-bold tech-mono text-xs text-purple-200 shrink-0 select-none">AI</div>
-                        <div class="p-3.5 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs sm:text-sm leading-relaxed" 
-                             data-vi="🤖 Xin chào! Tôi là Trợ lý Sáng tạo ảo đại diện cho Pikapeo. Bạn muốn khám phá gì hôm nay? Đặt bất kỳ câu hỏi nào về thiết kế đồ họa, kỹ năng thiết kế 3D hoặc yêu cầu tôi lập trình ý tưởng visual cho bạn nhé!"
-                             data-en="🤖 Greetings! I am Pikapeo's virtual Creative AI Companion. What shall we co-create today? Ask me about design, 3D workflow feedback, or trigger creative writing templates.">
-                             🤖 Xin chào! Tôi là Trợ lý Sáng tạo ảo đại diện cho Pikapeo. Bạn muốn khám phá gì hôm nay? Đặt bất kỳ câu hỏi nào về thiết kế đồ họa, kỹ năng thiết kế 3D hoặc yêu cầu tôi lập trình ý tưởng visual cho bạn nhé!
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chat Input Frame -->
-                <div class="p-4 border-t border-purple-900/30 bg-purple-950/10">
-                    <form id="ai-input-form" onsubmit="sendChatMessage(event)" class="flex gap-2">
-                        <input type="text" id="ai-user-query" class="flex-grow bg-purple-950/20 border border-purple-500/35 p-3 rounded-xl text-white placeholder-purple-700/80 focus:outline-none focus:border-pink-500 text-sm focus:ring-1 focus:ring-pink-500/40 transition-all duration-300" placeholder="Nhập câu hỏi sáng tạo hoặc tìm kiếm của bạn tại đây...">
-                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl text-sm transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/25">
-                            SEND
-                        </button>
-                    </form>
-                    <p class="text-[10px] text-gray-500 mt-2 tech-mono text-center">🛡️ Để đảm bảo an toàn tuyệt đối, hệ thống khuyến cáo bạn nên nhập API Key cá nhân của bạn vào ô "SECURE ACCESS KEY" ở trên để sử dụng AI miễn phí không giới hạn!</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. FOOTER SECTION -->
-    <footer class="py-20 px-6 border-t border-purple-950/50 glass-panel relative z-10">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
-            <div>
-                <h3 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 tech-mono mb-2">PIKAPEO LABS</h3>
-                <p class="text-gray-400 text-xs tracking-wider max-w-sm" data-vi="Kiến tạo những trải nghiệm số siêu thực của tương lai." data-en="Engineering futuristic immersive designs.">Kiến tạo những trải nghiệm số siêu thực của tương lai.</p>
-            </div>
-            
-            <div class="flex flex-col items-center md:items-end gap-6">
-                <!-- Social links -->
-                <div class="flex space-x-6 tech-mono text-xs uppercase tracking-widest text-gray-400">
-                    <a href="https://www.facebook.com/johnluu1998/" class="hover:text-pink-500 transition-colors">FACEBOOK</a>
-                    <a href="https://www.behance.net/hongluu98" class="hover:text-pink-500 transition-colors">BEHANCE</a>
-                    <a href="https://www.linkedin.com/in/pikapeo-pikapeo-b577a7324/" class="hover:text-pink-500 transition-colors">LINKEDIN</a>
-                </div>
-                <p class="text-[10px] text-purple-500/75 tech-mono">© 2026 PIKAPEO. ALL RIGHTS RESERVED. SECURE CODED BY AI.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- 7. CUSTOM CYBERPUNK TOAST NOTIFICATION -->
-    <div id="cyber-toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 glass-panel border border-pink-500/60 rounded px-6 py-3 text-xs tech-mono text-pink-400 flex items-center gap-2 shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all duration-500 opacity-0 pointer-events-none transform -translate-y-4">
-        <span class="animate-ping w-2 h-2 rounded-full bg-pink-500 shrink-0"></span>
-        <span id="toast-message">🔓 ADMIN_LOCK_SYSTEM: ACCESS KEY UNLOCKED</span>
+  <main class="main-page" id="mainPage">
+    <div class="ticker" aria-label="Welcome to the Neon Grid">
+      <div class="ticker-track">
+        <span>+++ WELCOME TO THE NEON GRID +++ TRANSMISSION ACTIVE +++</span>
+        <span aria-hidden="true">+++ WELCOME TO THE NEON GRID +++ TRANSMISSION ACTIVE +++</span>
+      </div>
     </div>
 
-    <!-- 8. JAVASCRIPT CONTROLLERS -->
-    <script>
-        // 1. Language Database
-        let currentLanguage = 'vi';
+    <div class="shell">
+      <header class="topbar">
+        <h1 class="logo">NEON GRID<small>PERSONAL CYBERSPACE TERMINAL</small></h1>
+        <span class="status-light" aria-label="System online"></span>
+        <time class="system-time" id="systemTime">00:00:00</time>
+      </header>
 
-        // AI Skill Database
-        const skillData = {
-            "Blender 3D": {
-                vi: "Pikapeo đã có hơn 2 năm thực chiến dựng hình với Blender. Chuyên sâu về điêu khắc môi trường (Environment Sculpting), thiết kế chất liệu kính phát sáng đặc biệt (Emission Glass) và xử lý ánh sáng mờ sương (Volumetric Fog) để tạo chiều sâu siêu thực.",
-                en: "Pikapeo has over 2 years of hands-on modeling with Blender. Expert in Environment Sculpting, custom emissive glass shaders, and volumetric fog rendering to engineer mind-bending cyberpunk depth."
-            },
-            "Premiere Pro": {
-                vi: "Thường xuyên chỉnh sửa video các phân cảnh Motion Graphic quảng cáo cao cấp. Thế mạnh nằm ở mô phỏng vật lý động lực học (Dynamics) và hệ thống hạt mượt mà bằng Premiere Pro.",
-                en: "Regularly edits high-end motion graphics sequences for advertisements, with a particular strength in physics-based dynamics simulations and smooth particle systems using Premiere Pro."
-            },
-            "Adobe After Effects": {
-                vi: "Với những kỹ năng After Effects nâng cao, Pikapeo tạo ra các hiệu ứng chữ động (Kinetic Typography) và chuyển cảnh tương lai cực kỳ ấn tượng. Chuyên về render glitch cyber, thiết kế HUD/FUI viễn tưởng và đồng bộ hóa chuyển động với phổ âm thanh.",
-                en: "Leveraging advanced After Effects skills, Pikapeo creates stunning kinetic typography and futuristic transitions. They specialize in cyber-glitch rendering, sci-fi HUD/FUI design, and motion synchronization with audio spectrums."
-            },
-            "Photoshop": {
-                vi: "Áp dụng để vẽ phác thảo (Concept Art) ban đầu, xử lý hậu kỳ ánh sáng chuyên sâu cho các file kết xuất 3D (3D Renders) và tối ưu độ tương phản kỹ thuật số.",
-                en: "Utilized for primary concept art drafting, advanced post-production lighting on 3D renders, and optimizing ultimate digital contrast."
-            },
-            "Illustrator": {
-                vi: "Công cụ cốt lõi để xây dựng lưới vector chuyên nghiệp, thiết kế các ký tự cơ khí, sơ đồ hệ thống HUD/FUI viễn tưởng cực kỳ chi tiết và tối ưu hóa logo.",
-                en: "Core tool for drafting complex vector blueprints, designing highly detailed mechanical HUD/FUI layouts, and engineering clean logo vectors."
-            },
-            "Figma UI/UX": {
-                vi: "Dựng khung dây (Wireframe) trực quan, thiết kế giao diện ứng dụng tương lai (User Interface) và tối ưu hóa luồng tương tác trải nghiệm mượt mà cho khách hàng.",
-                en: "Designing interactive wireframes, futuristic app UI interfaces, and engineering streamlined, friction-free user experiences."
-            },
-            "Generative AI": {
-                vi: "Làm chủ các mô hình AI tạo ảnh thế hệ mới (Midjourney, Stable Diffusion, Dall-E) kết hợp cùng kỹ thuật prompt thông minh để bứt phá ý tưởng thiết kế chỉ trong vài giây.",
-                en: "Mastering advanced generative models (Midjourney, Stable Diffusion, Dall-E) with hyper-engineered prompts to unlock infinite design options in seconds."
-            }
-        };
+      <nav class="nav-bar" aria-label="Primary navigation">
+        <a href="#home">[ HOME ]</a>
+        <a href="#directory">[ DIRECTORY ]</a>
+        <a href="#stats">[ SYSTEM ]</a>
+        <a href="#guestbook">[ GUESTBOOK ]</a>
+      </nav>
 
-        let activeSelectedSkill = "Blender 3D";
+      <div class="desktop-grid">
+        <div>
+          <section class="window" id="home">
+            <div class="title-bar">
+              <span>C:\NEON\WELCOME.EXE</span>
+              <span class="window-controls" aria-hidden="true"><span class="window-control">_</span><span class="window-control">□</span><span class="window-control">×</span></span>
+            </div>
+            <div class="window-content hero">
+              <p class="eyebrow">TRANSMISSION 001 // ACCESS GRANTED</p>
+              <h2>THE NIGHT HAS A NEW OPERATING SYSTEM.</h2>
+              <p>Jack into a hand-coded corner of the web where the pixels stay sharp, the modem never sleeps, and everything glows pink.</p>
+              <div><a class="pixel-button" href="#directory">ENTER THE GRID</a></div>
+            </div>
+          </section>
 
-        function selectSkill(skillName) {
-            activeSelectedSkill = skillName;
-            
-            // Highlight selected button
-            document.querySelectorAll('.skill-tag-btn').forEach(btn => {
-                if (btn.innerText.trim() === skillName) {
-                    btn.className = "skill-tag-btn px-3.5 py-1.5 rounded bg-pink-950/40 border border-pink-500/50 text-xs tech-mono text-pink-400 font-semibold transition-all duration-300 shadow-[0_0_10px_rgba(236,72,153,0.15)]";
-                } else {
-                    btn.className = "skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-300";
-                }
-            });
-            
-            const textElement = document.getElementById('skill-ai-readout');
-            const statusElement = document.getElementById('skill-agent-status');
-            
-            statusElement.innerText = `// AGENT: DECODING_${skillName.toUpperCase().replace(/\s+/g, '_')}`;
-            
-            const fullText = skillData[skillName] ? (currentLanguage === 'vi' ? skillData[skillName].vi : skillData[skillName].en) : "";
-            textElement.innerHTML = "";
-            let i = 0;
-            
-            // Typewriter effect simulation
-            function type() {
-                if (i < fullText.length) {
-                    textElement.innerHTML += fullText.charAt(i);
-                    i++;
-                    setTimeout(type, 10);
-                } else {
-                    statusElement.innerText = `// AGENT: READOUT_SUCCESSFUL`;
-                }
-            }
-            type();
-        }
+          <section class="window" id="directory">
+            <div class="title-bar">
+              <span>FILE DIRECTORY</span>
+              <span class="window-controls" aria-hidden="true"><span class="window-control">?</span></span>
+            </div>
+            <div class="window-content">
+              <ul class="directory-list">
+                <li><span>ARCADE_PROTOCOLS.TXT</span><span>4 KB</span></li>
+                <li><span>MIDNIGHT_MIXES.WAV</span><span>42 MB</span></li>
+                <li><span>LASER_SKYLINES.GIF</span><span>812 KB</span></li>
+                <li><span>SECRET_FUTURE.ZIP</span><span>???</span></li>
+              </ul>
+            </div>
+          </section>
+        </div>
 
-        async function askCustomSkillQuery(e) {
-            if (e) e.preventDefault();
-            const queryInput = document.getElementById('skill-custom-query');
-            const query = queryInput.value.trim();
-            if (!query) return;
-            
-            const textElement = document.getElementById('skill-ai-readout');
-            const statusElement = document.getElementById('skill-agent-status');
-            
-            statusElement.innerText = `// AGENT: ANALYZING_QUERY`;
-            textElement.innerHTML = `System analyzing specific requests for ${activeSelectedSkill}... <span class="animate-pulse">⏳</span>`;
-            queryInput.value = '';
-            
-            const defaultKeyInput = "AIzaSy" + "AsgT6n7v" + "2_XyH26H-e7o" + "b3gH5mK" + "M89C" + "Z_k";
-            const userKey = document.getElementById('custom-api-key').value.trim();
-            const activeApiKey = userKey !== "" ? userKey : defaultKeyInput;
-            
-            try {
-                const prompt = `You are Pikapeo's AI Skill Advisor. The user is asking a custom question about Pikapeo's proficiency in: ${activeSelectedSkill}.
-                User question: ${query}
-                Keep the answer very brief (strictly under 3 sentences), inspiring, highly professional and futuristic. Respond in Vietnamese if the question is in Vietnamese, else in English. Format with bold markdown key terms. Output the answer immediately without introductory greeting.`;
-                
-                const reqBody = {
-                    contents: [{ parts: [{ text: prompt }] }]
-                };
-                
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeApiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(reqBody)
-                });
-                
-                const data = await response.json();
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    textElement.innerHTML = formatMarkdown(data.candidates[0].content.parts[0].text);
-                    statusElement.innerText = `// AGENT: CUSTOM_REPORT_READY`;
-                } else {
-                    textElement.innerHTML = "❌ AI_ERROR: Không phản hồi hoặc tràn hạn mức API Key. Hãy dán API Key cá nhân của bạn để tiếp tục.";
-                    statusElement.innerText = `// AGENT: REPORT_FAILED`;
-                }
-            } catch (err) {
-                textElement.innerHTML = "❌ SYSTEM_OFFLINE: Không thể kết nối tới Google AI API. Hãy kiểm tra kết nối mạng hoặc dán API Key cá nhân.";
-                statusElement.innerText = `// AGENT: OFFLINE`;
-            }
-        }
+        <aside>
+          <section class="window" id="stats">
+            <div class="title-bar"><span>SYSTEM MONITOR</span></div>
+            <div class="window-content">
+              <div class="meter"><span>STYLE</span><div class="meter-track"><div class="meter-fill" style="width: 94%"></div></div></div>
+              <div class="meter"><span>VIBES</span><div class="meter-track"><div class="meter-fill" style="width: 87%; animation-delay: .15s"></div></div></div>
+              <div class="meter"><span>RAM</span><div class="meter-track"><div class="meter-fill" style="width: 73%; animation-delay: .3s"></div></div></div>
+              <p>VISITORS: <span id="visitorCount">000042</span></p>
+              <p>UPLINK: <span>56.6 KBPS</span></p>
+              <p>STATUS: <span>RADICAL</span></p>
+            </div>
+          </section>
 
-        // 2. Project Database / Showcase Controllers
-        const defaultTemplates = [
-            {
-                titleVi: "Lildan Pet Shop",
-                titleEn: "Lildan Pet Shop",
-                category: "Branding",
-                year: "2022",
-                image: "asset/img/lildan.jpg",
-                descVi: "Lildan Pet Shop là thương hiệu chăm sóc thú cưng toàn diện, mang đến trải nghiệm trọn vẹn cho cả thú cưng và người nuôi. Với định hướng phát triển chuyên nghiệp, Lildan cung cấp đa dạng sản phẩm phụ kiện chất lượng, dịch vụ spa chăm sóc tận tâm và hệ thống pet hotel tiện nghi, an toàn.",
-                descEn: "Lildan Pet Shop is a comprehensive pet care brand dedicated to delivering a complete experience for both pets and their owners. With a professional approach, Lildan offers a wide range of high-quality accessories, attentive grooming services, and a safe, well-equipped pet hotel.",
-                link: "https://www.behance.net/gallery/164913969/Lildan-shopee"
-            },
-            {
-                titleVi: "Milo Branding Campaign",
-                titleEn: "Milo Branding Campaign",
-                category: "Branding",
-                year: "2022",
-                image: "asset/img/milo.png",
-                descVi: "MILO là thương hiệu thức uống dinh dưỡng nổi tiếng thuộc Nestlé, được biết đến với hương vị cacao mạch nha đặc trưng và thông điệp khuyến khích lối sống năng động. Tại Việt Nam, MILO gắn liền với hình ảnh trẻ em khỏe mạnh, phát triển thể chất thông qua thể thao và vận động mỗi ngày. Không chỉ là một sản phẩm, MILO còn là biểu tượng của năng lượng tích cực và tinh thần bền bỉ.",
-                descEn: "MILO is a well-known nutritional beverage brand by Nestlé, recognized for its unique malted cocoa flavor and its mission to promote an active lifestyle. In Vietnam, MILO is closely associated with healthy, energetic children who grow through sports and daily physical activities. More than just a drink, MILO represents positive energy, endurance, and a strong sporting spirit.",
-                link: "https://www.behance.net/gallery/143302561/Banner-Milo"
-            },
-            {
-                titleVi: "Nescafé Café Sữa Đá Key Visual",
-                titleEn: "Nescafé Milk Café Key Visual",
-                category: "Brangding",
-                year: "2022",
-                image: "asset/img/nescafe.png",
-                descVi: "Dự án thiết kế key visual cho NESCAFÉ Café Sữa Đá tập trung làm nổi bật ưu đãi và sản phẩm thông qua bố cục rõ ràng, màu sắc ấm và typography mạnh. Thiết kế hướng đến việc thu hút sự chú ý nhanh tại điểm bán và tăng khả năng nhận diện thương hiệu.",
-                descEn: "This key visual design project for NESCAFÉ Café Sữa Đá focuses on highlighting the promotion and product through clear layout, warm tones, and bold typography. The design aims to capture attention quickly in-store and enhance brand recognition.",
-                link: "https://www.behance.net/gallery/143302221/Wobbler-Nescafe"
-            },
-            {
-                titleVi: "Pikapeo Logo Concept",
-                titleEn: "Pikapeo Logo Concept",
-                category: "Branding",
-                year: "2023",
-                image: "asset/img/logo.png",
-                descVi: "Logo cá nhân “pikapeo” được thiết kế theo phong cách mascot kết hợp neon hiện đại, thể hiện cá tính sáng tạo và năng lượng trẻ trung. Nhân vật trung tâm mang biểu cảm tinh nghịch, tạo điểm nhấn riêng biệt và dễ ghi nhớ. Tông màu tím -– hồng neon cùng hình khối tam giác phía sau giúp tăng chiều sâu thị giác, đồng thời gợi cảm giác công nghệ và giải trí. Tổng thể logo hướng đến hình ảnh một cá nhân năng động, phù hợp với lĩnh vực gaming, sáng tạo nội dung và digital art.",
-                descEn: "The “pikapeo” personal logo is designed in a mascot style combined with a modern neon aesthetic, expressing creativity and youthful energy. The central character features a playful expression, making the logo distinctive and memorable. The purple-pink neon palette and triangular geometric background add visual depth while evoking a sense of technology and entertainment. Overall, the logo represents a dynamic personal brand suited for gaming, content creation, and digital art.",
-                link: "https://www.behance.net/gallery/130712909/Mascot-Logo"
-            }
-        ];
+          <section class="window" id="guestbook">
+            <div class="title-bar"><span>SIGN GUESTBOOK</span></div>
+            <div class="window-content">
+              <form class="guestbook" id="guestbookForm">
+                <label for="handle" class="sr-only">Cyber handle</label>
+                <input id="handle" name="handle" maxlength="18" placeholder="YOUR CYBER HANDLE" autocomplete="off" required>
+                <button type="submit">POST</button>
+              </form>
+              <p class="guestbook-message" id="guestbookMessage">&gt; AWAITING INPUT_<span class="cursor">_</span></p>
+            </div>
+          </section>
+        </aside>
+      </div>
 
-        let projects = [];
+      <footer class="footer">BEST VIEWED AT 800×600 // MADE WITH HTML, STATIC, AND ELECTRIC DREAMS // 1996–FOREVER</footer>
+    </div>
+  </main>
 
-        // Dynamic project template loader & checker
-        function initProjects() {
-            const storedRaw = localStorage.getItem('pikapeo-templates-raw');
-            const currentRaw = JSON.stringify(defaultTemplates);
-            const storedProjects = localStorage.getItem('pikapeo-projects');
+  <script>
+    const loadingScreen = document.getElementById('loadingScreen');
+    const bootTerminal = document.getElementById('bootTerminal');
+    const loaderFill = document.getElementById('loaderFill');
+    const loaderPercent = document.getElementById('loaderPercent');
+    const loaderStatus = document.getElementById('loaderStatus');
+    const mainPage = document.getElementById('mainPage');
+    const systemTime = document.getElementById('systemTime');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const loadDuration = reducedMotion ? 100 : 3000;
+    const startTime = performance.now();
 
-            // CƠ CHẾ TỰ ĐỘNG PHÁT HIỆN SỬA CODE SIÊU THÔNG MINH:
-            // Nếu bạn chỉnh sửa dù chỉ 1 chữ trong defaultTemplates ở VSCode và lưu lại,
-            // hệ thống sẽ tự động ghi đè bộ nhớ đệm và hiển thị nội dung mới của bạn ngay lập tức!
-            if (storedRaw !== currentRaw) {
-                projects = [...defaultTemplates];
-                localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
-                localStorage.setItem('pikapeo-templates-raw', currentRaw);
-            } else if (storedProjects) {
-                try {
-                    projects = JSON.parse(storedProjects);
-                } catch(e) {
-                    projects = [...defaultTemplates];
-                }
-            } else {
-                projects = [...defaultTemplates];
-                localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
-                localStorage.setItem('pikapeo-templates-raw', currentRaw);
-            }
-            renderProjects('all');
-        }
+    function updateLoader(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(100, Math.round((elapsed / loadDuration) * 100));
+      loaderFill.style.width = `${progress}%`;
+      loaderPercent.textContent = `${progress}%`;
 
-        // Render projects grid based on category and current language
-        function renderProjects(categoryFilter = 'all') {
-            const grid = document.getElementById('projects-grid');
-            grid.innerHTML = '';
+      if (progress > 72) loaderStatus.textContent = 'OPENING PORTAL';
+      else if (progress > 35) loaderStatus.textContent = 'SYNCING SIGNAL';
 
-            const filtered = categoryFilter === 'all' ? projects : projects.filter(p => p.category === categoryFilter);
+      if (progress < 100) {
+        requestAnimationFrame(updateLoader);
+      } else {
+        bootTerminal.classList.add('glitch');
+        setTimeout(revealMainPage, reducedMotion ? 0 : 480);
+      }
+    }
 
-            filtered.forEach((p, idx) => {
-                const title = currentLanguage === 'vi' ? p.titleVi : p.titleEn;
-                const desc = currentLanguage === 'vi' ? p.descVi : p.descEn;
-                
-                const card = document.createElement('div');
-                card.className = "group border border-purple-900/40 rounded-2xl overflow-hidden bg-black/50 hover:bg-black/80 neon-card-glow relative";
-                
-                card.innerHTML = `
-                    <div class="aspect-video w-full overflow-hidden relative">
-                        <div class="absolute top-3 left-3 px-3 py-1 bg-purple-950/80 border border-purple-500/30 rounded text-[9px] tech-mono uppercase text-purple-300 tracking-wider z-20">${p.category}</div>
-                        <div class="absolute top-3 right-3 px-3 py-1 bg-purple-950/80 border border-purple-500/30 rounded text-[9px] tech-mono uppercase text-purple-300 tracking-wider z-20">${p.year}</div>
-                        <img src="${p.image}" alt="${title}" class="w-full h-full object-cover transition duration-700 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="absolute inset-0 bg-gradient-to-t from-purple-950/30 to-transparent flex items-center justify-center text-xs tech-mono text-purple-400 font-bold tracking-widest uppercase hidden bg-purple-950/40 p-4 text-center">
-                            <span>[ ${title} ]</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-3 text-white group-hover:text-pink-400 transition-colors">${title}</h3>
-                        <p class="text-gray-400 text-xs sm:text-sm font-light leading-relaxed mb-6 h-20 overflow-y-auto">${desc}</p>
-                        <div class="flex justify-between items-center border-t border-purple-900/30 pt-4">
-                            <a href="${p.link}" target="_blank" class="tech-mono text-[11px] text-pink-400 hover:text-white transition-all duration-300 uppercase font-medium tracking-widest">[ VIEW PROJECT ]</a>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
+    function revealMainPage() {
+      loadingScreen.classList.add('is-hidden');
+      mainPage.classList.add('is-visible');
+      document.body.classList.remove('is-loading');
+      setTimeout(() => loadingScreen.setAttribute('hidden', ''), 600);
+    }
 
-        // Toggle category button states and filter
-        function filterProjects(category) {
-            const btns = ['all', '3D', 'Branding', 'Motion'];
-            btns.forEach(b => {
-                const el = document.getElementById(`filter-btn-${b}`);
-                if (b === category) {
-                    el.className = "px-4 py-2 border border-purple-500/40 rounded bg-purple-600 text-white transition-all";
-                } else {
-                    el.className = "px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all";
-                }
-            });
-            renderProjects(category);
-        }
+    function updateClock() {
+      systemTime.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+    }
 
-        // 3. ADMIN / CREATOR CONTROLLERS
-        let clickCount = 0;
-        let lastClickTime = 0;
-        let adminUnlocked = false;
+    document.getElementById('guestbookForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const handle = document.getElementById('handle');
+      const safeHandle = handle.value.trim().toUpperCase();
+      const message = document.getElementById('guestbookMessage');
+      message.textContent = safeHandle ? `> ${safeHandle} WAS HERE. SIGNAL SAVED.` : '> ERROR: HANDLE REQUIRED.';
+      if (safeHandle) handle.value = '';
+    });
 
-        // Easter Egg: Unlock Admin panel on 5 clicks on logo
-        function triggerAdminMode() {
-            const now = Date.now();
-            if (now - lastClickTime < 1500) {
-                clickCount++;
-            } else {
-                clickCount = 1;
-            }
-            lastClickTime = now;
-
-            if (clickCount >= 5 && !adminUnlocked) {
-                adminUnlocked = true;
-                document.getElementById('admin-trigger-container').classList.remove('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                
-                // Trực quan hóa danh sách nhanh dự án trong Admin
-                renderAdminList();
-                showToast("🔓 ADMIN: KÍCH HOẠT THÀNH CÔNG!");
-                clickCount = 0;
-            } else if (clickCount >= 5 && adminUnlocked) {
-                adminUnlocked = false;
-                document.getElementById('admin-trigger-container').classList.add('hidden');
-                document.getElementById('admin-panel').classList.add('hidden');
-                showToast("🔒 ADMIN: ĐÃ KHÓA BẢO MẬT!");
-                clickCount = 0;
-            }
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('cyber-toast');
-            document.getElementById('toast-message').innerText = message;
-            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
-            toast.classList.add('opacity-100', 'translate-y-0');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
-            }, 3000);
-        }
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.toggle('hidden');
-        }
-
-        function renderAdminList() {
-            const tbody = document.getElementById('admin-projects-list');
-            tbody.innerHTML = '';
-
-            projects.forEach((p, idx) => {
-                const tr = document.createElement('tr');
-                tr.className = "border-b border-purple-900/20 hover:bg-purple-950/10";
-                tr.innerHTML = `
-                    <td class="p-2 border border-purple-900/30 font-bold text-white">${p.titleVi}</td>
-                    <td class="p-2 border border-purple-900/30 text-purple-400">${p.category}</td>
-                    <td class="p-2 border border-purple-900/30 text-gray-400">${p.year}</td>
-                    <td class="p-2 border border-purple-900/30 space-x-2">
-                        <button onclick="editProject(${idx})" class="text-pink-400 hover:text-white transition-all">[ SỬA ]</button>
-                        <button onclick="deleteProject(${idx})" class="text-red-400 hover:text-white transition-all">[ XÓA ]</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function saveProject(e) {
-            e.preventDefault();
-            const editIdx = parseInt(document.getElementById('edit-index').value);
-            
-            const newProject = {
-                titleVi: document.getElementById('title-vi').value,
-                titleEn: document.getElementById('title-en').value,
-                category: document.getElementById('project-category').value,
-                year: document.getElementById('project-year').value,
-                image: document.getElementById('project-image').value,
-                descVi: document.getElementById('desc-vi').value,
-                descEn: document.getElementById('desc-en').value,
-                link: document.getElementById('project-link').value
-            };
-
-            if (editIdx === -1) {
-                projects.push(newProject);
-                showToast("➕ THÊM MỚI DỰ ÁN THÀNH CÔNG!");
-            } else {
-                projects[editIdx] = newProject;
-                showToast("📝 CẬP NHẬT DỰ ÁN THÀNH CÔNG!");
-            }
-
-            localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
-            resetForm();
-            renderAdminList();
-            renderProjects('all');
-        }
-
-        function editProject(idx) {
-            const p = projects[idx];
-            document.getElementById('edit-index').value = idx;
-            document.getElementById('title-vi').value = p.titleVi;
-            document.getElementById('title-en').value = p.titleEn;
-            document.getElementById('project-category').value = p.category;
-            document.getElementById('project-year').value = p.year;
-            document.getElementById('project-image').value = p.image;
-            document.getElementById('desc-vi').value = p.descVi;
-            document.getElementById('desc-en').value = p.descEn;
-            document.getElementById('project-link').value = p.link;
-            
-            document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function deleteProject(idx) {
-            if (confirm("Bạn có chắc chắn muốn xóa dự án này?")) {
-                projects.splice(idx, 1);
-                localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
-                renderAdminList();
-                renderProjects('all');
-                showToast("🗑️ ĐÃ XÓA DỰ ÁN!");
-            }
-        }
-
-        function resetForm() {
-            document.getElementById('project-form').reset();
-            document.getElementById('edit-index').value = "-1";
-        }
-
-        function resetToDefaultTemplates() {
-            if (confirm("Tất cả dự án tùy biến của bạn sẽ bị xóa để hoàn tác dữ liệu mẫu mặc định. Tiếp tục?")) {
-                localStorage.removeItem('pikapeo-projects');
-                localStorage.removeItem('pikapeo-templates-raw');
-                initProjects();
-                renderAdminList();
-                showToast("♻️ ĐÃ KHÔI PHỤC BẢN MẪU GỐC!");
-            }
-        }
-
-        // 4. LANGUAGE SYSTEM CONTROLLERS
-        function toggleLanguage() {
-            currentLanguage = currentLanguage === 'vi' ? 'en' : 'vi';
-            document.getElementById('lang-indicator').innerText = currentLanguage.toUpperCase();
-            setLanguage(currentLanguage);
-            renderProjects('all');
-        }
-
-        function setLanguage(lang) {
-            document.querySelectorAll('[data-vi]').forEach(el => {
-                el.innerHTML = lang === 'vi' ? el.getAttribute('data-vi') : el.getAttribute('data-en');
-            });
-            
-            // Translate form placeholders
-            const queryInput = document.getElementById('ai-user-query');
-            if (lang === 'vi') {
-                queryInput.placeholder = "Nhập câu hỏi sáng tạo hoặc tìm kiếm của bạn tại đây...";
-            } else {
-                queryInput.placeholder = "Enter your custom design query or creative prompts...";
-            }
-        }
-
-        // 5. EMBEDDED AI SYSTEM INTERACTIVITY (Google Gemini API integration)
-        async function sendChatMessage(e) {
-            e.preventDefault();
-            const queryInput = document.getElementById('ai-user-query');
-            const queryText = queryInput.value.trim();
-            if (!queryText) return;
-
-            // Render User's message Bubble
-            appendMessageBubble('user', queryText);
-            queryInput.value = '';
-
-            // Loading system bubble simulation
-            const loadingId = appendMessageBubble('bot', 'AI System is processing... <span class="animate-pulse">⏳</span>');
-
-            // API fetch controllers
-            const defaultKeyInput = "AIzaSy" + "AsgT6n7v" + "2_XyH26H-e7o" + "b3gH5mK" + "M89C" + "Z_k"; // Obfuscated sandbox free key
-            const userKey = document.getElementById('custom-api-key').value.trim();
-            const activeApiKey = userKey !== "" ? userKey : defaultKeyInput;
-
-            try {
-                // System Instruction to calibrate model behavior
-                const sysInstruction = `You are Pikapeo's Creative portfolio bot. Keep responses polite, futuristic, and helpful. Guide users about design tools, Blender 3D, After Effects. Keep responses brief and formatted with basic Markdown. Always reply in Vietnamese if they write in Vietnamese, else in English.`;
-
-                const reqBody = {
-                    contents: [{
-                        parts: [{ text: `${sysInstruction}\n\nUser Question: ${queryText}` }]
-                    }]
-                };
-
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeApiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(reqBody)
-                });
-
-                const data = await response.json();
-                
-                // Edit loading bubble to response content
-                const loadingBubble = document.getElementById(loadingId);
-                
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    let text = data.candidates[0].content.parts[0].text;
-                    // Filter bad elements or clean code block tags
-                    loadingBubble.innerHTML = formatMarkdown(text);
-                } else {
-                    loadingBubble.innerHTML = "❌ AI_ERROR: Không phản hồi hoặc tràn hạn mức API Key. Hãy dán API Key cá nhân của bạn để tiếp tục.";
-                }
-            } catch(err) {
-                document.getElementById(loadingId).innerHTML = "❌ SYSTEM_OFFLINE: Không thể kết nối tới Google AI API. Hãy kiểm tra kết nối mạng hoặc thử lại bằng API Key của riêng bạn.";
-            }
-        }
-
-        function appendMessageBubble(sender, text) {
-            const chatScreen = document.getElementById('ai-chat-messages');
-            const bubbleId = 'bubble-' + Date.now() + '-' + Math.floor(Math.random() * 100);
-            
-            const wrapper = document.createElement('div');
-            wrapper.className = sender === 'user' ? "flex gap-3 justify-end" : "flex gap-3 max-w-[85%]";
-            
-            if (sender === 'user') {
-                wrapper.innerHTML = `
-                    <div class="p-3.5 rounded-2xl rounded-tr-none bg-purple-600/35 border border-purple-500/30 text-white text-xs sm:text-sm leading-relaxed max-w-[85%]">
-                        ${text}
-                    </div>
-                `;
-            } else {
-                wrapper.innerHTML = `
-                    <div class="w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center font-bold tech-mono text-xs text-purple-200 shrink-0 select-none">AI</div>
-                    <div id="${bubbleId}" class="p-3.5 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs sm:text-sm leading-relaxed">
-                        ${text}
-                    </div>
-                `;
-            }
-
-            chatScreen.appendChild(wrapper);
-            chatScreen.scrollTop = chatScreen.scrollHeight; // Auto-scroll to bottom
-            return bubbleId;
-        }
-
-        // Custom minimalistic markdown parser for safer HTML injects
-        function formatMarkdown(text) {
-            return text
-                .replace(/\n/g, '<br>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                .replace(/`(.*?)`/g, '<code class="bg-purple-950 px-1 py-0.5 rounded tech-mono">$1</code>');
-        }
-
-        // 6. GLOBAL EFFECTS CONTROLLERS
-        // Moving Neon trail follow
-        document.addEventListener('mousemove', (e) => {
-            const sphere = document.querySelector('.id-glow-sphere');
-            if (sphere) {
-                sphere.style.left = e.clientX + window.scrollX + 'px';
-                sphere.style.top = e.clientY + window.scrollY + 'px';
-            }
-        });
-
-        // Scroll reveal controller
-        function reveal() {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(r => {
-                const windowHeight = window.innerHeight;
-                const elementTop = r.getBoundingClientRect().top;
-                const elementVisible = 120;
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    r.classList.add('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', reveal);
-        
-        // 7. PAGE INITIALIZER
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initiate Project items
-            initProjects();
-            
-            // Set default language UI state
-            setLanguage(currentLanguage);
-
-            // Execute scroll check on start
-            setTimeout(reveal, 300);
-        });
-    </script>
+    updateClock();
+    setInterval(updateClock, 1000);
+    requestAnimationFrame(updateLoader);
+  </script>
 </body>
 </html>
