@@ -7,7 +7,7 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Space Grotesk for Tech Cyber Feel -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Space Grotesk', sans-serif;
@@ -96,9 +96,214 @@
             opacity: 1;
             transform: translateY(0);
         }
+        body.is-loading {
+            overflow: hidden;
+        }
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 48%, rgba(168, 44, 209, 0.11), transparent 26rem),
+                linear-gradient(rgba(121, 45, 143, 0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(121, 45, 143, 0.055) 1px, transparent 1px),
+                #07030c;
+            background-size: auto, 40px 40px, 40px 40px, auto;
+            transition: opacity 0.65s ease, visibility 0.65s ease;
+        }
+        .loading-screen::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%);
+            background-size: 100% 4px;
+            opacity: 0.42;
+        }
+        .loading-screen::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(226, 58, 183, 0.045), transparent);
+            transform: translateX(-100%);
+            animation: loader-scan 2.8s ease-in-out infinite;
+        }
+        .loading-screen.is-complete {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-frame {
+            position: absolute;
+            inset: clamp(1rem, 4vw, 3rem);
+            border: 1px solid rgba(168, 85, 247, 0.12);
+            pointer-events: none;
+        }
+        .loader-frame::before,
+        .loader-frame::after {
+            content: "";
+            position: absolute;
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+        .loader-frame::before {
+            top: -1px;
+            left: -1px;
+            border-top: 1px solid #ec4899;
+            border-left: 1px solid #ec4899;
+        }
+        .loader-frame::after {
+            right: -1px;
+            bottom: -1px;
+            border-right: 1px solid #a855f7;
+            border-bottom: 1px solid #a855f7;
+        }
+        .loader-panel {
+            position: relative;
+            width: min(84vw, 42rem);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .loader-kicker,
+        .loader-status,
+        .loader-percent,
+        .loader-skip {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .loader-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 2.1rem;
+            padding: 0.38rem 0.85rem;
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            border-radius: 999px;
+            background: rgba(76, 14, 65, 0.2);
+            font-size: 0.66rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .loader-kicker::before {
+            content: "";
+            width: 0.42rem;
+            height: 0.42rem;
+            border-radius: 50%;
+            background: #ec4899;
+            box-shadow: 0 0 9px rgba(236, 72, 153, 0.9);
+            animation: loader-pulse 1.2s ease-in-out infinite;
+        }
+        .loader-mark {
+            margin: 0;
+            color: #f4f0f5;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.25rem, 9vw, 5.4rem);
+            font-weight: 700;
+            letter-spacing: -0.055em;
+            line-height: 0.95;
+            text-transform: uppercase;
+        }
+        .loader-mark span {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: #b87af2;
+            font-size: 0.56em;
+            font-weight: 400;
+            letter-spacing: 0.34em;
+            text-shadow: none;
+        }
+        .loader-rule {
+            width: min(100%, 31rem);
+            height: 1px;
+            margin: 2rem auto 1.15rem;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.6), #ec4899, transparent);
+        }
+        .loader-meta {
+            width: min(100%, 31rem);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .loader-status {
+            color: #9d94a4;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .loader-percent {
+            color: #f472b6;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+        .loader-track {
+            position: relative;
+            width: min(100%, 31rem);
+            height: 3px;
+            margin: 0.8rem auto 0;
+            overflow: hidden;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            background: rgba(168, 85, 247, 0.06);
+        }
+        .loader-progress {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #9333ea, #ec4899);
+            box-shadow: 0 0 14px rgba(236, 72, 153, 0.55);
+            transition: width 0.16s ease-out;
+        }
+        .loader-skip {
+            position: absolute;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            padding: 0.55rem 0.7rem;
+            color: rgba(192, 179, 201, 0.58);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: rgba(7, 3, 12, 0.65);
+            font-size: 0.66rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .loader-skip:hover,
+        .loader-skip:focus-visible {
+            color: #fff0f7;
+            border-color: rgba(236, 72, 153, 0.65);
+            outline: none;
+        }
+        @keyframes loader-scan {
+            0%, 20% { transform: translateX(-100%); }
+            80%, 100% { transform: translateX(100%); }
+        }
+        @keyframes loader-pulse { 50% { opacity: 0.35; } }
+        @media (prefers-reduced-motion: reduce) {
+            .loading-screen::after, .loader-kicker::before { animation: none; }
+            .loading-screen, .loader-progress { transition-duration: 0.01ms; }
+        }
     </style>
 </head>
-<body class="grid-bg relative selection:bg-purple-600 selection:text-white">
+<body class="grid-bg relative selection:bg-purple-600 selection:text-white is-loading">
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite" aria-label="Loading portfolio">
+        <div class="loader-frame" aria-hidden="true"></div>
+        <main class="loader-panel">
+            <div class="loader-kicker">Khởi động hệ thống sáng tạo</div>
+            <h1 class="loader-mark"><span>Future</span>Pikapeo Lab</h1>
+            <div class="loader-rule"></div>
+            <div class="loader-meta">
+                <span id="loader-status" class="loader-status">Đang kết nối hệ thống</span>
+                <span id="loader-percent" class="loader-percent">00%</span>
+            </div>
+            <div class="loader-track" aria-hidden="true">
+                <div id="loader-progress" class="loader-progress"></div>
+            </div>
+        </main>
+        <button id="loader-skip" class="loader-skip" type="button">Bỏ qua mở đầu</button>
+    </div>
     <div class="scanlines"></div>
     <div class="glow-sphere id-glow-sphere"></div>
 
@@ -1002,6 +1207,42 @@
         
         // 7. PAGE INITIALIZER
         document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const loaderProgress = document.getElementById('loader-progress');
+            const loaderPercent = document.getElementById('loader-percent');
+            const loaderStatus = document.getElementById('loader-status');
+            const loaderSkip = document.getElementById('loader-skip');
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const statusMessages = [
+                'Đang kết nối hệ thống',
+                'Đang tải kho tác phẩm',
+                'Đang đồng bộ AI',
+                'Hệ thống sẵn sàng'
+            ];
+            let loaderValue = 0;
+            let loaderTimer;
+
+            function finishLoading() {
+                clearInterval(loaderTimer);
+                loaderValue = 100;
+                loaderProgress.style.width = '100%';
+                loaderPercent.textContent = '100%';
+                loaderStatus.textContent = statusMessages[3];
+                setTimeout(() => {
+                    loadingScreen.classList.add('is-complete');
+                    document.body.classList.remove('is-loading');
+                }, reducedMotion ? 0 : 420);
+            }
+
+            loaderSkip.addEventListener('click', finishLoading);
+            loaderTimer = setInterval(() => {
+                loaderValue = Math.min(loaderValue + Math.ceil(Math.random() * 7), 100);
+                loaderProgress.style.width = `${loaderValue}%`;
+                loaderPercent.textContent = `${String(loaderValue).padStart(2, '0')}%`;
+                loaderStatus.textContent = statusMessages[Math.min(Math.floor(loaderValue / 29), 3)];
+                if (loaderValue >= 100) finishLoading();
+            }, reducedMotion ? 25 : 105);
+
             // Initiate Project items
             initProjects();
             
