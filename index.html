@@ -96,9 +96,236 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .chat-message-enter {
+            animation: chatMessageIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+        .typing-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 999px;
+            background: #d8b4fe;
+            animation: typingPulse 1.1s ease-in-out infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.14s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.28s; }
+        @keyframes chatMessageIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes typingPulse {
+            0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+            30% { opacity: 1; transform: translateY(-3px); }
+        }
+
+        body.is-loading {
+            overflow: hidden;
+        }
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 48%, rgba(168, 44, 209, 0.11), transparent 26rem),
+                linear-gradient(rgba(121, 45, 143, 0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(121, 45, 143, 0.055) 1px, transparent 1px),
+                #07030c;
+            background-size: auto, 40px 40px, 40px 40px, auto;
+            transition: opacity 0.65s ease, visibility 0.65s ease;
+        }
+        .loading-screen::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%);
+            background-size: 100% 4px;
+            opacity: 0.42;
+        }
+        .loading-screen::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(226, 58, 183, 0.045), transparent);
+            transform: translateX(-100%);
+            animation: loader-scan 2.8s ease-in-out infinite;
+        }
+        .loading-screen.is-complete {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-frame {
+            position: absolute;
+            inset: clamp(1rem, 4vw, 3rem);
+            border: 1px solid rgba(168, 85, 247, 0.12);
+            pointer-events: none;
+        }
+        .loader-frame::before,
+        .loader-frame::after {
+            content: "";
+            position: absolute;
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+        .loader-frame::before {
+            top: -1px;
+            left: -1px;
+            border-top: 1px solid #ec4899;
+            border-left: 1px solid #ec4899;
+        }
+        .loader-frame::after {
+            right: -1px;
+            bottom: -1px;
+            border-right: 1px solid #a855f7;
+            border-bottom: 1px solid #a855f7;
+        }
+        .loader-panel {
+            position: relative;
+            width: min(84vw, 42rem);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .loader-kicker,
+        .loader-status,
+        .loader-percent,
+        .loader-skip {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .loader-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 2.1rem;
+            padding: 0.38rem 0.85rem;
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            border-radius: 999px;
+            background: rgba(76, 14, 65, 0.2);
+            font-size: 0.66rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .loader-kicker::before {
+            content: "";
+            width: 0.42rem;
+            height: 0.42rem;
+            border-radius: 50%;
+            background: #ec4899;
+            box-shadow: 0 0 9px rgba(236, 72, 153, 0.9);
+            animation: loader-pulse 1.2s ease-in-out infinite;
+        }
+        .loader-mark {
+            margin: 0;
+            color: #f4f0f5;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.25rem, 9vw, 5.4rem);
+            font-weight: 700;
+            letter-spacing: -0.055em;
+            line-height: 0.95;
+            text-transform: uppercase;
+        }
+        .loader-mark span {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: #b87af2;
+            font-size: 0.56em;
+            font-weight: 400;
+            letter-spacing: 0.34em;
+            text-shadow: none;
+        }
+        .loader-rule {
+            width: min(100%, 31rem);
+            height: 1px;
+            margin: 2rem auto 1.15rem;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.6), #ec4899, transparent);
+        }
+        .loader-meta {
+            width: min(100%, 31rem);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .loader-status {
+            color: #9d94a4;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .loader-percent {
+            color: #f472b6;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+        .loader-track {
+            position: relative;
+            width: min(100%, 31rem);
+            height: 3px;
+            margin: 0.8rem auto 0;
+            overflow: hidden;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            background: rgba(168, 85, 247, 0.06);
+        }
+        .loader-progress {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #9333ea, #ec4899);
+            box-shadow: 0 0 14px rgba(236, 72, 153, 0.55);
+            transition: width 0.16s ease-out;
+        }
+        .loader-skip {
+            position: absolute;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            padding: 0.55rem 0.7rem;
+            color: rgba(192, 179, 201, 0.58);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: rgba(7, 3, 12, 0.65);
+            font-size: 0.66rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .loader-skip:hover,
+        .loader-skip:focus-visible {
+            color: #fff0f7;
+            border-color: rgba(236, 72, 153, 0.65);
+            outline: none;
+        }
+        @keyframes loader-scan {
+            0%, 20% { transform: translateX(-100%); }
+            80%, 100% { transform: translateX(100%); }
+        }
+        @keyframes loader-pulse { 50% { opacity: 0.35; } }
+        @media (prefers-reduced-motion: reduce) {
+            .loading-screen::after, .loader-kicker::before { animation: none; }
+            .loading-screen, .loader-progress { transition-duration: 0.01ms; }
+        }
+
     </style>
 </head>
-<body class="grid-bg relative selection:bg-purple-600 selection:text-white">
+<body class="grid-bg relative selection:bg-purple-600 selection:text-white is-loading">
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite" aria-label="Loading portfolio">
+        <div class="loader-frame" aria-hidden="true"></div>
+        <main class="loader-panel">
+            <div class="loader-kicker">Khởi động hệ thống sáng tạo</div>
+            <h1 class="loader-mark"><span>Future</span>Pikapeo Lab</h1>
+            <div class="loader-rule"></div>
+            <div class="loader-meta">
+                <span id="loader-status" class="loader-status">Đang kết nối hệ thống</span>
+                <span id="loader-percent" class="loader-percent">00%</span>
+            </div>
+            <div class="loader-track" aria-hidden="true">
+                <div id="loader-progress" class="loader-progress"></div>
+            </div>
+        </main>
+        <button id="loader-skip" class="loader-skip" type="button">Bỏ qua mở đầu</button>
+    </div>
     <div class="scanlines"></div>
     <div class="glow-sphere id-glow-sphere"></div>
 
@@ -110,6 +337,7 @@
                 <span class="text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 hover:opacity-80 transition-opacity">PIKAPEO._</span>
                 <span class="tech-mono text-[9px] text-pink-500/80 block tracking-[0.2em] -mt-1 pl-1">LABS SYSTEM v4.5</span>
             </div>
+
 
             <!-- Main Nav Links -->
             <div class="hidden md:flex items-center space-x-10 text-sm tracking-widest uppercase text-gray-400">
@@ -404,13 +632,13 @@
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-12 reveal">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 border border-purple-500/30 rounded-full bg-purple-950/20 text-purple-300 text-xs tracking-widest uppercase mb-4 tech-mono">
-                    🤖 INTEGRATED SYSTEM AI
+                    🤖 CUSTOMER CONCIERGE ONLINE
                 </div>
-                <h2 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 uppercase mb-4">AI Sân Chơi Sáng Tạo</h2>
+                <h2 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 uppercase mb-4" data-vi="Trợ Lý Dự Án AI" data-en="AI Project Concierge">Trợ Lý Dự Án AI</h2>
                 <p class="max-w-2xl mx-auto text-gray-400 text-sm font-light" 
-                   data-vi="Trải nghiệm mô hình trí tuệ nhân tạo thế hệ mới tích hợp trực tiếp. Giao tiếp, đặt câu hỏi về giải pháp thiết kế hoặc sáng tạo kịch bản visual cùng AI."
-                   data-en="Immerse in our custom embedded generative AI ecosystem. Chat, seek UI/UX feedback, or brainstorm visual concepts directly in our sandbox.">
-                   Trải nghiệm mô hình trí tuệ nhân tạo thế hệ mới tích hợp trực tiếp. Giao tiếp, đặt câu hỏi về giải pháp thiết kế hoặc sáng tạo kịch bản visual cùng AI.
+                   data-vi="Mô tả ý tưởng, hỏi về dịch vụ hoặc chuẩn bị brief. Pika sẽ giúp bạn xác định hướng đi phù hợp trước khi trao đổi trực tiếp với Pikapeo."
+                   data-en="Describe your idea, explore services, or prepare a project brief. Pika helps clarify the right direction before you speak directly with Pikapeo.">
+                   Mô tả ý tưởng, hỏi về dịch vụ hoặc chuẩn bị brief. Pika sẽ giúp bạn xác định hướng đi phù hợp trước khi trao đổi trực tiếp với Pikapeo.
                 </p>
             </div>
 
@@ -419,15 +647,12 @@
                 <!-- Header of Chatbox -->
                 <div class="bg-purple-950/35 border-b border-purple-900/30 px-6 py-4 flex justify-between items-center text-xs tech-mono">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
-                        <span class="text-gray-200">PIKAPEO_AI_BOT v3.0</span>
+                        <span class="relative flex w-2.5 h-2.5"><span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70 animate-ping"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span></span>
+                        <span class="text-gray-200">PIKA // CUSTOMER SUPPORT</span>
                     </div>
-                    <!-- Secret Secure Key Access Trigger (Auto-Injected / Custom Key) -->
                     <div class="flex items-center gap-2">
-                        <input type="password" id="custom-api-key" placeholder="SECURE ACCESS KEY..." class="bg-purple-950/40 border border-purple-500/20 px-2 py-1 rounded text-[10px] text-pink-400 focus:outline-none focus:border-pink-500 w-36 placeholder:text-purple-700">
-                        <a href="https://aistudio.google.com" target="_blank" class="px-2 py-1 bg-purple-800/40 hover:bg-pink-800/40 border border-purple-500/30 hover:border-pink-500/40 text-purple-300 hover:text-white rounded text-[10px] uppercase font-bold tracking-wider transition-all duration-300 flex items-center gap-1 shrink-0 animate-pulse">
-                            🔑 LẤY KEY MIỄN PHÍ?
-                        </a>
+                        <span class="hidden sm:inline text-[9px] text-emerald-300/80 tracking-widest" data-vi="PHẢN HỒI TỨC THÌ" data-en="INSTANT REPLIES">PHẢN HỒI TỨC THÌ</span>
+                        <button type="button" onclick="resetChat()" class="px-2 py-1 border border-purple-500/25 rounded text-[10px] text-purple-300 hover:text-white hover:border-pink-500/50 transition-all" data-vi="LÀM MỚI" data-en="RESET">LÀM MỚI</button>
                     </div>
                 </div>
 
@@ -437,24 +662,43 @@
                     <div class="flex gap-3 max-w-[85%]">
                         <div class="w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center font-bold tech-mono text-xs text-purple-200 shrink-0 select-none">AI</div>
                         <div class="p-3.5 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs sm:text-sm leading-relaxed" 
-                             data-vi="🤖 Xin chào! Tôi là Trợ lý Sáng tạo ảo đại diện cho Pikapeo. Bạn muốn khám phá gì hôm nay? Đặt bất kỳ câu hỏi nào về thiết kế đồ họa, kỹ năng thiết kế 3D hoặc yêu cầu tôi lập trình ý tưởng visual cho bạn nhé!"
-                             data-en="🤖 Greetings! I am Pikapeo's virtual Creative AI Companion. What shall we co-create today? Ask me about design, 3D workflow feedback, or trigger creative writing templates.">
-                             🤖 Xin chào! Tôi là Trợ lý Sáng tạo ảo đại diện cho Pikapeo. Bạn muốn khám phá gì hôm nay? Đặt bất kỳ câu hỏi nào về thiết kế đồ họa, kỹ năng thiết kế 3D hoặc yêu cầu tôi lập trình ý tưởng visual cho bạn nhé!
+                             data-vi="Xin chào, tôi là Pika — trợ lý AI của Pikapeo Labs. Tôi có thể tư vấn dịch vụ, giúp bạn hoàn thiện brief hoặc xác định thông tin cần có để nhận báo giá. Bạn đang muốn thực hiện dự án gì?"
+                             data-en="Hi, I’m Pika — Pikapeo Labs’ AI assistant. I can explain services, shape your brief, or identify what is needed for a quote. What are you looking to create?">
+                             Xin chào, tôi là Pika — trợ lý AI của Pikapeo Labs. Tôi có thể tư vấn dịch vụ, giúp bạn hoàn thiện brief hoặc xác định thông tin cần có để nhận báo giá. Bạn đang muốn thực hiện dự án gì?
                         </div>
                     </div>
                 </div>
 
                 <!-- Chat Input Frame -->
                 <div class="p-4 border-t border-purple-900/30 bg-purple-950/10">
+                    <div class="flex gap-2 overflow-x-auto pb-3" aria-label="Suggested questions">
+                        <button type="button" onclick="showServiceCatalog()" class="whitespace-nowrap px-3 py-1.5 rounded-full border border-purple-500/25 bg-purple-950/20 text-[10px] text-purple-200 hover:border-pink-500/50 hover:text-white transition-all" data-vi="Dịch vụ thiết kế" data-en="Design services">Dịch vụ thiết kế</button>
+                        <button type="button" onclick="showQuoteCatalog()" class="whitespace-nowrap px-3 py-1.5 rounded-full border border-purple-500/25 bg-purple-950/20 text-[10px] text-purple-200 hover:border-pink-500/50 hover:text-white transition-all" data-vi="Nhận báo giá" data-en="Get a quote">Nhận báo giá</button>
+                        <button type="button" onclick="showProjectBriefForm()" class="whitespace-nowrap px-3 py-1.5 rounded-full border border-purple-500/25 bg-purple-950/20 text-[10px] text-purple-200 hover:border-pink-500/50 hover:text-white transition-all" data-vi="Tạo project brief" data-en="Create a brief">Tạo project brief</button>
+                    </div>
                     <form id="ai-input-form" onsubmit="sendChatMessage(event)" class="flex gap-2">
-                        <input type="text" id="ai-user-query" class="flex-grow bg-purple-950/20 border border-purple-500/35 p-3 rounded-xl text-white placeholder-purple-700/80 focus:outline-none focus:border-pink-500 text-sm focus:ring-1 focus:ring-pink-500/40 transition-all duration-300" placeholder="Nhập câu hỏi sáng tạo hoặc tìm kiếm của bạn tại đây...">
-                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl text-sm transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/25">
+                        <input type="text" id="ai-user-query" maxlength="2000" autocomplete="off" class="flex-grow min-w-0 bg-purple-950/20 border border-purple-500/35 p-3 rounded-xl text-white placeholder-purple-700/80 focus:outline-none focus:border-pink-500 text-sm focus:ring-1 focus:ring-pink-500/40 transition-all duration-300" placeholder="Mô tả dự án hoặc đặt câu hỏi...">
+                        <button id="ai-send-button" type="submit" class="px-5 sm:px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl text-sm transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/25">
                             SEND
                         </button>
                     </form>
-                    <p class="text-[10px] text-gray-500 mt-2 tech-mono text-center">🛡️ Để đảm bảo an toàn tuyệt đối, hệ thống khuyến cáo bạn nên nhập API Key cá nhân của bạn vào ô "SECURE ACCESS KEY" ở trên để sử dụng AI miễn phí không giới hạn!</p>
+                    <p class="text-[10px] text-gray-500 mt-2 tech-mono text-center" data-vi="AI có thể mắc lỗi. Báo giá và lịch thực hiện chỉ được xác nhận khi trao đổi trực tiếp với Pikapeo." data-en="AI can make mistakes. Pricing and availability are confirmed only through direct discussion with Pikapeo.">AI có thể mắc lỗi. Báo giá và lịch thực hiện chỉ được xác nhận khi trao đổi trực tiếp với Pikapeo.</p>
                 </div>
             </div>
+
+            <form name="project-brief" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+                <input type="hidden" name="form-name" value="project-brief">
+                <input type="hidden" name="subject" value="New Pikapeo project brief">
+                <input name="bot-field">
+                <input name="name">
+                <input name="email">
+                <input name="customer-phone">
+                <input name="project-type">
+                <input name="budget">
+                <input name="deadline">
+                <textarea name="project-details"></textarea>
+                <input name="recipient">
+            </form>
         </div>
     </section>
 
@@ -567,38 +811,30 @@
             const statusElement = document.getElementById('skill-agent-status');
             
             statusElement.innerText = `// AGENT: ANALYZING_QUERY`;
-            textElement.innerHTML = `System analyzing specific requests for ${activeSelectedSkill}... <span class="animate-pulse">⏳</span>`;
+            textElement.textContent = currentLanguage === 'vi' ? 'Hệ thống đang phân tích yêu cầu...' : 'Analyzing your request...';
             queryInput.value = '';
-            
-            const defaultKeyInput = "AIzaSy" + "AsgT6n7v" + "2_XyH26H-e7o" + "b3gH5mK" + "M89C" + "Z_k";
-            const userKey = document.getElementById('custom-api-key').value.trim();
-            const activeApiKey = userKey !== "" ? userKey : defaultKeyInput;
-            
+
             try {
-                const prompt = `You are Pikapeo's AI Skill Advisor. The user is asking a custom question about Pikapeo's proficiency in: ${activeSelectedSkill}.
-                User question: ${query}
-                Keep the answer very brief (strictly under 3 sentences), inspiring, highly professional and futuristic. Respond in Vietnamese if the question is in Vietnamese, else in English. Format with bold markdown key terms. Output the answer immediately without introductory greeting.`;
-                
-                const reqBody = {
-                    contents: [{ parts: [{ text: prompt }] }]
-                };
-                
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeApiKey}`, {
+                const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(reqBody)
+                    body: JSON.stringify({
+                        messages: [{
+                            role: 'user',
+                            content: `${query}\n\nContext: I am asking specifically about Pikapeo's ${activeSelectedSkill} service or skill. Keep the answer under three sentences.`
+                        }]
+                    })
                 });
-                
                 const data = await response.json();
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    textElement.innerHTML = formatMarkdown(data.candidates[0].content.parts[0].text);
+                if (response.ok && data.reply) {
+                    textElement.textContent = data.reply;
                     statusElement.innerText = `// AGENT: CUSTOM_REPORT_READY`;
                 } else {
-                    textElement.innerHTML = "❌ AI_ERROR: Không phản hồi hoặc tràn hạn mức API Key. Hãy dán API Key cá nhân của bạn để tiếp tục.";
+                    textElement.textContent = currentLanguage === 'vi' ? 'Không thể tạo báo cáo lúc này. Vui lòng thử lại.' : 'Unable to create a report right now. Please try again.';
                     statusElement.innerText = `// AGENT: REPORT_FAILED`;
                 }
             } catch (err) {
-                textElement.innerHTML = "❌ SYSTEM_OFFLINE: Không thể kết nối tới Google AI API. Hãy kiểm tra kết nối mạng hoặc dán API Key cá nhân.";
+                textElement.textContent = currentLanguage === 'vi' ? 'Trợ lý đang tạm mất kết nối.' : 'The assistant is temporarily offline.';
                 statusElement.innerText = `// AGENT: OFFLINE`;
             }
         }
@@ -880,98 +1116,333 @@
             // Translate form placeholders
             const queryInput = document.getElementById('ai-user-query');
             if (lang === 'vi') {
-                queryInput.placeholder = "Nhập câu hỏi sáng tạo hoặc tìm kiếm của bạn tại đây...";
+                queryInput.placeholder = "Mô tả dự án hoặc đặt câu hỏi...";
             } else {
-                queryInput.placeholder = "Enter your custom design query or creative prompts...";
+                queryInput.placeholder = "Describe your project or ask a question...";
             }
         }
 
-        // 5. EMBEDDED AI SYSTEM INTERACTIVITY (Google Gemini API integration)
+        // 5. CUSTOMER AI CONCIERGE
+        const customerChatHistory = [];
+        let chatRequestPending = false;
+        const serviceCatalog = [
+            {
+                titleVi: 'Thiết kế thương hiệu',
+                titleEn: 'Brand identity design',
+                items: [
+                    ['Logo Cơ Bản', '2.000.000 ₫'],
+                    ['Logo Chuyên Nghiệp', '4.000.000 ₫'],
+                    ['Bộ nhận diện thương hiệu Cơ Bản', '8.000.000 ₫'],
+                    ['Bộ nhận diện thương hiệu Chuyên Nghiệp', '15.000.000 ₫']
+                ]
+            },
+            {
+                titleVi: 'Digital Marketing & Social Media',
+                titleEn: 'Digital marketing & social media',
+                items: [
+                    ['PPT Template', '500.000 ₫'],
+                    ['Key Visual', '2.000.000 ₫'],
+                    ['Campaign / Art Direction', '5.000.000 ₫'],
+                    ['Social Post Cơ Bản', '300.000 ₫'],
+                    ['Social Post Chuyên Nghiệp', '600.000 ₫'],
+                    ['Gói 10 Social Post', '2.500.000 ₫'],
+                    ['Monthly — 1 Post/ngày', '8.000.000 ₫'],
+                    ['Monthly — 2 Post/ngày', '14.000.000 ₫']
+                ]
+            },
+            {
+                titleVi: 'Ấn phẩm & in ấn',
+                titleEn: 'Print design',
+                items: [
+                    ['Standee / Poster / Flyer', '500.000 ₫'],
+                    ['Brochure', '800.000 ₫'],
+                    ['Menu cuốn', '300.000 ₫ / trang'],
+                    ['Menu để bàn', '500.000 ₫'],
+                    ['Nhãn bao bì', '500.000 ₫'],
+                    ['Thiết kế bao bì', '1.500.000 ₫'],
+                    ['Name Card', '500.000 ₫']
+                ]
+            },
+            {
+                titleVi: 'Motion Graphic, Edit & Animation',
+                titleEn: 'Motion graphics, editing & animation',
+                items: [
+                    ['Video Intro', '2.000.000 ₫'],
+                    ['Video Outro', '2.000.000 ₫'],
+                    ['VFX hình ảnh / chữ', '2.000.000 ₫'],
+                    ['3D Motion', '4.000.000 ₫']
+                ]
+            }
+        ];
+
         async function sendChatMessage(e) {
             e.preventDefault();
             const queryInput = document.getElementById('ai-user-query');
             const queryText = queryInput.value.trim();
-            if (!queryText) return;
+            if (!queryText || chatRequestPending) return;
 
-            // Render User's message Bubble
             appendMessageBubble('user', queryText);
+            customerChatHistory.push({ role: 'user', content: queryText });
             queryInput.value = '';
-
-            // Loading system bubble simulation
-            const loadingId = appendMessageBubble('bot', 'AI System is processing... <span class="animate-pulse">⏳</span>');
-
-            // API fetch controllers
-            const defaultKeyInput = "AIzaSy" + "AsgT6n7v" + "2_XyH26H-e7o" + "b3gH5mK" + "M89C" + "Z_k"; // Obfuscated sandbox free key
-            const userKey = document.getElementById('custom-api-key').value.trim();
-            const activeApiKey = userKey !== "" ? userKey : defaultKeyInput;
+            setChatLoading(true);
+            const loadingId = appendTypingBubble();
 
             try {
-                // System Instruction to calibrate model behavior
-                const sysInstruction = `You are Pikapeo's Creative portfolio bot. Keep responses polite, futuristic, and helpful. Guide users about design tools, Blender 3D, After Effects. Keep responses brief and formatted with basic Markdown. Always reply in Vietnamese if they write in Vietnamese, else in English.`;
-
-                const reqBody = {
-                    contents: [{
-                        parts: [{ text: `${sysInstruction}\n\nUser Question: ${queryText}` }]
-                    }]
-                };
-
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeApiKey}`, {
+                const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(reqBody)
+                    body: JSON.stringify({ messages: customerChatHistory.slice(-10) })
                 });
-
                 const data = await response.json();
-                
-                // Edit loading bubble to response content
-                const loadingBubble = document.getElementById(loadingId);
-                
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    let text = data.candidates[0].content.parts[0].text;
-                    // Filter bad elements or clean code block tags
-                    loadingBubble.innerHTML = formatMarkdown(text);
-                } else {
-                    loadingBubble.innerHTML = "❌ AI_ERROR: Không phản hồi hoặc tràn hạn mức API Key. Hãy dán API Key cá nhân của bạn để tiếp tục.";
+                if (!response.ok || !data.reply) {
+                    throw new Error(data.error || 'Assistant request failed');
                 }
-            } catch(err) {
-                document.getElementById(loadingId).innerHTML = "❌ SYSTEM_OFFLINE: Không thể kết nối tới Google AI API. Hãy kiểm tra kết nối mạng hoặc thử lại bằng API Key của riêng bạn.";
+                customerChatHistory.push({ role: 'assistant', content: data.reply });
+                replaceTypingBubble(loadingId, data.reply);
+            } catch (error) {
+                console.error(error);
+                replaceTypingBubble(
+                    loadingId,
+                    currentLanguage === 'vi'
+                        ? 'Xin lỗi, Pika đang tạm mất kết nối. Vui lòng thử lại sau một chút.'
+                        : 'Sorry, Pika is temporarily offline. Please try again in a moment.',
+                    true
+                );
+            } finally {
+                setChatLoading(false);
+                queryInput.focus();
             }
         }
 
         function appendMessageBubble(sender, text) {
             const chatScreen = document.getElementById('ai-chat-messages');
             const bubbleId = 'bubble-' + Date.now() + '-' + Math.floor(Math.random() * 100);
-            
             const wrapper = document.createElement('div');
-            wrapper.className = sender === 'user' ? "flex gap-3 justify-end" : "flex gap-3 max-w-[85%]";
+            wrapper.className = (sender === 'user' ? 'flex gap-3 justify-end' : 'flex gap-3 max-w-[85%]') + ' chat-message-enter';
             
             if (sender === 'user') {
-                wrapper.innerHTML = `
-                    <div class="p-3.5 rounded-2xl rounded-tr-none bg-purple-600/35 border border-purple-500/30 text-white text-xs sm:text-sm leading-relaxed max-w-[85%]">
-                        ${text}
-                    </div>
-                `;
+                const bubble = document.createElement('div');
+                bubble.className = 'p-3.5 rounded-2xl rounded-tr-none bg-purple-600/35 border border-purple-500/30 text-white text-xs sm:text-sm leading-relaxed max-w-[85%] whitespace-pre-wrap';
+                bubble.textContent = text;
+                wrapper.appendChild(bubble);
             } else {
-                wrapper.innerHTML = `
-                    <div class="w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center font-bold tech-mono text-xs text-purple-200 shrink-0 select-none">AI</div>
-                    <div id="${bubbleId}" class="p-3.5 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs sm:text-sm leading-relaxed">
-                        ${text}
-                    </div>
-                `;
+                wrapper.appendChild(createBotAvatar());
+                const bubble = document.createElement('div');
+                bubble.id = bubbleId;
+                bubble.className = 'p-3.5 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap';
+                bubble.textContent = text;
+                wrapper.appendChild(bubble);
             }
 
             chatScreen.appendChild(wrapper);
-            chatScreen.scrollTop = chatScreen.scrollHeight; // Auto-scroll to bottom
+            chatScreen.scrollTop = chatScreen.scrollHeight;
             return bubbleId;
         }
 
-        // Custom minimalistic markdown parser for safer HTML injects
-        function formatMarkdown(text) {
-            return text
-                .replace(/\n/g, '<br>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                .replace(/`(.*?)`/g, '<code class="bg-purple-950 px-1 py-0.5 rounded tech-mono">$1</code>');
+        function createBotAvatar() {
+            const avatar = document.createElement('div');
+            avatar.className = 'w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center font-bold tech-mono text-xs text-purple-200 shrink-0 select-none';
+            avatar.textContent = 'AI';
+            return avatar;
+        }
+
+        function appendTypingBubble() {
+            const chatScreen = document.getElementById('ai-chat-messages');
+            const bubbleId = 'bubble-' + Date.now() + '-typing';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 max-w-[85%] chat-message-enter';
+            wrapper.appendChild(createBotAvatar());
+
+            const bubble = document.createElement('div');
+            bubble.id = bubbleId;
+            bubble.className = 'p-4 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 flex items-center gap-1.5';
+            bubble.setAttribute('aria-label', currentLanguage === 'vi' ? 'Pika đang trả lời' : 'Pika is replying');
+            bubble.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+            wrapper.appendChild(bubble);
+            chatScreen.appendChild(wrapper);
+            chatScreen.scrollTop = chatScreen.scrollHeight;
+            return bubbleId;
+        }
+
+        function replaceTypingBubble(bubbleId, text, isError = false) {
+            const bubble = document.getElementById(bubbleId);
+            if (!bubble) return;
+            bubble.className = `p-3.5 rounded-2xl rounded-tl-none border text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${isError ? 'bg-red-950/25 border-red-500/30 text-red-200' : 'bg-purple-950/25 border-purple-900/30'}`;
+            bubble.textContent = text;
+        }
+
+        function setChatLoading(isLoading) {
+            chatRequestPending = isLoading;
+            document.getElementById('ai-send-button').disabled = isLoading;
+            document.getElementById('ai-user-query').disabled = isLoading;
+        }
+
+        function showServiceCatalog() {
+            appendCatalogCard(false);
+        }
+
+        function showQuoteCatalog() {
+            appendCatalogCard(true);
+        }
+
+        function appendCatalogCard(showPrices) {
+            if (chatRequestPending) return;
+            const chatScreen = document.getElementById('ai-chat-messages');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 max-w-[96%] chat-message-enter';
+            wrapper.appendChild(createBotAvatar());
+
+            const card = document.createElement('div');
+            card.className = 'p-4 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs leading-relaxed w-full';
+            const heading = document.createElement('div');
+            heading.className = 'font-bold text-white mb-1';
+            heading.textContent = showPrices
+                ? (currentLanguage === 'vi' ? 'Bảng giá tham khảo' : 'Reference pricing')
+                : (currentLanguage === 'vi' ? 'Dịch vụ thiết kế Pikapeo' : 'Pikapeo design services');
+            card.appendChild(heading);
+
+            const note = document.createElement('p');
+            note.className = 'text-gray-400 mb-4';
+            note.textContent = showPrices
+                ? (currentLanguage === 'vi' ? 'Giá thực tế được xác nhận sau khi xem brief và phạm vi công việc.' : 'Final pricing is confirmed after reviewing your brief and project scope.')
+                : (currentLanguage === 'vi' ? 'Chọn một nhóm dịch vụ để xem các hạng mục hiện có.' : 'Explore the available work in each service group.');
+            card.appendChild(note);
+
+            serviceCatalog.forEach((group) => {
+                const section = document.createElement('details');
+                section.className = 'border-t border-purple-500/15 py-2 group';
+                const summary = document.createElement('summary');
+                summary.className = 'cursor-pointer list-none flex items-center justify-between gap-2 text-purple-200 font-semibold py-1';
+                summary.innerHTML = `<span>${currentLanguage === 'vi' ? group.titleVi : group.titleEn}</span><span class="text-pink-400 group-open:rotate-45 transition-transform">+</span>`;
+                section.appendChild(summary);
+
+                const list = document.createElement('div');
+                list.className = 'space-y-2 pt-2 pb-1';
+                group.items.forEach(([name, price]) => {
+                    const row = document.createElement('div');
+                    row.className = 'flex items-start justify-between gap-4 text-gray-300';
+                    const nameElement = document.createElement('span');
+                    nameElement.textContent = name;
+                    row.appendChild(nameElement);
+                    if (showPrices) {
+                        const priceElement = document.createElement('span');
+                        priceElement.className = 'text-pink-300 font-semibold whitespace-nowrap';
+                        priceElement.textContent = price;
+                        row.appendChild(priceElement);
+                    }
+                    list.appendChild(row);
+                });
+                section.appendChild(list);
+                card.appendChild(section);
+            });
+
+            const sourceLink = document.createElement('a');
+            sourceLink.href = 'https://docs.google.com/spreadsheets/d/1JmWzd8agz6iDU04Spq22Qkh4F0BoNBScOcUZUT86c4U/edit?gid=0#gid=0';
+            sourceLink.target = '_blank';
+            sourceLink.rel = 'noopener noreferrer';
+            sourceLink.className = 'inline-flex mt-3 text-[10px] text-purple-300 hover:text-pink-300 underline underline-offset-4';
+            sourceLink.textContent = currentLanguage === 'vi' ? 'Mở bảng dịch vụ đầy đủ ↗' : 'Open the complete service sheet ↗';
+            card.appendChild(sourceLink);
+
+            wrapper.appendChild(card);
+            chatScreen.appendChild(wrapper);
+            chatScreen.scrollTop = chatScreen.scrollHeight;
+        }
+
+        function showProjectBriefForm() {
+            if (chatRequestPending || document.getElementById('project-brief-card')) return;
+            const chatScreen = document.getElementById('ai-chat-messages');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 max-w-[96%] chat-message-enter';
+            wrapper.appendChild(createBotAvatar());
+
+            const card = document.createElement('div');
+            card.id = 'project-brief-card';
+            card.className = 'p-4 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs w-full';
+            card.innerHTML = `
+                <div class="font-bold text-white text-sm mb-1">${currentLanguage === 'vi' ? 'Tạo project brief' : 'Create a project brief'}</div>
+                <p class="text-gray-400 mb-4">${currentLanguage === 'vi' ? 'Điền thông tin bên dưới. Brief được lưu an toàn và Gmail sẽ mở sẵn thư gửi đến Pikapeo.' : 'Complete the details below. Your brief is saved securely and Gmail opens a ready-to-send message to Pikapeo.'}</p>
+                <form id="project-brief-form" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="hidden" name="form-name" value="project-brief">
+                    <input type="hidden" name="subject" value="New Pikapeo project brief">
+                    <input type="hidden" name="recipient" value="jonhluu1998@gmail.com">
+                    <p class="hidden"><label>Do not fill: <input name="bot-field"></label></p>
+                    <input name="name" required class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="${currentLanguage === 'vi' ? 'Tên của bạn *' : 'Your name *'}">
+                    <input name="email" type="email" required class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="Email *">
+                    <input name="customer-phone" class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="${currentLanguage === 'vi' ? 'Số điện thoại' : 'Phone number'}">
+                    <select name="project-type" required class="bg-[#12091f] border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500">
+                        <option value="">${currentLanguage === 'vi' ? 'Loại dự án *' : 'Project type *'}</option>
+                        ${serviceCatalog.map((group) => `<option>${currentLanguage === 'vi' ? group.titleVi : group.titleEn}</option>`).join('')}
+                    </select>
+                    <input name="budget" class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="${currentLanguage === 'vi' ? 'Ngân sách dự kiến' : 'Estimated budget'}">
+                    <input name="deadline" type="date" class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500">
+                    <textarea name="project-details" required rows="4" class="sm:col-span-2 bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500 resize-none" placeholder="${currentLanguage === 'vi' ? 'Mô tả mục tiêu, sản phẩm cần bàn giao và yêu cầu quan trọng *' : 'Describe your goals, deliverables, and important requirements *'}"></textarea>
+                    <button type="submit" class="sm:col-span-2 px-4 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold hover:opacity-90 disabled:opacity-40">${currentLanguage === 'vi' ? 'LƯU BRIEF & MỞ GMAIL' : 'SAVE BRIEF & OPEN GMAIL'}</button>
+                    <div id="project-brief-status" class="sm:col-span-2 text-center text-[10px] text-gray-400" aria-live="polite"></div>
+                </form>`;
+            wrapper.appendChild(card);
+            chatScreen.appendChild(wrapper);
+            document.getElementById('project-brief-form').addEventListener('submit', submitProjectBrief);
+            chatScreen.scrollTop = chatScreen.scrollHeight;
+        }
+
+        async function submitProjectBrief(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const button = form.querySelector('button[type="submit"]');
+            const status = document.getElementById('project-brief-status');
+            const formData = new FormData(form);
+            const gmailWindow = window.open('about:blank', '_blank');
+            button.disabled = true;
+            status.textContent = currentLanguage === 'vi' ? 'Đang lưu brief...' : 'Saving your brief...';
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+                if (!response.ok) throw new Error('Brief submission failed');
+
+                const subject = `Project brief — ${formData.get('name')} — ${formData.get('project-type')}`;
+                const body = [
+                    `Tên / Name: ${formData.get('name')}`,
+                    `Email: ${formData.get('email')}`,
+                    `Điện thoại / Phone: ${formData.get('customer-phone') || '-'}`,
+                    `Loại dự án / Project type: ${formData.get('project-type')}`,
+                    `Ngân sách / Budget: ${formData.get('budget') || '-'}`,
+                    `Deadline: ${formData.get('deadline') || '-'}`,
+                    '',
+                    'Chi tiết / Details:',
+                    formData.get('project-details')
+                ].join('\n');
+                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=jonhluu1998@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                status.textContent = currentLanguage === 'vi' ? 'Đã lưu brief. Đang mở Gmail...' : 'Brief saved. Opening Gmail...';
+                if (gmailWindow) {
+                    gmailWindow.location.href = gmailUrl;
+                } else {
+                    window.location.href = gmailUrl;
+                }
+                form.reset();
+            } catch (error) {
+                console.error(error);
+                if (gmailWindow) gmailWindow.close();
+                status.textContent = currentLanguage === 'vi' ? 'Không thể lưu brief. Vui lòng thử lại.' : 'Unable to save the brief. Please try again.';
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        function resetChat() {
+            customerChatHistory.length = 0;
+            const chatScreen = document.getElementById('ai-chat-messages');
+            chatScreen.innerHTML = '';
+            appendMessageBubble(
+                'bot',
+                currentLanguage === 'vi'
+                    ? 'Xin chào, tôi là Pika — trợ lý AI của Pikapeo Labs. Bạn đang muốn thực hiện dự án gì?'
+                    : 'Hi, I’m Pika — Pikapeo Labs’ AI assistant. What are you looking to create?'
+            );
         }
 
         // 6. GLOBAL EFFECTS CONTROLLERS
@@ -1002,7 +1473,42 @@
         
         // 7. PAGE INITIALIZER
         document.addEventListener('DOMContentLoaded', () => {
-            // Initiate Project items
+            const loadingScreen = document.getElementById('loading-screen');
+            const loaderProgress = document.getElementById('loader-progress');
+            const loaderPercent = document.getElementById('loader-percent');
+            const loaderStatus = document.getElementById('loader-status');
+            const loaderSkip = document.getElementById('loader-skip');
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const statusMessages = [
+                'Đang kết nối hệ thống',
+                'Đang tải kho tác phẩm',
+                'Đang đồng bộ AI',
+                'Hệ thống sẵn sàng'
+            ];
+            let loaderValue = 0;
+            let loaderTimer;
+
+            function finishLoading() {
+                clearInterval(loaderTimer);
+                loaderValue = 100;
+                loaderProgress.style.width = '100%';
+                loaderPercent.textContent = '100%';
+                loaderStatus.textContent = statusMessages[3];
+                setTimeout(() => {
+                    loadingScreen.classList.add('is-complete');
+                    document.body.classList.remove('is-loading');
+                }, reducedMotion ? 0 : 420);
+            }
+
+            loaderSkip.addEventListener('click', finishLoading);
+            loaderTimer = setInterval(() => {
+                loaderValue = Math.min(loaderValue + Math.ceil(Math.random() * 7), 100);
+                loaderProgress.style.width = `${loaderValue}%`;
+                loaderPercent.textContent = `${String(loaderValue).padStart(2, '0')}%`;
+                loaderStatus.textContent = statusMessages[Math.min(Math.floor(loaderValue / 29), 3)];
+                if (loaderValue >= 100) finishLoading();
+            }, reducedMotion ? 25 : 105);
+		  // Initiate Project items
             initProjects();
             
             // Set default language UI state

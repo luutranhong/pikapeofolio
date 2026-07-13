@@ -1,0 +1,13 @@
+{
+  "name": "repo",
+  "version": "1.0.0",
+  "description": "Pikapeo Labs portfolio and AI customer assistant",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["portfolio", "netlify", "ai"],
+  "private": true,
+  "dependencies": {
+    "openai": "^6.46.0"
+  }
+}
