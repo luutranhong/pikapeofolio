@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Space Grotesk for Tech Cyber Feel -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Space Grotesk', sans-serif;
@@ -307,6 +309,40 @@
             .loading-screen, .loader-progress { transition-duration: 0.01ms; }
         }
 
+        /* Dino game style */
+        #portfolioDinoCanvas {
+            background-color: #1e1b4b;
+            transition: background-color 1s ease;
+        }
+        .game-menu-overlay {
+            background: rgba(11, 5, 20, 0.95);
+            backdrop-filter: blur(6px);
+        }
+        @keyframes borderFlash {
+            0%, 100% { border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 0 15px rgba(168, 85, 247, 0.15); }
+            50% { border-color: #ec4899; box-shadow: 0 0 30px rgba(236, 72, 153, 0.75); }
+        }
+        .neon-border-flash {
+            animation: borderFlash 1.2s ease-in-out 2;
+        }
+        .menu-btn {
+            background-color: #9333ea;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            pointer-events: auto;
+            border-radius: 6px;
+        }
+        .menu-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+        }
+
     </style>
 </head>
 <body class="grid-bg relative selection:bg-purple-600 selection:text-white is-loading">
@@ -410,106 +446,182 @@
 
     <!-- 3. ABOUT ME & SKILLS SECTION -->
     <section id="about" class="py-24 px-6 relative z-10 glass-panel border-t border-purple-950/40">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            
-            <!-- Left Portrait Box -->
-            <div class="lg:col-span-5 flex justify-center w-full reveal">
-                <div class="relative group max-w-sm w-full">
-                    <!-- Tech neon frames -->
-                    <div class="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
-                    <div class="relative bg-black border border-purple-500/30 p-4 rounded-xl">
-                        <!-- Upper Corners Tech details -->
-                        <div class="absolute top-2 left-2 tech-mono text-[8px] text-purple-400">SYS_ID: #7829X</div>
-                        <div class="absolute top-2 right-2 tech-mono text-[8px] text-pink-500 animate-pulse">● LIVE</div>
-                        
-                        <img src="asset/img/avatar.png" alt="Pikapeo Portrait" class="w-full rounded-lg grayscale hover:grayscale-0 transition-all duration-700 aspect-square object-cover mb-4 mt-4">
-                        
-                        <!-- Lower text frame -->
-                        <div class="border-t border-purple-900/40 pt-3 flex justify-between items-center text-[10px] tech-mono text-gray-400">
-                            <span>CO-CREATOR INVISION</span>
-                            <span>SYS_VER_4.5</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Profile Information -->
-            <div class="lg:col-span-7 flex flex-col justify-center reveal">
-                <div class="text-pink-500 tech-mono text-xs uppercase tracking-[0.25em] mb-3">// CO-CREATOR INVISION</div>
-                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-6" data-vi="Pikapeo là ai?" data-en="Who is Pikapeo?">Pikapeo là ai?</h2>
-                
-                <p class="text-gray-300 text-base sm:text-lg mb-8 font-light leading-relaxed" 
-                   data-vi="Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng."
-                   data-en="Hello! I am a passionate Graphic Designer specializing in molding future-oriented visual realms. I believe that design is not just a digital asset, but an immersive multisensory narrative crafted by glowing neon lights, deep spatial 3D realms, and dynamic kinetic motion.">
-                   Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng.
-                </p>
-
-                <!-- Statistics grid -->
-                <div class="grid grid-cols-3 gap-4 border-t border-b border-purple-900/30 py-6 mb-8 tech-mono">
-                    <div>
-                        <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">05+</div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Năm Kinh Nghiệm" data-en="Years of Exp">Năm Kinh Nghiệm</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">50+</div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Dự Án Hoàn Tất" data-en="Projects Done">Dự Án Hoàn Tất</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">99%</div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Khách Hài Lòng" data-en="Happy Clients">Khách Hài Lòng</div>
-                    </div>
-                </div>
-
-                <!-- Skill Tags inside tech containers -->
-                <div>
-                    <h3 class="text-xs uppercase tracking-widest text-purple-400 tech-mono mb-4" data-vi=">> BỘ KỸ NĂNG VÀ CÔNG CỤ" data-en=">> SKILLSETS & TOOLS">>> BỘ KỸ NĂNG VÀ CÔNG CỤ</h3>
-                    <div class="flex flex-wrap gap-2.5">
-                        <button onclick="selectSkill('Blender 3D')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Blender 3D</button>
-                        <button onclick="selectSkill('Premiere Pro')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Premiere Pro</button>
-                        <button onclick="selectSkill('Adobe After Effects')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">After Effects</button>
-                        <button onclick="selectSkill('Photoshop')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Photoshop</button>
-                        <button onclick="selectSkill('Illustrator')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Illustrator</button>
-                        <button onclick="selectSkill('Figma UI/UX')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-50₀/2₀ text-xs tech-mono text-purple-3₀ hover:border-pink-5₀/5₀ hover:bg-purple-9₀₀/2₀ transition-all duration-3₀₀">Figma UI/UX</button>
-                        <button onclick="selectSkill('Generative AI')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-pink-95₀/3₀ border border-pink-5₀/2₀ text-xs tech-mono text-pink-4₀ font-semibold hover:border-pink-4₀/8₀ hover:bg-pink-9₀₀/2₀ transition-all duration-3₀₀">Generative AI</button>
-                    </div>
-
-                    <!-- Interactive AI Skill Agent Widget -->
-                    <div class="border border-purple-5０/2０ rounded-xl p-4 bg-purple-9５０/1０ backdrop-blur-md flex items-start gap-3 mt-5 relative overflow-hidden">
-                        <!-- Neon background flare -->
-                        <div class="absolute -right-10 -bottom-10 w-24 h-24 bg-pink-500/10 rounded-full filter blur-xl pointer-events-none"></div>
-                        
-                        <!-- Skill AI Bot Avatar -->
-                        <div class="shrink-0 flex flex-col items-center gap-1.5">
-                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-lg shadow-lg shadow-purple-950/50 relative">
-                                <span class="animate-ping absolute inset-0 rounded-lg bg-pink-500/20"></span>
-                                🧠
-                            </div>
-                            <span class="tech-mono text-[8px] text-pink-400 tracking-wider">SKILL_BOT</span>
-                        </div>
-                        
-                        <!-- AI Skill Readout Screen -->
-                        <div class="flex-grow min-w-0">
-                            <div class="flex justify-between items-center mb-1.5 border-b border-purple-900/30 pb-1">
-                                <span class="tech-mono text-[9px] text-gray-400" id="skill-agent-status">// AGENT: WAITING_INPUT</span>
-                                <span class="tech-mono text-[9px] text-pink-500 animate-pulse">● READY</span>
-                            </div>
-                            <p id="skill-ai-readout" class="text-xs text-gray-300 leading-relaxed font-light" 
-                               data-vi="💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!"
-                               data-en="💡 Click any skill tag above, and the AI Skill Agent will instantly report how Pikapeo implements that tool in futuristic design pipelines!">
-                               💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!
-                            </p>
-                            
-                            <!-- Custom Query Input for specific skill questions -->
-                            <div class="mt-3 flex gap-1.5">
-                                <input type="text" id="skill-custom-query" class="flex-grow bg-black/40 border border-purple-500/25 px-2 py-1.5 rounded text-[11px] text-white focus:outline-none focus:border-pink-500 tech-mono placeholder:text-purple-950/80" placeholder="Hỏi thêm AI về chuyên môn này...">
-                                <button onclick="askCustomSkillQuery(event)" class="px-3 py-1.5 bg-purple-800/40 border border-purple-500/30 hover:border-pink-500/40 text-[10px] tech-mono text-purple-200 hover:text-white rounded transition-all uppercase font-bold shrink-0">ASK</button>
-                            </div>
-                        </div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        
+        <!-- Left Portrait Box -->
+        <div class="lg:col-span-5 flex justify-center w-full reveal">
+            <div class="relative group max-w-sm w-full">
+                <!-- Tech neon frames -->
+                <div class="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative bg-black border border-purple-500/30 p-4 rounded-xl">
+                    <!-- Upper Corners Tech details -->
+                    <div class="absolute top-2 left-2 tech-mono text-[8px] text-purple-400">SYS_ID: #7829X</div>
+                    <div class="absolute top-2 right-2 tech-mono text-[8px] text-pink-500 animate-pulse">● LIVE</div>
+                    
+                    <img src="asset/img/avatar.png" alt="Pikapeo Portrait" class="w-full rounded-lg grayscale hover:grayscale-0 transition-all duration-700 aspect-square object-cover mb-4 mt-4">
+                    
+                    <!-- Lower text frame -->
+                    <div class="border-t border-purple-900/40 pt-3 flex justify-between items-center text-[10px] tech-mono text-gray-400">
+                        <span>CO-CREATOR INVISION</span>
+                        <span>SYS_VER_4.5</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- Right Profile Information -->
+        <div class="lg:col-span-7 flex flex-col justify-center reveal">
+            <div class="text-pink-500 tech-mono text-xs uppercase tracking-[0.25em] mb-3">// CO-CREATOR INVISION</div>
+            <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-6" data-vi="Pikapeo là ai?" data-en="Who is Pikapeo?">Pikapeo là ai?</h2>
+            
+            <p class="text-gray-300 text-base sm:text-lg mb-8 font-light leading-relaxed" 
+               data-vi="Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng."
+               data-en="Hello! I am a passionate Graphic Designer specializing in molding future-oriented visual realms. I believe that design is not just a digital asset, but an immersive multisensory narrative crafted by glowing neon lights, deep spatial 3D realms, and dynamic kinetic motion.">
+                Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng.
+            </p>
+
+            <!-- Statistics grid -->
+            <div class="grid grid-cols-3 gap-4 border-t border-b border-purple-900/30 py-6 mb-8 tech-mono">
+                <div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">05+</div>
+                    <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Năm Kinh Nghiệm" data-en="Years of Exp">Năm Kinh Nghiệm</div>
+                </div>
+                <div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">50+</div>
+                    <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Dự Án Hoàn Tất" data-en="Projects Done">Dự Án Hoàn Tất</div>
+                </div>
+                <div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">99%</div>
+                    <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Khách Hài Lòng" data-en="Happy Clients">Khách Hài Lòng</div>
+                </div>
+            </div>
+
+            <!-- Skill Tags inside tech containers -->
+            <div>
+                <h3 class="text-xs uppercase tracking-widest text-purple-400 tech-mono mb-4" data-vi=">> BỘ KỸ NĂNG VÀ CÔNG CỤ" data-en=">> SKILLSETS & TOOLS">>> BỘ KỸ NĂNG VÀ CÔNG CỤ</h3>
+                <div class="flex flex-wrap gap-2.5">
+                    <button onclick="selectSkill('Blender 3D')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Blender 3D</button>
+                    <button onclick="selectSkill('Premiere Pro')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Premiere Pro</button>
+                    <button onclick="selectSkill('Adobe After Effects')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">After Effects</button>
+                    <button onclick="selectSkill('Photoshop')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Photoshop</button>
+                    <button onclick="selectSkill('Illustrator')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Illustrator</button>
+                    <button onclick="selectSkill('Figma UI/UX')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Figma UI/UX</button>
+                    <button onclick="selectSkill('Generative AI')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-pink-950/30 border border-pink-500/20 text-xs tech-mono text-pink-400 font-semibold hover:border-pink-400/80 hover:bg-pink-900/20 transition-all duration-300">Generative AI</button>
+                </div>
+
+                <!-- Interactive AI Skill Agent Widget -->
+                <div class="border border-purple-500/20 rounded-xl p-4 bg-purple-950/10 backdrop-blur-md flex items-start gap-3 mt-5 relative overflow-hidden">
+                    <!-- Neon background flare -->
+                    <div class="absolute -right-10 -bottom-10 w-24 h-24 bg-pink-500/10 rounded-full filter blur-xl pointer-events-none"></div>
+                    
+                    <!-- Skill AI Bot Avatar -->
+                    <div class="shrink-0 flex flex-col items-center gap-1.5">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-lg shadow-lg shadow-purple-950/50 relative">
+                            <span class="animate-ping absolute inset-0 rounded-lg bg-pink-500/20"></span>
+                            🧠
+                        </div>
+                        <span class="tech-mono text-[8px] text-pink-400 tracking-wider">SKILL_BOT</span>
+                    </div>
+                    
+                    <!-- AI Skill Readout Screen -->
+                    <div class="flex-grow min-w-0">
+                        <div class="flex justify-between items-center mb-1.5 border-b border-purple-900/30 pb-1">
+                            <span class="tech-mono text-[9px] text-gray-400" id="skill-agent-status">// AGENT: WAITING_INPUT</span>
+                            <span class="tech-mono text-[9px] text-pink-500 animate-pulse">● READY</span>
+                        </div>
+                        <p id="skill-ai-readout" class="text-xs text-gray-300 leading-relaxed font-light" 
+                           data-vi="💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!"
+                           data-en="💡 Click any skill tag above, and the AI Skill Agent will instantly report how Pikapeo implements that tool in futuristic design pipelines!">
+                            💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!
+                        </p>
+                        
+                        <!-- Custom Query Input for specific skill questions -->
+                        <div class="mt-3 flex gap-1.5">
+                            <input type="text" id="skill-custom-query" class="flex-grow bg-black/40 border border-purple-500/25 px-2 py-1.5 rounded text-[11px] text-white focus:outline-none focus:border-pink-500 tech-mono placeholder:text-purple-950/80" placeholder="Hỏi thêm AI về chuyên môn này...">
+                            <button onclick="askCustomSkillQuery(event)" class="px-3 py-1.5 bg-purple-800/40 border border-purple-500/30 hover:border-pink-500/40 text-[10px] tech-mono text-purple-200 hover:text-white rounded transition-all uppercase font-bold shrink-0">ASK</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3.5. INTEGRATED RETRO GAME CONSOLE -->
+                <div id="integrated-dino-console" class="mt-8 border-2 border-purple-500/40 rounded-2xl overflow-hidden bg-[#0b0514] shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col relative transition-all duration-300">
+                    <!-- Console Header Bar -->
+                    <div class="flex items-center justify-between px-5 py-3 border-b border-purple-900/50 bg-[#06020c]">
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg animate-bounce">🦖</span>
+                            <div>
+                                <h4 class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 tech-mono text-xs tracking-wider">PIXEL DINO RUNNER CONSOLE</h4>
+                                <p class="text-[8px] text-gray-500 tech-mono uppercase">Vanilla Javascript & Sound Synthesizer</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                            <span class="tech-mono text-[8px] text-green-400 tracking-wider">ONLINE</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Game Screen Area -->
+                    <div class="relative aspect-[4/3] w-full bg-black flex items-center justify-center overflow-hidden">
+                        <!-- Game Canvas Core -->
+                        <canvas id="portfolioDinoCanvas" width="320" height="240" class="w-full h-full" style="touch-action: none;"></canvas>
+                        
+                        <!-- Game Top Info UI Layer -->
+                        <div id="game-ui-layer" class="absolute top-0 left-0 w-full p-4 flex justify-between pointer-events-none select-none text-white text-shadow font-pixel text-[8px] z-20">
+                            <div class="flex gap-4">
+                                <span>HI <span id="gameHighScore">00000</span></span>
+                                <span><span id="gameCurrentScore">00000</span></span>
+                            </div>
+                            <button id="gamePauseBtn" class="pointer-events-auto bg-purple-900/60 hover:bg-purple-800 text-white border border-purple-500/40 px-2.5 py-1 font-pixel text-[7px] rounded cursor-pointer transition-all">PAUSE</button>
+                        </div>
+
+                        <!-- Game Overlays States -->
+                        <!-- A. Main Menu -->
+                        <div id="game-menu-main" class="absolute inset-0 game-menu-overlay flex flex-col items-center justify-center z-30">
+                            <h1 class="font-pixel text-lg text-yellow-400 mb-6 tracking-widest text-center leading-loose animate-pulse">PIXEL<br>RUNNER</h1>
+                            <button onclick="startGameEngine()" class="menu-btn bg-purple-600 hover:bg-purple-500 border-2 border-white px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer shadow-lg active:translate-y-1">PLAY</button>
+                            <button onclick="toggleGameSettings(true)" class="menu-btn bg-purple-900 hover:bg-purple-800 border-2 border-purple-500 px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer shadow-lg mt-3">SETTINGS</button>
+                        </div>
+
+                        <!-- B. Pause Menu -->
+                        <div id="game-menu-pause" class="absolute inset-0 game-menu-overlay hidden flex flex-col items-center justify-center z-30">
+                            <h1 class="font-pixel text-lg text-purple-400 mb-6">PAUSED</h1>
+                            <button onclick="resumeGameEngine()" class="menu-btn bg-purple-600 hover:bg-purple-500 border-2 border-white px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer">RESUME</button>
+                            <button onclick="toggleGameSettings(true)" class="menu-btn bg-purple-900 hover:bg-purple-800 border-2 border-purple-500 px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer mt-3">SETTINGS</button>
+                        </div>
+
+                        <!-- C. Settings Rules Overlay -->
+                        <div id="game-menu-settings" class="absolute inset-0 game-menu-overlay hidden flex flex-col items-center justify-center p-6 text-center z-30">
+                            <h1 class="font-pixel text-xs text-yellow-400 mb-4 uppercase">CONTROL CONFIGS</h1>
+                            <p class="font-pixel text-[7px] leading-loose text-gray-300 mb-5">
+                                PC PLATFORM:<br>Space / Up Arrow to Jump<br>Down Arrow to Duck<br><br>
+                                MOBILE TOUCH:<br>Tap Screen to Jump<br>Swipe Down to Duck
+                            </p>
+                            <button onclick="toggleGameSettings(false)" class="menu-btn bg-purple-600 hover:bg-purple-500 border-2 border-white px-6 py-2 font-pixel text-[9px] text-white rounded cursor-pointer">BACK</button>
+                        </div>
+
+                        <!-- D. Game Over Screen -->
+                        <div id="game-menu-over" class="absolute inset-0 game-menu-overlay hidden flex flex-col items-center justify-center z-30">
+                            <h1 class="font-pixel text-lg text-red-500 mb-2 animate-bounce">GAME OVER</h1>
+                            <p class="font-pixel text-[8px] text-purple-300 blink-text mt-4 uppercase">TAP TO TRY AGAIN</p>
+                        </div>
+                    </div>
+
+                    <!-- Console Footer Panel -->
+                    <div class="px-5 py-3.5 bg-[#06020c] border-t border-purple-900/50 flex flex-col sm:flex-row justify-between items-center gap-2.5 text-xs text-gray-400 text-center sm:text-left">
+                        <div class="tech-mono text-[9px]">
+                            <span class="font-semibold text-pink-500">PC Controls:</span> 
+                            <span class="bg-purple-950/80 px-1 py-0.5 border border-purple-900 rounded">Space</span> / <span class="bg-purple-950/80 px-1 py-0.5 border border-purple-900 rounded">↑</span> Jump, <span class="bg-purple-950/80 px-1 py-0.5 border border-purple-900 rounded">↓</span> Duck
+                        </div>
+                        <button onclick="resetGameEngine()" class="text-pink-400 hover:text-white flex items-center gap-1 transition tech-mono text-[9px]">
+                            <i class="fa-solid fa-rotate-right text-[8px]"></i> Reset Arcade
+                        </button>
+                    </div>
+                </div> <!-- End #integrated-dino-console -->
+            </div> <!-- End Skillsets block wrapper -->
+        </div> <!-- End Right Profile Information (.lg:col-span-7) -->
+        
+    </div> <!-- End Grid Layout wrapper -->
+</section>
 
     <!-- 4. SELECTED WORKS SECTION (DỰ ÁN NỔI BẬT) -->
     <section id="work" class="py-24 px-6 relative z-10">
@@ -1517,6 +1629,507 @@
             // Execute scroll check on start
             setTimeout(reveal, 300);
         });
+
+        // Action: Smooth Scroll and highlight game console
+        function scrollToGameConsole() {
+            const consoleCard = document.getElementById('integrated-dino-console');
+            if (consoleCard) {
+                consoleCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                consoleCard.classList.add('neon-border-flash');
+                setTimeout(() => {
+                    consoleCard.classList.remove('neon-border-flash');
+                }, 2400);
+            }
+        }
+
+        // Integrated HTML5 Canvas T-Rex Dino Game Engine logic
+        const gameCanvas = document.getElementById('portfolioDinoCanvas');
+        const gameCtx = gameCanvas.getContext('2d');
+        gameCtx.imageSmoothingEnabled = false;
+
+        const uiHighScore = document.getElementById('gameHighScore');
+        const uiCurrentScore = document.getElementById('gameCurrentScore');
+        const overlayMain = document.getElementById('game-menu-main');
+        const overlayPause = document.getElementById('game-menu-pause');
+        const overlaySettings = document.getElementById('game-menu-settings');
+        const overlayGameOver = document.getElementById('game-menu-over');
+        const btnPause = document.getElementById('gamePauseBtn');
+
+        const dinoGroundY = 190;
+        let gameActiveState = 'MENU'; // MENU, PLAYING, PAUSED, GAME_OVER, SETTINGS
+        let gameScore = 0;
+        let gameHighScoreVal = localStorage.getItem('portfolioDinoHighScore') || 0;
+        let gameSpeed = 4;
+        const gameBaseSpeed = 4;
+        let gameSpawnTimer = 0;
+        let isNightTheme = false;
+        let lastMilestoneScore = 0;
+
+        let gamePlayer;
+        let gameObstacles = [];
+        let gameClouds = [];
+        let gameGroundLines = [];
+
+        // Dynamic sound synth
+        const synthCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSynthSound(freqStart, freqEnd, duration, waveType) {
+            try {
+                if (synthCtx.state === 'suspended') synthCtx.resume();
+                const osc = synthCtx.createOscillator();
+                const gain = synthCtx.createGain();
+                osc.connect(gain);
+                gain.connect(synthCtx.destination);
+
+                osc.type = waveType || 'square';
+                const now = synthCtx.currentTime;
+
+                osc.frequency.setValueAtTime(freqStart, now);
+                if (freqEnd) {
+                    osc.frequency.exponentialRampToValueAtTime(freqEnd, now + duration);
+                }
+                
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+                osc.start(now);
+                osc.stop(now + duration);
+            } catch(e) { console.log(e); }
+        }
+
+        function formatGameScore(val) {
+            return Math.floor(val).toString().padStart(5, '0');
+        }
+        uiHighScore.innerText = formatGameScore(gameHighScoreVal);
+
+        // Player entity
+        class DinoPlayer {
+            constructor() {
+                this.x = 40;
+                this.y = dinoGroundY - 18;
+                this.width = 14;
+                this.height = 18;
+                this.vy = 0;
+                this.jumpStrength = 8.5;
+                this.gravity = 0.5;
+                this.grounded = true;
+                this.isDucking = false;
+                this.animFrame = 0;
+                this.animTimer = 0;
+            }
+            jump() {
+                if (this.grounded && !this.isDucking) {
+                    this.vy = -this.jumpStrength;
+                    this.grounded = false;
+                    playSynthSound(300, 600, 0.1, 'square');
+                }
+            }
+            duck(isDucking) {
+                if (this.grounded) {
+                    this.isDucking = isDucking;
+                }
+            }
+            update() {
+                this.vy += this.gravity;
+                this.y += this.vy;
+
+                if (this.y + this.height > dinoGroundY) {
+                    this.y = dinoGroundY - this.height;
+                    this.vy = 0;
+                    this.grounded = true;
+                }
+
+                if (!this.grounded) this.isDucking = false;
+
+                if (this.grounded) {
+                    this.animTimer += gameSpeed;
+                    if (this.animTimer > 30) {
+                        this.animFrame = (this.animFrame + 1) % 2;
+                        this.animTimer = 0;
+                    }
+                } else {
+                    this.animFrame = 0;
+                }
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? '#ecf0f1' : '#a855f7';
+                
+                if (this.isDucking) {
+                    gameCtx.fillRect(this.x, this.y + 8, 18, 10);
+                    gameCtx.fillStyle = isNightTheme ? '#2c3e50' : '#ffffff';
+                    gameCtx.fillRect(this.x + 14, this.y + 10, 2, 2);
+                    
+                    gameCtx.fillStyle = isNightTheme ? '#ecf0f1' : '#a855f7';
+                    if (this.animFrame === 0) {
+                        gameCtx.fillRect(this.x + 2, this.y + 18, 4, 2);
+                        gameCtx.fillRect(this.x + 12, this.y + 18, 4, 1);
+                    } else {
+                        gameCtx.fillRect(this.x + 2, this.y + 18, 4, 1);
+                        gameCtx.fillRect(this.x + 12, this.y + 18, 4, 2);
+                    }
+                } else {
+                    gameCtx.fillRect(this.x + 4, this.y, 10, 8);
+                    gameCtx.fillStyle = isNightTheme ? '#2c3e50' : '#ffffff';
+                    gameCtx.fillRect(this.x + 10, this.y + 2, 2, 2);
+                    
+                    gameCtx.fillStyle = isNightTheme ? '#ecf0f1' : '#a855f7';
+                    gameCtx.fillRect(this.x + 2, this.y + 8, 10, 6);
+                    gameCtx.fillRect(this.x, this.y + 10, 2, 4);
+                    
+                    if (this.grounded) {
+                        if (this.animFrame === 0) {
+                            gameCtx.fillRect(this.x + 2, this.y + 14, 4, 4);
+                            gameCtx.fillRect(this.x + 8, this.y + 14, 4, 2);
+                        } else {
+                            gameCtx.fillRect(this.x + 2, this.y + 14, 4, 2);
+                            gameCtx.fillRect(this.x + 8, this.y + 14, 4, 4);
+                        }
+                    } else {
+                        gameCtx.fillRect(this.x + 2, this.y + 14, 4, 2);
+                        gameCtx.fillRect(this.x + 8, this.y + 14, 4, 3);
+                    }
+                }
+            }
+        }
+
+        // Obstacle entities
+        class DinoObstacle {
+            constructor(type) {
+                this.type = type;
+                this.x = gameCanvas.width + 20;
+                this.markedForDeletion = false;
+                
+                if (type === 'cactus_sm') {
+                    this.width = 12;
+                    this.height = 20;
+                    this.y = dinoGroundY - this.height;
+                } else if (type === 'cactus_bg') {
+                    this.width = 18;
+                    this.height = 30;
+                    this.y = dinoGroundY - this.height;
+                } else if (type === 'bird') {
+                    this.width = 20;
+                    this.height = 10;
+                    const heights = [dinoGroundY - 15, dinoGroundY - 30, dinoGroundY - 45];
+                    this.y = heights[Math.floor(Math.random() * heights.length)];
+                    this.animFrame = 0;
+                    this.animTimer = 0;
+                }
+            }
+            update() {
+                this.x -= gameSpeed;
+                if (this.x + this.width < 0) {
+                    this.markedForDeletion = true;
+                }
+                if (this.type === 'bird') {
+                    this.animTimer += gameSpeed * 0.5;
+                    if (this.animTimer > 15) {
+                        this.animFrame = (this.animFrame + 1) % 2;
+                        this.animTimer = 0;
+                    }
+                }
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? '#db2777' : '#ec4899';
+                if (this.type === 'cactus_sm' || this.type === 'cactus_bg') {
+                    gameCtx.fillRect(this.x + this.width/2 - 2, this.y, 4, this.height);
+                    gameCtx.fillRect(this.x, this.y + this.height/3, 4, this.height/3);
+                    gameCtx.fillRect(this.x + 2, this.y + this.height/3 + 2, 2, 2);
+                    gameCtx.fillRect(this.x + this.width - 4, this.y + this.height/4, 4, this.height/3);
+                    gameCtx.fillRect(this.x + this.width - 6, this.y + this.height/4 + 2, 2, 2);
+                } else if (this.type === 'bird') {
+                    gameCtx.fillStyle = isNightTheme ? '#f472b6' : '#d8b4fe';
+                    gameCtx.fillRect(this.x + 4, this.y + 4, 12, 4);
+                    gameCtx.fillRect(this.x, this.y + 4, 4, 2);
+                    if (this.animFrame === 0) {
+                        gameCtx.fillRect(this.x + 8, this.y, 6, 4);
+                    } else {
+                        gameCtx.fillRect(this.x + 8, this.y + 8, 6, 4);
+                    }
+                }
+            }
+        }
+
+        class DinoCloud {
+            constructor() {
+                this.x = gameCanvas.width + 10;
+                this.y = Math.random() * 80 + 20;
+                this.speed = Math.random() * 0.4 + 0.1;
+                this.width = Math.random() * 30 + 30;
+            }
+            update() {
+                this.x -= this.speed;
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.6)';
+                gameCtx.fillRect(this.x, this.y, this.width, 10);
+                gameCtx.fillRect(this.x + 5, this.y - 5, this.width - 15, 5);
+            }
+        }
+
+        class GroundLine {
+            constructor(x) {
+                this.x = x !== undefined ? x : gameCanvas.width;
+                this.y = dinoGroundY + Math.random() * 20;
+                this.width = Math.random() * 3 + 1;
+            }
+            update() {
+                this.x -= gameSpeed;
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? '#6b21a8' : '#a855f7';
+                gameCtx.fillRect(this.x, this.y, this.width, 1);
+            }
+        }
+
+        function initGameEngine() {
+            gamePlayer = new DinoPlayer();
+            gameObstacles = [];
+            gameClouds = [new DinoCloud(), new DinoCloud()];
+            gameClouds[0].x = 100;
+            gameClouds[1].x = 240;
+            
+            gameGroundLines = [];
+            for (let i = 0; i < gameCanvas.width; i += 15) {
+                if (Math.random() > 0.5) gameGroundLines.push(new GroundLine(i));
+            }
+            
+            gameScore = 0;
+            gameSpeed = gameBaseSpeed;
+            lastMilestoneScore = 0;
+            gameSpawnTimer = 60;
+            isNightTheme = false;
+            gameCanvas.style.backgroundColor = '#1e1b4b'; // Deep dark cyber sky
+            
+            uiCurrentScore.innerText = formatGameScore(0);
+        }
+
+        function triggerJumpEvent(e) {
+            if (e && e.type !== 'mousedown') e.preventDefault();
+            if (synthCtx.state === 'suspended') synthCtx.resume();
+            
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.jump();
+            } else if (gameActiveState === 'MENU') {
+                startGameEngine();
+            } else if (gameActiveState === 'GAME_OVER') {
+                restartGameFromOver();
+            }
+        }
+
+        // PC Controls
+        window.addEventListener('keydown', (e) => {
+            if (gameActiveState === 'PLAYING') {
+                if (e.code === 'Space' || e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    gamePlayer.jump();
+                } else if (e.code === 'ArrowDown') {
+                    e.preventDefault();
+                    gamePlayer.duck(true);
+                }
+            } else if (gameActiveState === 'GAME_OVER' && e.code === 'Space') {
+                e.preventDefault();
+                restartGameFromOver();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (gameActiveState === 'PLAYING') {
+                if (e.code === 'ArrowDown') {
+                    e.preventDefault();
+                    gamePlayer.duck(false);
+                }
+            }
+        });
+
+        // Touch gesture controls (Swipe Down to Duck)
+        let swipeStartY = 0;
+        gameCanvas.addEventListener('touchstart', (e) => {
+            swipeStartY = e.touches[0].clientY;
+            triggerJumpEvent(e);
+        }, { passive: false });
+
+        gameCanvas.addEventListener('touchmove', (e) => {
+            if (gameActiveState !== 'PLAYING') return;
+            const swipeEndY = e.touches[0].clientY;
+            if (swipeEndY - swipeStartY > 30) {
+                gamePlayer.duck(true);
+            }
+        }, { passive: false });
+
+        gameCanvas.addEventListener('touchend', () => {
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.duck(false);
+            }
+        });
+
+        gameCanvas.addEventListener('mousedown', triggerJumpEvent);
+
+        function triggerGameLoss() {
+            playSynthSound(200, 50, 0.35, 'sawtooth');
+            gameActiveState = 'GAME_OVER';
+            
+            if (gameScore > gameHighScoreVal) {
+                gameHighScoreVal = Math.floor(gameScore);
+                localStorage.setItem('portfolioDinoHighScore', gameHighScoreVal);
+                uiHighScore.innerText = formatGameScore(gameHighScoreVal);
+            }
+
+            overlayGameOver.classList.remove('hidden');
+            overlayGameOver.style.display = 'flex';
+        }
+
+        function restartGameFromOver() {
+            overlayGameOver.classList.add('hidden');
+            overlayGameOver.style.display = 'none';
+            initGameEngine();
+            gameActiveState = 'PLAYING';
+        }
+
+        overlayGameOver.addEventListener('click', restartGameFromOver);
+
+        function startGameEngine() {
+            overlayMain.classList.add('hidden');
+            overlayMain.style.display = 'none';
+            initGameEngine();
+            gameActiveState = 'PLAYING';
+        }
+
+        function resumeGameEngine() {
+            overlayPause.classList.add('hidden');
+            overlayPause.style.display = 'none';
+            gameActiveState = 'PLAYING';
+        }
+
+        function toggleGameSettings(show) {
+            if (show) {
+                overlayMain.classList.add('hidden');
+                overlayMain.style.display = 'none';
+                overlayPause.classList.add('hidden');
+                overlayPause.style.display = 'none';
+                overlaySettings.classList.remove('hidden');
+                overlaySettings.style.display = 'flex';
+            } else {
+                overlaySettings.classList.add('hidden');
+                overlaySettings.style.display = 'none';
+                if (gameActiveState === 'PAUSED') {
+                    overlayPause.classList.remove('hidden');
+                    overlayPause.style.display = 'flex';
+                } else {
+                    overlayMain.classList.remove('hidden');
+                    overlayMain.style.display = 'flex';
+                }
+            }
+        }
+
+        btnPause.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (gameActiveState === 'PLAYING') {
+                gameActiveState = 'PAUSED';
+                overlayPause.classList.remove('hidden');
+                overlayPause.style.display = 'flex';
+            }
+        });
+
+        function resetGameEngine() {
+            initGameEngine();
+            overlayPause.classList.add('hidden');
+            overlayPause.style.display = 'none';
+            overlayGameOver.classList.add('hidden');
+            overlayGameOver.style.display = 'none';
+            overlayMain.classList.remove('hidden');
+            overlayMain.style.display = 'flex';
+            gameActiveState = 'MENU';
+        }
+
+        // Running engine loop tick
+        function mainGameLoopTick() {
+            if (gameActiveState === 'PLAYING') {
+                // Accelerate game speed slowly
+                gameSpeed += 0.0015;
+                if (gameSpeed > 10) gameSpeed = 10;
+
+                gameScore += gameSpeed * 0.02;
+                uiCurrentScore.innerText = formatGameScore(gameScore);
+
+                // Sound milestone beat
+                let scoreCeil = Math.floor(gameScore / 100) * 100;
+                if (scoreCeil > 0 && scoreCeil > lastMilestoneScore) {
+                    lastMilestoneScore = scoreCeil;
+                    playSynthSound(800, 1200, 0.15, 'sine');
+                }
+
+                // Check environment cycles (Day/Night shifts every 300 points)
+                let environmentIndex = Math.floor(gameScore / 300) % 2;
+                isNightTheme = environmentIndex === 1;
+                gameCanvas.style.backgroundColor = isNightTheme ? '#020005' : '#1e1b4b';
+
+                gamePlayer.update();
+
+                // Dynamic background spawns
+                if (Math.random() < 0.01) gameClouds.push(new DinoCloud());
+                if (Math.random() < 0.4) gameGroundLines.push(new GroundLine());
+
+                // Spawn obstacles
+                gameSpawnTimer--;
+                if (gameSpawnTimer <= 0) {
+                    let r = Math.random();
+                    let obsType = 'cactus_sm';
+                    if (gameSpeed > 5 && r > 0.7) obsType = 'bird';
+                    else if (r > 0.4) obsType = 'cactus_bg';
+                    
+                    gameObstacles.push(new DinoObstacle(obsType));
+                    gameSpawnTimer = Math.max(35, 75 - Math.floor(gameSpeed * 3)) + Math.random() * 40;
+                }
+
+                // Update obstacles
+                for (let i = gameObstacles.length - 1; i >= 0; i--) {
+                    gameObstacles[i].update();
+                    if (gameObstacles[i].markedForDeletion) {
+                        gameObstacles.splice(i, 1);
+                    }
+                }
+
+                gameClouds.forEach(c => c.update());
+                gameGroundLines.forEach(gl => gl.update());
+
+                // Box-to-Box collision detection
+                let pBox = gamePlayer.isDucking ? 
+                    { x: gamePlayer.x, y: gamePlayer.y + 8, w: 18, h: 10 } :
+                    { x: gamePlayer.x + 2, y: gamePlayer.y + 2, w: gamePlayer.width - 4, h: gamePlayer.height - 4 };
+
+                for (let obs of gameObstacles) {
+                    let oBox = { x: obs.x + 2, y: obs.y + 2, w: obs.width - 4, h: obs.height - 4 };
+                    if (pBox.x < oBox.x + oBox.w &&
+                        pBox.x + pBox.w > oBox.x &&
+                        pBox.y < oBox.y + oBox.h &&
+                        pBox.y + pBox.h > oBox.y) {
+                        triggerGameLoss();
+                        break;
+                    }
+                }
+            }
+
+            // Draw game frame layers
+            gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+            // Ground divider rule
+            gameCtx.fillStyle = isNightTheme ? '#db2777' : '#a855f7';
+            gameCtx.fillRect(0, dinoGroundY, gameCanvas.width, 2);
+
+            gameClouds.forEach(c => c.draw());
+            gameGroundLines.forEach(gl => gl.draw());
+            gameObstacles.forEach(o => o.draw());
+
+            if (gameActiveState !== 'MENU') {
+                gamePlayer.draw();
+            }
+
+            requestAnimationFrame(mainGameLoopTick);
+        }
+
+        // Start animation frame loop
+        mainGameLoopTick();
+
     </script>
 </body>
 </html>
