@@ -1,0 +1,23 @@
+{
+  "name": "repo",
+  "version": "1.0.0",
+  "description": "Pikapeo Labs portfolio and AI customer assistant",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sanity:dev": "sanity dev --config sanity/sanity.config.ts",
+    "sanity:build": "sanity build --config sanity/sanity.config.ts",
+    "sanity:deploy": "sanity deploy --config sanity/sanity.config.ts"
+  },
+  "keywords": [
+    "portfolio",
+    "netlify",
+    "ai"
+  ],
+  "private": true,
+  "dependencies": {
+    "@sanity/client": "^8.10.0",
+    "@sanity/vision": "^6.20.0",
+    "openai": "^6.46.0",
+    "sanity": "^6.20.0"
+  }
+}

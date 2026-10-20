@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pikapeo folio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk for Tech Cyber Feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #030008;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .tech-mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        /* Custom Glowing and Futuristic effects */
+        .neon-text-purple {
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.6), 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+        .neon-text-pink {
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.6), 0 0 20px rgba(236, 72, 153, 0.4);
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+        }
+        .neon-card-glow {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .neon-card-glow:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2), 0 0 20px rgba(236, 72, 153, 0.15);
+            border-color: rgba(236, 72, 153, 0.6);
+        }
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(10, 5, 20, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030008;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6b21a8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #db2777;
+        }
+        /* Futuristic grid background animation */
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(168, 85, 247, 0.04) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(168, 85, 247, 0.04) 1px, transparent 1px);
+        }
+        /* Scanline animation */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+        /* Interactive Glowing Cursor Trail simulation (subtle) */
+        .glow-sphere {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        /* Smooth reveal animation on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .chat-message-enter {
+            animation: chatMessageIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+        .typing-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 999px;
+            background: #d8b4fe;
+            animation: typingPulse 1.1s ease-in-out infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.14s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.28s; }
+        @keyframes chatMessageIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes typingPulse {
+            0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+            30% { opacity: 1; transform: translateY(-3px); }
+        }
+
+        body.is-loading {
+            overflow: hidden;
+        }
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 48%, rgba(168, 44, 209, 0.11), transparent 26rem),
+                linear-gradient(rgba(121, 45, 143, 0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(121, 45, 143, 0.055) 1px, transparent 1px),
+                #07030c;
+            background-size: auto, 40px 40px, 40px 40px, auto;
+            transition: opacity 0.65s ease, visibility 0.65s ease;
+        }
+        .loading-screen::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%);
+            background-size: 100% 4px;
+            opacity: 0.42;
+        }
+        .loading-screen::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(226, 58, 183, 0.045), transparent);
+            transform: translateX(-100%);
+            animation: loader-scan 2.8s ease-in-out infinite;
+        }
+        .loading-screen.is-complete {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-frame {
+            position: absolute;
+            inset: clamp(1rem, 4vw, 3rem);
+            border: 1px solid rgba(168, 85, 247, 0.12);
+            pointer-events: none;
+        }
+        .loader-frame::before,
+        .loader-frame::after {
+            content: "";
+            position: absolute;
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+        .loader-frame::before {
+            top: -1px;
+            left: -1px;
+            border-top: 1px solid #ec4899;
+            border-left: 1px solid #ec4899;
+        }
+        .loader-frame::after {
+            right: -1px;
+            bottom: -1px;
+            border-right: 1px solid #a855f7;
+            border-bottom: 1px solid #a855f7;
+        }
+        .loader-panel {
+            position: relative;
+            width: min(84vw, 42rem);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .loader-kicker,
+        .loader-status,
+        .loader-percent,
+        .loader-skip {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .loader-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 2.1rem;
+            padding: 0.38rem 0.85rem;
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            border-radius: 999px;
+            background: rgba(76, 14, 65, 0.2);
+            font-size: 0.66rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .loader-kicker::before {
+            content: "";
+            width: 0.42rem;
+            height: 0.42rem;
+            border-radius: 50%;
+            background: #ec4899;
+            box-shadow: 0 0 9px rgba(236, 72, 153, 0.9);
+            animation: loader-pulse 1.2s ease-in-out infinite;
+        }
+        .loader-mark {
+            margin: 0;
+            color: #f4f0f5;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.25rem, 9vw, 5.4rem);
+            font-weight: 700;
+            letter-spacing: -0.055em;
+            line-height: 0.95;
+            text-transform: uppercase;
+        }
+        .loader-mark span {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: #b87af2;
+            font-size: 0.56em;
+            font-weight: 400;
+            letter-spacing: 0.34em;
+            text-shadow: none;
+        }
+        .loader-rule {
+            width: min(100%, 31rem);
+            height: 1px;
+            margin: 2rem auto 1.15rem;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.6), #ec4899, transparent);
+        }
+        .loader-meta {
+            width: min(100%, 31rem);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .loader-status {
+            color: #9d94a4;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .loader-percent {
+            color: #f472b6;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+        .loader-track {
+            position: relative;
+            width: min(100%, 31rem);
+            height: 3px;
+            margin: 0.8rem auto 0;
+            overflow: hidden;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            background: rgba(168, 85, 247, 0.06);
+        }
+        .loader-progress {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #9333ea, #ec4899);
+            box-shadow: 0 0 14px rgba(236, 72, 153, 0.55);
+            transition: width 0.16s ease-out;
+        }
+        .loader-skip {
+            position: absolute;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            padding: 0.55rem 0.7rem;
+            color: rgba(192, 179, 201, 0.58);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: rgba(7, 3, 12, 0.65);
+            font-size: 0.66rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .loader-skip:hover,
+        .loader-skip:focus-visible {
+            color: #fff0f7;
+            border-color: rgba(236, 72, 153, 0.65);
+            outline: none;
+        }
+        @keyframes loader-scan {
+            0%, 20% { transform: translateX(-100%); }
+            80%, 100% { transform: translateX(100%); }
+        }
+        @keyframes loader-pulse { 50% { opacity: 0.35; } }
+        @media (prefers-reduced-motion: reduce) {
+            .loading-screen::after, .loader-kicker::before { animation: none; }
+            .loading-screen, .loader-progress { transition-duration: 0.01ms; }
+        }
+
+        /* Dino game style */
+        #portfolioDinoCanvas {
+            background-color: #1e1b4b;
+            transition: background-color 1s ease;
+        }
+        .game-menu-overlay {
+            background: rgba(11, 5, 20, 0.95);
+            backdrop-filter: blur(6px);
+        }
+        @keyframes borderFlash {
+            0%, 100% { border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 0 15px rgba(168, 85, 247, 0.15); }
+            50% { border-color: #ec4899; box-shadow: 0 0 30px rgba(236, 72, 153, 0.75); }
+        }
+        .neon-border-flash {
+            animation: borderFlash 1.2s ease-in-out 2;
+        }
+        .menu-btn {
+            background-color: #9333ea;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            pointer-events: auto;
+            border-radius: 6px;
+        }
+        .menu-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+        }
+
+    </style>
+</head>
+<body class="grid-bg relative selection:bg-purple-600 selection:text-white is-loading">
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite" aria-label="Loading portfolio">
+        <div class="loader-frame" aria-hidden="true"></div>
+        <main class="loader-panel">
+            <div class="loader-kicker">Khởi động hệ thống sáng tạo</div>
+            <h1 class="loader-mark"><span>Future</span>Pikapeo Lab</h1>
+            <div class="loader-rule"></div>
+            <div class="loader-meta">
+                <span id="loader-status" class="loader-status">Đang kết nối hệ thống</span>
+                <span id="loader-percent" class="loader-percent">00%</span>
+            </div>
+            <div class="loader-track" aria-hidden="true">
+                <div id="loader-progress" class="loader-progress"></div>
+            </div>
+        </main>
+        <button id="loader-skip" class="loader-skip" type="button">Bỏ qua mở đầu</button>
+    </div>
+    <div class="scanlines"></div>
+    <div class="glow-sphere id-glow-sphere"></div>
+
+    <!-- 1. NAVIGATION HEADER -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-purple-900/30">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Brand Logo (Secret Admin access trigger on click) -->
+            <div onclick="triggerAdminMode()" class="cursor-pointer select-none">
+                <span class="text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 hover:opacity-80 transition-opacity">PIKAPEO._</span>
+                <span class="tech-mono text-[9px] text-pink-500/80 block tracking-[0.2em] -mt-1 pl-1">LABS SYSTEM v4.5</span>
+            </div>
+
+
+            <!-- Main Nav Links -->
+            <div class="hidden md:flex items-center space-x-10 text-sm tracking-widest uppercase text-gray-400">
+                <a href="#about" class="hover:text-purple-400 transition-colors duration-300 relative group py-1">
+                    <span data-vi="[ GIỚI THIỆU ]" data-en="[ ABOUT ME ]">[ GIỚI THIỆU ]</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-purple-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#work" class="hover:text-purple-400 transition-colors duration-300 relative group py-1">
+                    <span data-vi="[ DỰ ÁN ]" data-en="[ WORK ]">[ DỰ ÁN ]</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-purple-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#ai-playground" class="hover:text-pink-400 transition-colors duration-300 relative group py-1 text-pink-500 font-medium">
+                    <span data-vi="⚡ AI PLAYGROUND" data-en="⚡ AI PLAYGROUND">⚡ AI PLAYGROUND</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-pink-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </div>
+
+            <!-- Controls (Language toggle & Quick access) -->
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleLanguage()" class="tech-mono text-xs px-3 py-1.5 border border-purple-500/40 rounded bg-purple-950/20 hover:bg-purple-800/30 transition-all flex items-center gap-1">
+                    <span class="text-pink-500 font-bold">🌐</span> <span id="lang-indicator">VI</span>
+                </button>
+                <a href="#ai-playground" class="tech-mono hidden sm:inline-block text-xs px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded font-medium shadow-lg shadow-purple-900/30 hover:shadow-pink-500/20 hover:scale-105 active:scale-95 transition-all duration-300">
+                    CONNECT AI
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. HERO SECTION -->
+    <header class="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-6 overflow-hidden">
+        <!-- Abstract glowing elements in bg -->
+        <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-600/10 rounded-full filter blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-600/10 rounded-full filter blur-[150px] pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 border border-pink-500/30 rounded-full bg-pink-950/20 text-pink-400 text-xs tracking-widest uppercase mb-8 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                <span data-vi="Hệ thống Portfolio Sáng tạo Tích hợp AI" data-en="AI-Integrated Creative System Activated">Hệ thống Portfolio Sáng tạo Tích hợp AI</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight mb-8 uppercase leading-[1.05]">
+                <span class="block text-gray-500 text-xl sm:text-2xl tracking-[0.3em] font-light mb-4 text-center">FUTURE</span>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-500 neon-text-purple font-black">Pikapeo Lab</span>
+                <span class="block text-gray-200 mt-2 tracking-wide font-extrabold text-3xl sm:text-5xl md:text-6xl" data-vi="NGHỆ THUẬT TƯƠNG LAI" data-en="ART EXHIBITION">NGHỆ THUẬT TƯƠNG LAI</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-12 font-light leading-relaxed" 
+               data-vi="Sự giao thoa hoàn hảo giữa tư duy thiết kế tối giản, chiều sâu không gian 3D cùng sức mạnh sáng tạo vượt trội của trí tuệ nhân tạo thế hệ mới."
+               data-en="The perfect integration of minimalist design thinking, surreal 3D space depth, and the computational creativity of modern artificial intelligence.">
+               Sự giao thoa hoàn hảo giữa tư duy thiết kế tối giản, chiều sâu không gian 3D cùng sức mạnh sáng tạo vượt trội của trí tuệ nhân tạo thế hệ mới.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#work" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded text-sm font-semibold tracking-widest uppercase transition-all duration-300 shadow-lg shadow-purple-900/30 hover:scale-105">
+                    <span data-vi="Khám Phá Tác Phẩm" data-en="Explore Projects">Khám Phá Tác Phẩm</span>
+                </a>
+                <a href="#about" class="w-full sm:w-auto px-8 py-4 border border-purple-500/40 hover:border-pink-500/60 rounded text-sm font-semibold tracking-widest uppercase transition-all duration-300 hover:bg-purple-950/20">
+                    <span data-vi="Giới Thiệu Bản Thân" data-en="About Me">Giới Thiệu Bản Thân</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll down indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs tracking-widest text-purple-400/60 tech-mono">
+            <span class="animate-bounce">▼</span>
+            <span class="uppercase">SCROLL</span>
+        </div>
+    </header>
+
+    <!-- 3. ABOUT ME & SKILLS SECTION -->
+    <section id="about" class="py-24 px-6 relative z-10 glass-panel border-t border-purple-950/40">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        
+        <!-- Left Portrait Box -->
+        <div class="lg:col-span-5 flex justify-center w-full reveal">
+            <div class="relative group max-w-sm w-full">
+                <!-- Tech neon frames -->
+                <div class="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative bg-black border border-purple-500/30 p-4 rounded-xl">
+                    <!-- Upper Corners Tech details -->
+                    <div class="absolute top-2 left-2 tech-mono text-[8px] text-purple-400">SYS_ID: #7829X</div>
+                    <div class="absolute top-2 right-2 tech-mono text-[8px] text-pink-500 animate-pulse">● LIVE</div>
+                    
+                    <img src="asset/img/avatar.png" alt="Pikapeo Portrait" class="w-full rounded-lg grayscale hover:grayscale-0 transition-all duration-700 aspect-square object-cover mb-4 mt-4">
+                    
+                    <!-- Lower text frame -->
+                    <div class="border-t border-purple-900/40 pt-3 flex justify-between items-center text-[10px] tech-mono text-gray-400">
+                        <span>CO-CREATOR INVISION</span>
+                        <span>SYS_VER_4.5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Profile Information -->
+        <div class="lg:col-span-7 flex flex-col justify-center reveal">
+            <div class="text-pink-500 tech-mono text-xs uppercase tracking-[0.25em] mb-3">// CO-CREATOR INVISION</div>
+            <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-6" data-vi="Pikapeo là ai?" data-en="Who is Pikapeo?">Pikapeo là ai?</h2>
+            
+            <p class="text-gray-300 text-base sm:text-lg mb-8 font-light leading-relaxed" 
+               data-vi="Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng."
+               data-en="Hello! I am a passionate Graphic Designer specializing in molding future-oriented visual realms. I believe that design is not just a digital asset, but an immersive multisensory narrative crafted by glowing neon lights, deep spatial 3D realms, and dynamic kinetic motion.">
+                Xin chào! Tôi là một Graphic Designer với niềm đam mê vô hạn trong việc kiến tạo các thế giới thị giác mang định hướng tương lai. Tôi tin rằng mỗi thiết kế không chỉ là một sản phẩm kỹ thuật số đơn thuần, mà là một trải nghiệm cảm xúc đa giác quan được dệt nên từ ánh sáng Neon, chiều sâu 3D sống động và nhịp điệu chuyển động đầy năng lượng.
+            </p>
+
+            <!-- Statistics grid -->
+            <div class="grid grid-cols-3 gap-4 border-t border-b border-purple-900/30 py-6 mb-8 tech-mono">
+                <div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">05+</div>
+                    <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Năm Kinh Nghiệm" data-en="Years of Exp">Năm Kinh Nghiệm</div>
+                </div>
+                <div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">50+</div>
+                    <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Dự Án Hoàn Tất" data-en="Projects Done">Dự Án Hoàn Tất</div>
+                </div>
+                <div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">99%</div>
+                    <div class="text-[10px] sm:text-xs text-gray-400 uppercase mt-1" data-vi="Khách Hài Lòng" data-en="Happy Clients">Khách Hài Lòng</div>
+                </div>
+            </div>
+
+            <!-- Skill Tags inside tech containers -->
+            <div>
+                <h3 class="text-xs uppercase tracking-widest text-purple-400 tech-mono mb-4" data-vi=">> BỘ KỸ NĂNG VÀ CÔNG CỤ" data-en=">> SKILLSETS & TOOLS">>> BỘ KỸ NĂNG VÀ CÔNG CỤ</h3>
+                <div class="flex flex-wrap gap-2.5">
+                    <button onclick="selectSkill('Blender 3D')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Blender 3D</button>
+                    <button onclick="selectSkill('Premiere Pro')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Premiere Pro</button>
+                    <button onclick="selectSkill('Adobe After Effects')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">After Effects</button>
+                    <button onclick="selectSkill('Photoshop')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Photoshop</button>
+                    <button onclick="selectSkill('Illustrator')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Illustrator</button>
+                    <button onclick="selectSkill('Figma UI/UX')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-pink-500/50 hover:bg-purple-900/20 transition-all duration-300">Figma UI/UX</button>
+                    <button onclick="selectSkill('Generative AI')" class="skill-tag-btn px-3.5 py-1.5 rounded bg-pink-950/30 border border-pink-500/20 text-xs tech-mono text-pink-400 font-semibold hover:border-pink-400/80 hover:bg-pink-900/20 transition-all duration-300">Generative AI</button>
+                </div>
+
+                <!-- Interactive AI Skill Agent Widget -->
+                <div class="border border-purple-500/20 rounded-xl p-4 bg-purple-950/10 backdrop-blur-md flex items-start gap-3 mt-5 relative overflow-hidden">
+                    <!-- Neon background flare -->
+                    <div class="absolute -right-10 -bottom-10 w-24 h-24 bg-pink-500/10 rounded-full filter blur-xl pointer-events-none"></div>
+                    
+                    <!-- Skill AI Bot Avatar -->
+                    <div class="shrink-0 flex flex-col items-center gap-1.5">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-lg shadow-lg shadow-purple-950/50 relative">
+                            <span class="animate-ping absolute inset-0 rounded-lg bg-pink-500/20"></span>
+                            🧠
+                        </div>
+                        <span class="tech-mono text-[8px] text-pink-400 tracking-wider">SKILL_BOT</span>
+                    </div>
+                    
+                    <!-- AI Skill Readout Screen -->
+                    <div class="flex-grow min-w-0">
+                        <div class="flex justify-between items-center mb-1.5 border-b border-purple-900/30 pb-1">
+                            <span class="tech-mono text-[9px] text-gray-400" id="skill-agent-status">// AGENT: WAITING_INPUT</span>
+                            <span class="tech-mono text-[9px] text-pink-500 animate-pulse">● READY</span>
+                        </div>
+                        <p id="skill-ai-readout" class="text-xs text-gray-300 leading-relaxed font-light" 
+                           data-vi="💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!"
+                           data-en="💡 Click any skill tag above, and the AI Skill Agent will instantly report how Pikapeo implements that tool in futuristic design pipelines!">
+                            💡 Hãy click vào bất kỳ kỹ năng nào ở trên, Trợ lý AI sẽ lập tức báo cáo chuyên sâu về cách Pikapeo vận dụng công cụ đó vào các dự án nghệ thuật tương lai!
+                        </p>
+                        
+                        <!-- Custom Query Input for specific skill questions -->
+                        <div class="mt-3 flex gap-1.5">
+                            <input type="text" id="skill-custom-query" class="flex-grow bg-black/40 border border-purple-500/25 px-2 py-1.5 rounded text-[11px] text-white focus:outline-none focus:border-pink-500 tech-mono placeholder:text-purple-950/80" placeholder="Hỏi thêm AI về chuyên môn này...">
+                            <button onclick="askCustomSkillQuery(event)" class="px-3 py-1.5 bg-purple-800/40 border border-purple-500/30 hover:border-pink-500/40 text-[10px] tech-mono text-purple-200 hover:text-white rounded transition-all uppercase font-bold shrink-0">ASK</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3.5. INTEGRATED RETRO GAME CONSOLE (DIRECTLY BELOW AI AGENT) -->
+                    <div id="integrated-dino-console" class="mt-8 border-2 border-purple-500/40 rounded-2xl overflow-hidden bg-[#0b0514] shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col relative transition-all duration-300">
+                        <!-- Console Header Bar -->
+                        <div class="flex items-center justify-between px-5 py-3 border-b border-purple-900/50 bg-[#06020c]">
+                            <div class="flex items-center gap-3">
+                                <span class="text-lg animate-bounce">🦖</span>
+                                <div>
+                                    <h4 class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 tech-mono text-xs tracking-wider">PIXEL DINO RUNNER CONSOLE</h4>
+                                    <p class="text-[8px] text-gray-500 tech-mono uppercase">With Dedicated Mobile Virtual Controls</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                                <span class="tech-mono text-[8px] text-green-400 tracking-wider">ONLINE</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Main Game Screen Area -->
+                        <div class="relative aspect-[4/3] w-full bg-black flex items-center justify-center overflow-hidden">
+                            <!-- Game Canvas Core -->
+                            <canvas id="portfolioDinoCanvas" width="320" height="240" class="w-full h-full" style="touch-action: none;"></canvas>
+                            
+                            <!-- Game Top Info UI Layer -->
+                            <div id="game-ui-layer" class="absolute top-0 left-0 w-full p-4 flex justify-between pointer-events-none select-none text-white text-shadow font-pixel text-[8px] z-20">
+                                <div class="flex gap-4">
+                                    <span>HI <span id="gameHighScore">00000</span></span>
+                                    <span><span id="gameCurrentScore">00000</span></span>
+                                </div>
+                                <button id="gamePauseBtn" class="pointer-events-auto bg-purple-900/60 hover:bg-purple-800 text-white border border-purple-500/40 px-2.5 py-1 font-pixel text-[7px] rounded cursor-pointer transition-all">PAUSE</button>
+                            </div>
+
+                            <!-- Game Overlays States -->
+                            <!-- A. Main Menu -->
+                            <div id="game-menu-main" class="absolute inset-0 game-menu-overlay flex flex-col items-center justify-center z-30">
+                                <h1 class="font-pixel text-lg text-yellow-400 mb-6 tracking-widest text-center leading-loose animate-pulse">PIXEL<br>RUNNER</h1>
+                                <button onclick="startGameEngine()" class="menu-btn bg-purple-600 hover:bg-purple-500 border-2 border-white px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer shadow-lg active:translate-y-1">PLAY</button>
+                                <button onclick="toggleGameSettings(true)" class="menu-btn bg-purple-900 hover:bg-purple-800 border-2 border-purple-500 px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer shadow-lg mt-3">SETTINGS</button>
+                            </div>
+
+                            <!-- B. Pause Menu -->
+                            <div id="game-menu-pause" class="absolute inset-0 game-menu-overlay hidden flex flex-col items-center justify-center z-30">
+                                <h1 class="font-pixel text-lg text-purple-400 mb-6">PAUSED</h1>
+                                <button onclick="resumeGameEngine()" class="menu-btn bg-purple-600 hover:bg-purple-500 border-2 border-white px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer">RESUME</button>
+                                <button onclick="toggleGameSettings(true)" class="menu-btn bg-purple-900 hover:bg-purple-800 border-2 border-purple-500 px-6 py-3 font-pixel text-[10px] text-white rounded cursor-pointer mt-3">SETTINGS</button>
+                            </div>
+
+                            <!-- C. Settings Rules Overlay -->
+                            <div id="game-menu-settings" class="absolute inset-0 game-menu-overlay hidden flex flex-col items-center justify-center p-6 text-center z-30">
+                                <h1 class="font-pixel text-xs text-yellow-400 mb-4 uppercase">CONTROL CONFIGS</h1>
+                                <p class="font-pixel text-[7px] leading-loose text-gray-300 mb-5">
+                                    PC PLATFORM:<br>Space / Up Arrow to Jump<br>Down Arrow to Duck<br><br>
+                                    MOBILE TOUCH:<br>Tap Virtual Button "JUMP" to Jump<br>Tap & Hold Virtual Button "DUCK" to Duck
+                                </p>
+                                <button onclick="toggleGameSettings(false)" class="menu-btn bg-purple-600 hover:bg-purple-500 border-2 border-white px-6 py-2 font-pixel text-[9px] text-white rounded cursor-pointer">BACK</button>
+                            </div>
+
+                            <!-- D. Game Over Screen -->
+                            <div id="game-menu-over" class="absolute inset-0 game-menu-overlay hidden flex flex-col items-center justify-center z-30">
+                                <h1 class="font-pixel text-lg text-red-500 mb-2 animate-bounce">GAME OVER</h1>
+                                <p class="font-pixel text-[8px] text-purple-300 blink-text mt-4 uppercase">TAP BUTTON TO TRY AGAIN</p>
+                            </div>
+                        </div>
+
+                        <!-- Dedicated Cyberpunk Mobile Gamepad (Displays ONLY on Mobile) -->
+                        <div class="grid grid-cols-2 gap-4 p-4 bg-[#0a0414] border-t border-purple-900/40 md:hidden z-20">
+                            <!-- Mobile Duck Control (Left Side) -->
+                            <button id="mobileDuckBtn" class="w-full py-4 rounded-xl bg-gradient-to-b from-purple-950/80 to-purple-900 border-2 border-purple-500/40 active:from-pink-600/95 active:to-pink-500 active:border-pink-400 flex items-center justify-center gap-2 text-white text-xs font-pixel select-none shadow-[0_4px_10px_rgba(0,0,0,0.3)] active:scale-95 transition-all" style="-webkit-user-select: none; -webkit-touch-callout: none; touch-action: none;">
+                                <i class="fa-solid fa-arrow-down text-sm select-none pointer-events-none animate-pulse"></i>
+                                <span class="select-none pointer-events-none tracking-wider">DUCK</span>
+                            </button>
+                            <!-- Mobile Jump Control (Right Side) -->
+                            <button id="mobileJumpBtn" class="w-full py-4 rounded-xl bg-gradient-to-b from-purple-950/80 to-purple-900 border-2 border-purple-500/40 active:from-pink-600/95 active:to-pink-500 active:border-pink-400 flex items-center justify-center gap-2 text-white text-xs font-pixel select-none shadow-[0_4px_10px_rgba(0,0,0,0.3)] active:scale-95 transition-all" style="-webkit-user-select: none; -webkit-touch-callout: none; touch-action: none;">
+                                <i class="fa-solid fa-arrow-up text-sm select-none pointer-events-none"></i>
+                                <span class="select-none pointer-events-none tracking-wider">JUMP</span>
+                            </button>
+                        </div>
+
+                        <!-- Console Footer Panel -->
+                        <div class="px-5 py-3.5 bg-[#06020c] border-t border-purple-900/50 flex flex-col sm:flex-row justify-between items-center gap-2.5 text-xs text-gray-400 text-center sm:text-left">
+                            <div class="tech-mono text-[9px]">
+                                <span class="font-semibold text-pink-500">PC Controls:</span> 
+                                <span class="bg-purple-950/80 px-1 py-0.5 border border-purple-900 rounded">Space</span> / <span class="bg-purple-950/80 px-1 py-0.5 border border-purple-900 rounded">↑</span> Jump, <span class="bg-purple-950/80 px-1 py-0.5 border border-purple-900 rounded">↓</span> Duck
+                            </div>
+                            <button onclick="resetGameEngine()" class="text-pink-400 hover:text-white flex items-center gap-1 transition tech-mono text-[9px]">
+                                <i class="fa-solid fa-rotate-right text-[8px]"></i> Reset Arcade
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- End Grid Layout wrapper -->
+</section>
+
+    <!-- 4. SELECTED WORKS SECTION (DỰ ÁN NỔI BẬT) -->
+    <section id="work" class="py-24 px-6 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header section of Works -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 reveal">
+                <div>
+                    <span class="text-pink-500 tech-mono text-xs uppercase tracking-[0.25em] mb-2">// PORTFOLIO SHOWCASE</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white uppercase" data-vi="Tác Phẩm Nổi Bật" data-en="Selected Works">Tác Phẩm Nổi Bật</h2>
+                </div>
+                <!-- Categories filter -->
+                <div class="flex flex-wrap gap-2 mt-6 md:mt-0 tech-mono text-xs">
+                    <button onclick="filterProjects('all')" id="filter-btn-all" class="px-4 py-2 border border-purple-500/40 rounded bg-purple-600 text-white transition-all">ALL</button>
+                    <button onclick="filterProjects('3D')" id="filter-btn-3D" class="px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all">3D ART</button>
+                    <button onclick="filterProjects('Branding')" id="filter-btn-Branding" class="px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all">BRANDING</button>
+                    <button onclick="filterProjects('Motion')" id="filter-btn-Motion" class="px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all">MOTION</button>
+                </div>
+            </div>
+
+            <!-- Interactive projects container (Grid) -->
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+                <!-- Projects will be rendered dynamically by JS -->
+            </div>
+
+            <!-- Secret Admin activation info & Trigger Button (Hidden by default, activated secretly) -->
+            <div id="admin-trigger-container" class="mt-16 text-center hidden">
+                <button onclick="toggleAdminPanel()" class="tech-mono text-xs px-6 py-3 border border-pink-500/40 rounded bg-pink-950/10 text-pink-400 hover:bg-pink-950/40 transition-all animate-pulse">
+                    [ QUẢN LÝ & THÊM DỰ ÁN CỦA BẠN ]
+                </button>
+            </div>
+
+            <!-- Interactive Project Admin panel (Only displays when unlocked) -->
+            <div id="admin-panel" class="mt-8 p-6 border border-purple-500/50 rounded-xl bg-black/90 glass-panel hidden">
+                <h3 class="text-xl font-bold text-purple-400 uppercase tech-mono mb-6 pb-2 border-b border-purple-900/30">🛠️ PORTFOLIO MANAGER (ADMIN ONLY)</h3>
+                
+                <form id="project-form" onsubmit="saveProject(event)" class="space-y-4 text-xs tech-mono">
+                    <input type="hidden" id="edit-index" value="-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-400 uppercase mb-1">Tên Dự Án (Tiếng Việt)</label>
+                            <input type="text" id="title-vi" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 uppercase mb-1">Project Name (English)</label>
+                            <input type="text" id="title-en" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-gray-400 uppercase mb-1">Phân Loại (Category)</label>
+                            <select id="project-category" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500">
+                                <option value="Branding" class="bg-black">Branding</option>
+                                <option value="3D" class="bg-black">3D Art</option>
+                                <option value="Motion" class="bg-black">Motion Graphic</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 uppercase mb-1">Năm (Year)</label>
+                            <input type="text" id="project-year" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 uppercase mb-1">Link Dự án (Behance / Drive...)</label>
+                            <input type="url" id="project-link" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" placeholder="https://" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-400 uppercase mb-1">Đường Dẫn Link Ảnh (Direct Image URL)</label>
+                        <input type="text" id="project-image" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" placeholder="https://i.ibb.co/... hoặc asset/img/tên_ảnh.jpg" required>
+                        <p class="text-[10px] text-pink-400/80 mt-1">⚠️ LƯU Ý: Không dùng link Facebook, hãy tải ảnh của bạn lên <a href="https://imgbb.com/" target="_blank" class="underline hover:text-pink-300 font-bold">ImgBB.com</a> và dán dòng "Direct Link" (Liên kết trực tiếp) vào đây để hiển thị thành công!</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-400 uppercase mb-1">Mô tả dự án (Tiếng Việt)</label>
+                            <textarea id="desc-vi" rows="3" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 uppercase mb-1">Project Description (English)</label>
+                            <textarea id="desc-en" rows="3" class="w-full bg-purple-950/20 border border-purple-500/30 p-2.5 rounded text-white focus:outline-none focus:border-pink-500" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 pt-2">
+                        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded font-bold hover:opacity-90 transition-all flex-grow">LƯU DỰ ÁN / SAVE PROJECT</button>
+                        <button type="button" onclick="resetForm()" class="px-4 py-2 border border-purple-500/40 rounded hover:bg-purple-950/20 transition-all">HỦY / RESET FORM</button>
+                    </div>
+                </form>
+
+                <div class="mt-8 border-t border-purple-900/30 pt-4">
+                    <h4 class="text-sm font-bold text-gray-300 mb-4 uppercase">Danh sách Dự án Hiện Tại (Quản lý nhanh):</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-[11px] border-collapse border border-purple-900/30">
+                            <thead>
+                                <tr class="bg-purple-950/40 text-purple-300">
+                                    <th class="p-2 border border-purple-900/30">TÊN DỰ ÁN (VI)</th>
+                                    <th class="p-2 border border-purple-900/30">PHÂN LOẠI</th>
+                                    <th class="p-2 border border-purple-900/30">NĂM</th>
+                                    <th class="p-2 border border-purple-900/30">HÀNH ĐỘNG</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-projects-list">
+                                <!-- Rendered dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex gap-2 justify-end">
+                        <button onclick="resetToDefaultTemplates()" class="px-4 py-2 bg-red-950/30 border border-red-500/40 text-red-400 rounded hover:bg-red-900/30 transition-all text-[11px]">
+                            [ Reset to Default Templates ]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. AI PLAYGROUND SECTION -->
+    <section id="ai-playground" class="py-24 px-6 relative z-10 glass-panel border-t border-purple-950/45">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 reveal">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 border border-purple-500/30 rounded-full bg-purple-950/20 text-purple-300 text-xs tracking-widest uppercase mb-4 tech-mono">
+                    🤖 CUSTOMER CONCIERGE ONLINE
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 uppercase mb-4" data-vi="Trợ Lý Dự Án AI" data-en="AI Project Concierge">Trợ Lý Dự Án AI</h2>
+                <p class="max-w-2xl mx-auto text-gray-400 text-sm font-light" 
+                   data-vi="Mô tả ý tưởng, hỏi về dịch vụ hoặc chuẩn bị brief. Pika sẽ giúp bạn xác định hướng đi phù hợp trước khi trao đổi trực tiếp với Pikapeo."
+                   data-en="Describe your idea, explore services, or prepare a project brief. Pika helps clarify the right direction before you speak directly with Pikapeo.">
+                   Mô tả ý tưởng, hỏi về dịch vụ hoặc chuẩn bị brief. Pika sẽ giúp bạn xác định hướng đi phù hợp trước khi trao đổi trực tiếp với Pikapeo.
+                </p>
+            </div>
+
+            <!-- Interactive AI Chat Widget -->
+            <div class="border border-purple-500/35 rounded-2xl overflow-hidden shadow-2xl bg-black/80 flex flex-col h-[550px] reveal">
+                <!-- Header of Chatbox -->
+                <div class="bg-purple-950/35 border-b border-purple-900/30 px-6 py-4 flex justify-between items-center text-xs tech-mono">
+                    <div class="flex items-center gap-2">
+                        <span class="relative flex w-2.5 h-2.5"><span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70 animate-ping"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span></span>
+                        <span class="text-gray-200">PIKA // CUSTOMER SUPPORT</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="hidden sm:inline text-[9px] text-emerald-300/80 tracking-widest" data-vi="PHẢN HỒI TỨC THÌ" data-en="INSTANT REPLIES">PHẢN HỒI TỨC THÌ</span>
+                        <button type="button" onclick="resetChat()" class="px-2 py-1 border border-purple-500/25 rounded text-[10px] text-purple-300 hover:text-white hover:border-pink-500/50 transition-all" data-vi="LÀM MỚI" data-en="RESET">LÀM MỚI</button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages Screen -->
+                <div id="ai-chat-messages" class="flex-grow overflow-y-auto p-6 space-y-4 text-sm text-gray-300">
+                    <!-- Default Bot Greeting -->
+                    <div class="flex gap-3 max-w-[85%]">
+                        <div class="w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center font-bold tech-mono text-xs text-purple-200 shrink-0 select-none">AI</div>
+                        <div class="p-3.5 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs sm:text-sm leading-relaxed" 
+                             data-vi="Xin chào, tôi là Pika — trợ lý AI của Pikapeo Labs. Tôi có thể tư vấn dịch vụ, giúp bạn hoàn thiện brief hoặc xác định thông tin cần có để nhận báo giá. Bạn đang muốn thực hiện dự án gì?"
+                             data-en="Hi, I’m Pika — Pikapeo Labs’ AI assistant. I can explain services, shape your brief, or identify what is needed for a quote. What are you looking to create?">
+                             Xin chào, tôi là Pika — trợ lý AI của Pikapeo Labs. Tôi có thể tư vấn dịch vụ, giúp bạn hoàn thiện brief hoặc xác định thông tin cần có để nhận báo giá. Bạn đang muốn thực hiện dự án gì?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input Frame -->
+                <div class="p-4 border-t border-purple-900/30 bg-purple-950/10">
+                    <div class="flex gap-2 overflow-x-auto pb-3" aria-label="Suggested questions">
+                        <button type="button" onclick="showServiceCatalog()" class="whitespace-nowrap px-3 py-1.5 rounded-full border border-purple-500/25 bg-purple-950/20 text-[10px] text-purple-200 hover:border-pink-500/50 hover:text-white transition-all" data-vi="Dịch vụ thiết kế" data-en="Design services">Dịch vụ thiết kế</button>
+                        <button type="button" onclick="showQuoteCatalog()" class="whitespace-nowrap px-3 py-1.5 rounded-full border border-purple-500/25 bg-purple-950/20 text-[10px] text-purple-200 hover:border-pink-500/50 hover:text-white transition-all" data-vi="Nhận báo giá" data-en="Get a quote">Nhận báo giá</button>
+                        <button type="button" onclick="showProjectBriefForm()" class="whitespace-nowrap px-3 py-1.5 rounded-full border border-purple-500/25 bg-purple-950/20 text-[10px] text-purple-200 hover:border-pink-500/50 hover:text-white transition-all" data-vi="Tạo project brief" data-en="Create a brief">Tạo project brief</button>
+                    </div>
+                    <form id="ai-input-form" onsubmit="sendChatMessage(event)" class="flex gap-2">
+                        <input type="text" id="ai-user-query" maxlength="2000" autocomplete="off" class="flex-grow min-w-0 bg-purple-950/20 border border-purple-500/35 p-3 rounded-xl text-white placeholder-purple-700/80 focus:outline-none focus:border-pink-500 text-sm focus:ring-1 focus:ring-pink-500/40 transition-all duration-300" placeholder="Mô tả dự án hoặc đặt câu hỏi...">
+                        <button id="ai-send-button" type="submit" class="px-5 sm:px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl text-sm transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/25">
+                            SEND
+                        </button>
+                    </form>
+                    <p class="text-[10px] text-gray-500 mt-2 tech-mono text-center" data-vi="AI có thể mắc lỗi. Báo giá và lịch thực hiện chỉ được xác nhận khi trao đổi trực tiếp với Pikapeo." data-en="AI can make mistakes. Pricing and availability are confirmed only through direct discussion with Pikapeo.">AI có thể mắc lỗi. Báo giá và lịch thực hiện chỉ được xác nhận khi trao đổi trực tiếp với Pikapeo.</p>
+                </div>
+            </div>
+
+            <form name="project-brief" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+                <input type="hidden" name="form-name" value="project-brief">
+                <input type="hidden" name="subject" value="New Pikapeo project brief">
+                <input name="bot-field">
+                <input name="name">
+                <input name="email">
+                <input name="customer-phone">
+                <input name="project-type">
+                <input name="budget">
+                <input name="deadline">
+                <textarea name="project-details"></textarea>
+                <input name="recipient">
+            </form>
+        </div>
+    </section>
+
+    <!-- 6. FOOTER SECTION -->
+    <footer class="py-20 px-6 border-t border-purple-950/50 glass-panel relative z-10">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
+            <div>
+                <h3 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 tech-mono mb-2">PIKAPEO LABS</h3>
+                <p class="text-gray-400 text-xs tracking-wider max-w-sm" data-vi="Kiến tạo những trải nghiệm số siêu thực của tương lai." data-en="Engineering futuristic immersive designs.">Kiến tạo những trải nghiệm số siêu thực của tương lai.</p>
+            </div>
+            
+            <div class="flex flex-col items-center md:items-end gap-6">
+                <!-- Social links -->
+                <div class="flex space-x-6 tech-mono text-xs uppercase tracking-widest text-gray-400">
+                    <a href="https://www.facebook.com/johnluu1998/" class="hover:text-pink-500 transition-colors">FACEBOOK</a>
+                    <a href="https://www.behance.net/hongluu98" class="hover:text-pink-500 transition-colors">BEHANCE</a>
+                    <a href="https://www.linkedin.com/in/pikapeo-pikapeo-b577a7324/" class="hover:text-pink-500 transition-colors">LINKEDIN</a>
+                </div>
+                <p class="text-[10px] text-purple-500/75 tech-mono">© 2026 PIKAPEO. ALL RIGHTS RESERVED. SECURE CODED BY AI.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 7. CUSTOM CYBERPUNK TOAST NOTIFICATION -->
+    <div id="cyber-toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 glass-panel border border-pink-500/60 rounded px-6 py-3 text-xs tech-mono text-pink-400 flex items-center gap-2 shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all duration-500 opacity-0 pointer-events-none transform -translate-y-4">
+        <span class="animate-ping w-2 h-2 rounded-full bg-pink-500 shrink-0"></span>
+        <span id="toast-message">🔓 ADMIN_LOCK_SYSTEM: ACCESS KEY UNLOCKED</span>
+    </div>
+
+    <!-- 8. JAVASCRIPT CONTROLLERS -->
+    <script>
+        // 1. Language Database
+        let currentLanguage = 'vi';
+
+        // AI Skill Database
+        const skillData = {
+            "Blender 3D": {
+                vi: "Pikapeo đã có hơn 2 năm thực chiến dựng hình với Blender. Chuyên sâu về điêu khắc môi trường (Environment Sculpting), thiết kế chất liệu kính phát sáng đặc biệt (Emission Glass) và xử lý ánh sáng mờ sương (Volumetric Fog) để tạo chiều sâu siêu thực.",
+                en: "Pikapeo has over 2 years of hands-on modeling with Blender. Expert in Environment Sculpting, custom emissive glass shaders, and volumetric fog rendering to engineer mind-bending cyberpunk depth."
+            },
+            "Premiere Pro": {
+                vi: "Thường xuyên chỉnh sửa video các phân cảnh Motion Graphic quảng cáo cao cấp. Thế mạnh nằm ở mô phỏng vật lý động lực học (Dynamics) và hệ thống hạt mượt mà bằng Premiere Pro.",
+                en: "Regularly edits high-end motion graphics sequences for advertisements, with a particular strength in physics-based dynamics simulations and smooth particle systems using Premiere Pro."
+            },
+            "Adobe After Effects": {
+                vi: "Với những kỹ năng After Effects nâng cao, Pikapeo tạo ra các hiệu ứng chữ động (Kinetic Typography) và chuyển cảnh tương lai cực kỳ ấn tượng. Chuyên về render glitch cyber, thiết kế HUD/FUI viễn tưởng và đồng bộ hóa chuyển động với phổ âm thanh.",
+                en: "Leveraging advanced After Effects skills, Pikapeo creates stunning kinetic typography and futuristic transitions. They specialize in cyber-glitch rendering, sci-fi HUD/FUI design, and motion synchronization with audio spectrums."
+            },
+            "Photoshop": {
+                vi: "Áp dụng để vẽ phác thảo (Concept Art) ban đầu, xử lý hậu kỳ ánh sáng chuyên sâu cho các file kết xuất 3D (3D Renders) và tối ưu độ tương phản kỹ thuật số.",
+                en: "Utilized for primary concept art drafting, advanced post-production lighting on 3D renders, and optimizing ultimate digital contrast."
+            },
+            "Illustrator": {
+                vi: "Công cụ cốt lõi để xây dựng lưới vector chuyên nghiệp, thiết kế các ký tự cơ khí, sơ đồ hệ thống HUD/FUI viễn tưởng cực kỳ chi tiết và tối ưu hóa logo.",
+                en: "Core tool for drafting complex vector blueprints, designing highly detailed mechanical HUD/FUI layouts, and engineering clean logo vectors."
+            },
+            "Figma UI/UX": {
+                vi: "Dựng khung dây (Wireframe) trực quan, thiết kế giao diện ứng dụng tương lai (User Interface) và tối ưu hóa luồng tương tác trải nghiệm mượt mà cho khách hàng.",
+                en: "Designing interactive wireframes, futuristic app UI interfaces, and engineering streamlined, friction-free user experiences."
+            },
+            "Generative AI": {
+                vi: "Làm chủ các mô hình AI tạo ảnh thế hệ mới (Midjourney, Stable Diffusion, Dall-E) kết hợp cùng kỹ thuật prompt thông minh để bứt phá ý tưởng thiết kế chỉ trong vài giây.",
+                en: "Mastering advanced generative models (Midjourney, Stable Diffusion, Dall-E) with hyper-engineered prompts to unlock infinite design options in seconds."
+            }
+        };
+
+        let activeSelectedSkill = "Blender 3D";
+
+        function selectSkill(skillName) {
+            activeSelectedSkill = skillName;
+            
+            // Highlight selected button
+            document.querySelectorAll('.skill-tag-btn').forEach(btn => {
+                if (btn.innerText.trim() === skillName) {
+                    btn.className = "skill-tag-btn px-3.5 py-1.5 rounded bg-pink-950/40 border border-pink-500/50 text-xs tech-mono text-pink-400 font-semibold transition-all duration-300 shadow-[0_0_10px_rgba(236,72,153,0.15)]";
+                } else {
+                    btn.className = "skill-tag-btn px-3.5 py-1.5 rounded bg-purple-950/30 border border-purple-500/20 text-xs tech-mono text-purple-300 hover:border-purple-500/50 hover:bg-purple-900/20 transition-all duration-300";
+                }
+            });
+            
+            const textElement = document.getElementById('skill-ai-readout');
+            const statusElement = document.getElementById('skill-agent-status');
+            
+            statusElement.innerText = `// AGENT: DECODING_${skillName.toUpperCase().replace(/\s+/g, '_')}`;
+            
+            const fullText = skillData[skillName] ? (currentLanguage === 'vi' ? skillData[skillName].vi : skillData[skillName].en) : "";
+            textElement.innerHTML = "";
+            let i = 0;
+            
+            // Typewriter effect simulation
+            function type() {
+                if (i < fullText.length) {
+                    textElement.innerHTML += fullText.charAt(i);
+                    i++;
+                    setTimeout(type, 10);
+                } else {
+                    statusElement.innerText = `// AGENT: READOUT_SUCCESSFUL`;
+                }
+            }
+            type();
+        }
+
+        async function askCustomSkillQuery(e) {
+            if (e) e.preventDefault();
+            const queryInput = document.getElementById('skill-custom-query');
+            const query = queryInput.value.trim();
+            if (!query) return;
+            
+            const textElement = document.getElementById('skill-ai-readout');
+            const statusElement = document.getElementById('skill-agent-status');
+            
+            statusElement.innerText = `// AGENT: ANALYZING_QUERY`;
+            textElement.textContent = currentLanguage === 'vi' ? 'Hệ thống đang phân tích yêu cầu...' : 'Analyzing your request...';
+            queryInput.value = '';
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{
+                            role: 'user',
+                            content: `${query}\n\nContext: I am asking specifically about Pikapeo's ${activeSelectedSkill} service or skill. Keep the answer under three sentences.`
+                        }]
+                    })
+                });
+                const data = await response.json();
+                if (response.ok && data.reply) {
+                    textElement.textContent = data.reply;
+                    statusElement.innerText = `// AGENT: CUSTOM_REPORT_READY`;
+                } else {
+                    textElement.textContent = currentLanguage === 'vi' ? 'Không thể tạo báo cáo lúc này. Vui lòng thử lại.' : 'Unable to create a report right now. Please try again.';
+                    statusElement.innerText = `// AGENT: REPORT_FAILED`;
+                }
+            } catch (err) {
+                textElement.textContent = currentLanguage === 'vi' ? 'Trợ lý đang tạm mất kết nối.' : 'The assistant is temporarily offline.';
+                statusElement.innerText = `// AGENT: OFFLINE`;
+            }
+        }
+
+        // 2. Project Database / Showcase Controllers
+        const sanityConfig = {
+            projectId: 'YOUR_PROJECT_ID',
+            dataset: 'production',
+            useCdn: true,
+            apiVersion: '2026-10-20'
+        };
+
+        async function loadSanityProjects() {
+            if (!sanityConfig.projectId || sanityConfig.projectId === 'YOUR_PROJECT_ID') {
+                return false;
+            }
+
+            try {
+                const { createClient } = await import('https://esm.sh/@sanity/client@latest');
+                const client = createClient(sanityConfig);
+                const query = `*[_type == "project"] | order(order asc) {
+                    title,
+                    slug,
+                    excerpt,
+                    category,
+                    featured,
+                    order,
+                    link,
+                    "image": image.asset->url
+                }`;
+
+                const sanityProjects = await client.fetch(query);
+                if (!Array.isArray(sanityProjects) || !sanityProjects.length) {
+                    return false;
+                }
+
+                projects = sanityProjects.map((p, index) => ({
+                    titleVi: p.title || `Project ${index + 1}`,
+                    titleEn: p.title || `Project ${index + 1}`,
+                    category: p.category || 'Branding',
+                    year: String(new Date().getFullYear()),
+                    image: p.image || 'asset/img/logo.png',
+                    descVi: p.excerpt || '',
+                    descEn: p.excerpt || '',
+                    link: p.link || '#'
+                }));
+
+                localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
+                localStorage.setItem('pikapeo-projects-source', 'sanity');
+                renderProjects('all');
+                return true;
+            } catch (error) {
+                console.warn('Sanity project fetch failed, using fallback data:', error);
+                return false;
+            }
+        }
+
+        const defaultTemplates = [
+            {
+                titleVi: "Lildan Pet Shop",
+                titleEn: "Lildan Pet Shop",
+                category: "Branding",
+                year: "2022",
+                image: "asset/img/lildan.jpg",
+                descVi: "Lildan Pet Shop là thương hiệu chăm sóc thú cưng toàn diện, mang đến trải nghiệm trọn vẹn cho cả thú cưng và người nuôi. Với định hướng phát triển chuyên nghiệp, Lildan cung cấp đa dạng sản phẩm phụ kiện chất lượng, dịch vụ spa chăm sóc tận tâm và hệ thống pet hotel tiện nghi, an toàn.",
+                descEn: "Lildan Pet Shop is a comprehensive pet care brand dedicated to delivering a complete experience for both pets and their owners. With a professional approach, Lildan offers a wide range of high-quality accessories, attentive grooming services, and a safe, well-equipped pet hotel.",
+                link: "https://www.behance.net/gallery/164913969/Lildan-shopee"
+            },
+            {
+                titleVi: "Milo Branding Campaign",
+                titleEn: "Milo Branding Campaign",
+                category: "Branding",
+                year: "2022",
+                image: "asset/img/milo.png",
+                descVi: "MILO là thương hiệu thức uống dinh dưỡng nổi tiếng thuộc Nestlé, được biết đến với hương vị cacao mạch nha đặc trưng và thông điệp khuyến khích lối sống năng động. Tại Việt Nam, MILO gắn liền với hình ảnh trẻ em khỏe mạnh, phát triển thể chất thông qua thể thao và vận động mỗi ngày. Không chỉ là một sản phẩm, MILO còn là biểu tượng của năng lượng tích cực và tinh thần bền bỉ.",
+                descEn: "MILO is a well-known nutritional beverage brand by Nestlé, recognized for its unique malted cocoa flavor and its mission to promote an active lifestyle. In Vietnam, MILO is closely associated with healthy, energetic children who grow through sports and daily physical activities. More than just a drink, MILO represents positive energy, endurance, and a strong sporting spirit.",
+                link: "https://www.behance.net/gallery/143302561/Banner-Milo"
+            },
+            {
+                titleVi: "Nescafé Café Sữa Đá Key Visual",
+                titleEn: "Nescafé Milk Café Key Visual",
+                category: "Brangding",
+                year: "2022",
+                image: "asset/img/nescafe.png",
+                descVi: "Dự án thiết kế key visual cho NESCAFÉ Café Sữa Đá tập trung làm nổi bật ưu đãi và sản phẩm thông qua bố cục rõ ràng, màu sắc ấm và typography mạnh. Thiết kế hướng đến việc thu hút sự chú ý nhanh tại điểm bán và tăng khả năng nhận diện thương hiệu.",
+                descEn: "This key visual design project for NESCAFÉ Café Sữa Đá focuses on highlighting the promotion and product through clear layout, warm tones, and bold typography. The design aims to capture attention quickly in-store and enhance brand recognition.",
+                link: "https://www.behance.net/gallery/143302221/Wobbler-Nescafe"
+            },
+            {
+                titleVi: "Pikapeo Logo Concept",
+                titleEn: "Pikapeo Logo Concept",
+                category: "Branding",
+                year: "2023",
+                image: "asset/img/logo.png",
+                descVi: "Logo cá nhân “pikapeo” được thiết kế theo phong cách mascot kết hợp neon hiện đại, thể hiện cá tính sáng tạo và năng lượng trẻ trung. Nhân vật trung tâm mang biểu cảm tinh nghịch, tạo điểm nhấn riêng biệt và dễ ghi nhớ. Tông màu tím -– hồng neon cùng hình khối tam giác phía sau giúp tăng chiều sâu thị giác, đồng thời gợi cảm giác công nghệ và giải trí. Tổng thể logo hướng đến hình ảnh một cá nhân năng động, phù hợp với lĩnh vực gaming, sáng tạo nội dung và digital art.",
+                descEn: "The “pikapeo” personal logo is designed in a mascot style combined with a modern neon aesthetic, expressing creativity and youthful energy. The central character features a playful expression, making the logo distinctive and memorable. The purple-pink neon palette and triangular geometric background add visual depth while evoking a sense of technology and entertainment. Overall, the logo represents a dynamic personal brand suited for gaming, content creation, and digital art.",
+                link: "https://www.behance.net/gallery/130712909/Mascot-Logo"
+            }
+        ];
+
+        let projects = [];
+
+        // Dynamic project template loader & checker
+        async function initProjects() {
+            const sanityLoaded = await loadSanityProjects();
+            if (sanityLoaded) {
+                return;
+            }
+
+            const storedRaw = localStorage.getItem('pikapeo-templates-raw');
+            const currentRaw = JSON.stringify(defaultTemplates);
+            const storedProjects = localStorage.getItem('pikapeo-projects');
+
+            // CƠ CHẾ TỰ ĐỘNG PHÁT HIỆN SỬA CODE SIÊU THÔNG MINH:
+            // Nếu bạn chỉnh sửa dù chỉ 1 chữ trong defaultTemplates ở VSCode và lưu lại,
+            // hệ thống sẽ tự động ghi đè bộ nhớ đệm và hiển thị nội dung mới của bạn ngay lập tức!
+            if (storedRaw !== currentRaw) {
+                projects = [...defaultTemplates];
+                localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
+                localStorage.setItem('pikapeo-templates-raw', currentRaw);
+            } else if (storedProjects) {
+                try {
+                    projects = JSON.parse(storedProjects);
+                } catch(e) {
+                    projects = [...defaultTemplates];
+                }
+            } else {
+                projects = [...defaultTemplates];
+                localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
+                localStorage.setItem('pikapeo-templates-raw', currentRaw);
+            }
+            renderProjects('all');
+        }
+
+        // Render projects grid based on category and current language
+        function renderProjects(categoryFilter = 'all') {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = '';
+
+            const filtered = categoryFilter === 'all' ? projects : projects.filter(p => p.category === categoryFilter);
+
+            filtered.forEach((p, idx) => {
+                const title = currentLanguage === 'vi' ? p.titleVi : p.titleEn;
+                const desc = currentLanguage === 'vi' ? p.descVi : p.descEn;
+                
+                const card = document.createElement('div');
+                card.className = "group border border-purple-900/40 rounded-2xl overflow-hidden bg-black/50 hover:bg-black/80 neon-card-glow relative";
+                
+                card.innerHTML = `
+                    <div class="aspect-video w-full overflow-hidden relative">
+                        <div class="absolute top-3 left-3 px-3 py-1 bg-purple-950/80 border border-purple-500/30 rounded text-[9px] tech-mono uppercase text-purple-300 tracking-wider z-20">${p.category}</div>
+                        <div class="absolute top-3 right-3 px-3 py-1 bg-purple-950/80 border border-purple-500/30 rounded text-[9px] tech-mono uppercase text-purple-300 tracking-wider z-20">${p.year}</div>
+                        <img src="${p.image}" alt="${title}" class="w-full h-full object-cover transition duration-700 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-purple-950/30 to-transparent flex items-center justify-center text-xs tech-mono text-purple-400 font-bold tracking-widest uppercase hidden bg-purple-950/40 p-4 text-center">
+                            <span>[ ${title} ]</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-white group-hover:text-pink-400 transition-colors">${title}</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm font-light leading-relaxed mb-6 h-20 overflow-y-auto">${desc}</p>
+                        <div class="flex justify-between items-center border-t border-purple-900/30 pt-4">
+                            <a href="${p.link}" target="_blank" class="tech-mono text-[11px] text-pink-400 hover:text-white transition-all duration-300 uppercase font-medium tracking-widest">[ VIEW PROJECT ]</a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Toggle category button states and filter
+        function filterProjects(category) {
+            const btns = ['all', '3D', 'Branding', 'Motion'];
+            btns.forEach(b => {
+                const el = document.getElementById(`filter-btn-${b}`);
+                if (b === category) {
+                    el.className = "px-4 py-2 border border-purple-500/40 rounded bg-purple-600 text-white transition-all";
+                } else {
+                    el.className = "px-4 py-2 border border-purple-500/20 rounded bg-purple-950/10 text-purple-300 hover:border-purple-500/50 transition-all";
+                }
+            });
+            renderProjects(category);
+        }
+
+        // 3. ADMIN / CREATOR CONTROLLERS
+        let clickCount = 0;
+        let lastClickTime = 0;
+        let adminUnlocked = false;
+
+        // Easter Egg: Unlock Admin panel on 5 clicks on logo
+        function triggerAdminMode() {
+            const now = Date.now();
+            if (now - lastClickTime < 1500) {
+                clickCount++;
+            } else {
+                clickCount = 1;
+            }
+            lastClickTime = now;
+
+            if (clickCount >= 5 && !adminUnlocked) {
+                adminUnlocked = true;
+                document.getElementById('admin-trigger-container').classList.remove('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                
+                // Trực quan hóa danh sách nhanh dự án trong Admin
+                renderAdminList();
+                showToast("🔓 ADMIN: KÍCH HOẠT THÀNH CÔNG!");
+                clickCount = 0;
+            } else if (clickCount >= 5 && adminUnlocked) {
+                adminUnlocked = false;
+                document.getElementById('admin-trigger-container').classList.add('hidden');
+                document.getElementById('admin-panel').classList.add('hidden');
+                showToast("🔒 ADMIN: ĐÃ KHÓA BẢO MẬT!");
+                clickCount = 0;
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('cyber-toast');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+            }, 3000);
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function renderAdminList() {
+            const tbody = document.getElementById('admin-projects-list');
+            tbody.innerHTML = '';
+
+            projects.forEach((p, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-purple-900/20 hover:bg-purple-950/10";
+                tr.innerHTML = `
+                    <td class="p-2 border border-purple-900/30 font-bold text-white">${p.titleVi}</td>
+                    <td class="p-2 border border-purple-900/30 text-purple-400">${p.category}</td>
+                    <td class="p-2 border border-purple-900/30 text-gray-400">${p.year}</td>
+                    <td class="p-2 border border-purple-900/30 space-x-2">
+                        <button onclick="editProject(${idx})" class="text-pink-400 hover:text-white transition-all">[ SỬA ]</button>
+                        <button onclick="deleteProject(${idx})" class="text-red-400 hover:text-white transition-all">[ XÓA ]</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function saveProject(e) {
+            e.preventDefault();
+            const editIdx = parseInt(document.getElementById('edit-index').value);
+            
+            const newProject = {
+                titleVi: document.getElementById('title-vi').value,
+                titleEn: document.getElementById('title-en').value,
+                category: document.getElementById('project-category').value,
+                year: document.getElementById('project-year').value,
+                image: document.getElementById('project-image').value,
+                descVi: document.getElementById('desc-vi').value,
+                descEn: document.getElementById('desc-en').value,
+                link: document.getElementById('project-link').value
+            };
+
+            if (editIdx === -1) {
+                projects.push(newProject);
+                showToast("➕ THÊM MỚI DỰ ÁN THÀNH CÔNG!");
+            } else {
+                projects[editIdx] = newProject;
+                showToast("📝 CẬP NHẬT DỰ ÁN THÀNH CÔNG!");
+            }
+
+            localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
+            resetForm();
+            renderAdminList();
+            renderProjects('all');
+        }
+
+        function editProject(idx) {
+            const p = projects[idx];
+            document.getElementById('edit-index').value = idx;
+            document.getElementById('title-vi').value = p.titleVi;
+            document.getElementById('title-en').value = p.titleEn;
+            document.getElementById('project-category').value = p.category;
+            document.getElementById('project-year').value = p.year;
+            document.getElementById('project-image').value = p.image;
+            document.getElementById('desc-vi').value = p.descVi;
+            document.getElementById('desc-en').value = p.descEn;
+            document.getElementById('project-link').value = p.link;
+            
+            document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteProject(idx) {
+            if (confirm("Bạn có chắc chắn muốn xóa dự án này?")) {
+                projects.splice(idx, 1);
+                localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
+                renderAdminList();
+                renderProjects('all');
+                showToast("🗑️ ĐÃ XÓA DỰ ÁN!");
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('project-form').reset();
+            document.getElementById('edit-index').value = "-1";
+        }
+
+        function resetToDefaultTemplates() {
+            if (confirm("Tất cả dự án tùy biến của bạn sẽ bị xóa để hoàn tác dữ liệu mẫu mặc định. Tiếp tục?")) {
+                localStorage.removeItem('pikapeo-projects');
+                localStorage.removeItem('pikapeo-templates-raw');
+                initProjects();
+                renderAdminList();
+                showToast("♻️ ĐÃ KHÔI PHỤC BẢN MẪU GỐC!");
+            }
+        }
+
+        // 4. LANGUAGE SYSTEM CONTROLLERS
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'vi' ? 'en' : 'vi';
+            document.getElementById('lang-indicator').innerText = currentLanguage.toUpperCase();
+            setLanguage(currentLanguage);
+            renderProjects('all');
+        }
+
+        function setLanguage(lang) {
+            document.querySelectorAll('[data-vi]').forEach(el => {
+                el.innerHTML = lang === 'vi' ? el.getAttribute('data-vi') : el.getAttribute('data-en');
+            });
+            
+            // Translate form placeholders
+            const queryInput = document.getElementById('ai-user-query');
+            if (lang === 'vi') {
+                queryInput.placeholder = "Mô tả dự án hoặc đặt câu hỏi...";
+            } else {
+                queryInput.placeholder = "Describe your project or ask a question...";
+            }
+        }
+
+        // 5. CUSTOMER AI CONCIERGE
+        const customerChatHistory = [];
+        let chatRequestPending = false;
+        const serviceCatalog = [
+            {
+                titleVi: 'Thiết kế thương hiệu',
+                titleEn: 'Brand identity design',
+                items: [
+                    ['Logo Cơ Bản', '2.000.000 ₫'],
+                    ['Logo Chuyên Nghiệp', '4.000.000 ₫'],
+                    ['Bộ nhận diện thương hiệu Cơ Bản', '8.000.000 ₫'],
+                    ['Bộ nhận diện thương hiệu Chuyên Nghiệp', '15.000.000 ₫']
+                ]
+            },
+            {
+                titleVi: 'Digital Marketing & Social Media',
+                titleEn: 'Digital marketing & social media',
+                items: [
+                    ['PPT Template', '500.000 ₫'],
+                    ['Key Visual', '2.000.000 ₫'],
+                    ['Campaign / Art Direction', '5.000.000 ₫'],
+                    ['Social Post Cơ Bản', '300.000 ₫'],
+                    ['Social Post Chuyên Nghiệp', '600.000 ₫'],
+                    ['Gói 10 Social Post', '2.500.000 ₫'],
+                    ['Monthly — 1 Post/ngày', '8.000.000 ₫'],
+                    ['Monthly — 2 Post/ngày', '14.000.000 ₫']
+                ]
+            },
+            {
+                titleVi: 'Ấn phẩm & in ấn',
+                titleEn: 'Print design',
+                items: [
+                    ['Standee / Poster / Flyer', '500.000 ₫'],
+                    ['Brochure', '800.000 ₫'],
+                    ['Menu cuốn', '300.000 ₫ / trang'],
+                    ['Menu để bàn', '500.000 ₫'],
+                    ['Nhãn bao bì', '500.000 ₫'],
+                    ['Thiết kế bao bì', '1.500.000 ₫'],
+                    ['Name Card', '500.000 ₫']
+                ]
+            },
+            {
+                titleVi: 'Motion Graphic, Edit & Animation',
+                titleEn: 'Motion graphics, editing & animation',
+                items: [
+                    ['Video Intro', '2.000.000 ₫'],
+                    ['Video Outro', '2.000.000 ₫'],
+                    ['VFX hình ảnh / chữ', '2.000.000 ₫'],
+                    ['3D Motion', '4.000.000 ₫']
+                ]
+            }
+        ];
+
+        async function sendChatMessage(e) {
+            e.preventDefault();
+            const queryInput = document.getElementById('ai-user-query');
+            const queryText = queryInput.value.trim();
+            if (!queryText || chatRequestPending) return;
+
+            appendMessageBubble('user', queryText);
+            customerChatHistory.push({ role: 'user', content: queryText });
+            queryInput.value = '';
+            setChatLoading(true);
+            const loadingId = appendTypingBubble();
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: customerChatHistory.slice(-10) })
+                });
+                const data = await response.json();
+                if (!response.ok || !data.reply) {
+                    throw new Error(data.error || 'Assistant request failed');
+                }
+                customerChatHistory.push({ role: 'assistant', content: data.reply });
+                replaceTypingBubble(loadingId, data.reply);
+            } catch (error) {
+                console.error(error);
+                replaceTypingBubble(
+                    loadingId,
+                    currentLanguage === 'vi'
+                        ? 'Xin lỗi, Pika đang tạm mất kết nối. Vui lòng thử lại sau một chút.'
+                        : 'Sorry, Pika is temporarily offline. Please try again in a moment.',
+                    true
+                );
+            } finally {
+                setChatLoading(false);
+                queryInput.focus();
+            }
+        }
+
+        function appendMessageBubble(sender, text) {
+            const chatScreen = document.getElementById('ai-chat-messages');
+            const bubbleId = 'bubble-' + Date.now() + '-' + Math.floor(Math.random() * 100);
+            const wrapper = document.createElement('div');
+            wrapper.className = (sender === 'user' ? 'flex gap-3 justify-end' : 'flex gap-3 max-w-[85%]') + ' chat-message-enter';
+            
+            if (sender === 'user') {
+                const bubble = document.createElement('div');
+                bubble.className = 'p-3.5 rounded-2xl rounded-tr-none bg-purple-600/35 border border-purple-500/30 text-white text-xs sm:text-sm leading-relaxed max-w-[85%] whitespace-pre-wrap';
+                bubble.textContent = text;
+                wrapper.appendChild(bubble);
+            } else {
+                wrapper.appendChild(createBotAvatar());
+                const bubble = document.createElement('div');
+                bubble.id = bubbleId;
+                bubble.className = 'p-3.5 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap';
+                bubble.textContent = text;
+                wrapper.appendChild(bubble);
+            }
+
+            chatScreen.appendChild(wrapper);
+            chatScreen.scrollTop = chatScreen.scrollHeight;
+            return bubbleId;
+        }
+
+        function createBotAvatar() {
+            const avatar = document.createElement('div');
+            avatar.className = 'w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center font-bold tech-mono text-xs text-purple-200 shrink-0 select-none';
+            avatar.textContent = 'AI';
+            return avatar;
+        }
+
+        function appendTypingBubble() {
+            const chatScreen = document.getElementById('ai-chat-messages');
+            const bubbleId = 'bubble-' + Date.now() + '-typing';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 max-w-[85%] chat-message-enter';
+            wrapper.appendChild(createBotAvatar());
+
+            const bubble = document.createElement('div');
+            bubble.id = bubbleId;
+            bubble.className = 'p-4 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 flex items-center gap-1.5';
+            bubble.setAttribute('aria-label', currentLanguage === 'vi' ? 'Pika đang trả lời' : 'Pika is replying');
+            bubble.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+            wrapper.appendChild(bubble);
+            chatScreen.appendChild(wrapper);
+            chatScreen.scrollTop = chatScreen.scrollHeight;
+            return bubbleId;
+        }
+
+        function replaceTypingBubble(bubbleId, text, isError = false) {
+            const bubble = document.getElementById(bubbleId);
+            if (!bubble) return;
+            bubble.className = `p-3.5 rounded-2xl rounded-tl-none border text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${isError ? 'bg-red-950/25 border-red-500/30 text-red-200' : 'bg-purple-950/25 border-purple-900/30'}`;
+            bubble.textContent = text;
+        }
+
+        function setChatLoading(isLoading) {
+            chatRequestPending = isLoading;
+            document.getElementById('ai-send-button').disabled = isLoading;
+            document.getElementById('ai-user-query').disabled = isLoading;
+        }
+
+        function showServiceCatalog() {
+            appendCatalogCard(false);
+        }
+
+        function showQuoteCatalog() {
+            appendCatalogCard(true);
+        }
+
+        function appendCatalogCard(showPrices) {
+            if (chatRequestPending) return;
+            const chatScreen = document.getElementById('ai-chat-messages');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 max-w-[96%] chat-message-enter';
+            wrapper.appendChild(createBotAvatar());
+
+            const card = document.createElement('div');
+            card.className = 'p-4 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs leading-relaxed w-full';
+            const heading = document.createElement('div');
+            heading.className = 'font-bold text-white mb-1';
+            heading.textContent = showPrices
+                ? (currentLanguage === 'vi' ? 'Bảng giá tham khảo' : 'Reference pricing')
+                : (currentLanguage === 'vi' ? 'Dịch vụ thiết kế Pikapeo' : 'Pikapeo design services');
+            card.appendChild(heading);
+
+            const note = document.createElement('p');
+            note.className = 'text-gray-400 mb-4';
+            note.textContent = showPrices
+                ? (currentLanguage === 'vi' ? 'Giá thực tế được xác nhận sau khi xem brief và phạm vi công việc.' : 'Final pricing is confirmed after reviewing your brief and project scope.')
+                : (currentLanguage === 'vi' ? 'Chọn một nhóm dịch vụ để xem các hạng mục hiện có.' : 'Explore the available work in each service group.');
+            card.appendChild(note);
+
+            serviceCatalog.forEach((group) => {
+                const section = document.createElement('details');
+                section.className = 'border-t border-purple-500/15 py-2 group';
+                const summary = document.createElement('summary');
+                summary.className = 'cursor-pointer list-none flex items-center justify-between gap-2 text-purple-200 font-semibold py-1';
+                summary.innerHTML = `<span>${currentLanguage === 'vi' ? group.titleVi : group.titleEn}</span><span class="text-pink-400 group-open:rotate-45 transition-transform">+</span>`;
+                section.appendChild(summary);
+
+                const list = document.createElement('div');
+                list.className = 'space-y-2 pt-2 pb-1';
+                group.items.forEach(([name, price]) => {
+                    const row = document.createElement('div');
+                    row.className = 'flex items-start justify-between gap-4 text-gray-300';
+                    const nameElement = document.createElement('span');
+                    nameElement.textContent = name;
+                    row.appendChild(nameElement);
+                    if (showPrices) {
+                        const priceElement = document.createElement('span');
+                        priceElement.className = 'text-pink-300 font-semibold whitespace-nowrap';
+                        priceElement.textContent = price;
+                        row.appendChild(priceElement);
+                    }
+                    list.appendChild(row);
+                });
+                section.appendChild(list);
+                card.appendChild(section);
+            });
+
+            const sourceLink = document.createElement('a');
+            sourceLink.href = 'https://docs.google.com/spreadsheets/d/1JmWzd8agz6iDU04Spq22Qkh4F0BoNBScOcUZUT86c4U/edit?gid=0#gid=0';
+            sourceLink.target = '_blank';
+            sourceLink.rel = 'noopener noreferrer';
+            sourceLink.className = 'inline-flex mt-3 text-[10px] text-purple-300 hover:text-pink-300 underline underline-offset-4';
+            sourceLink.textContent = currentLanguage === 'vi' ? 'Mở bảng dịch vụ đầy đủ ↗' : 'Open the complete service sheet ↗';
+            card.appendChild(sourceLink);
+
+            wrapper.appendChild(card);
+            chatScreen.appendChild(wrapper);
+            chatScreen.scrollTop = chatScreen.scrollHeight;
+        }
+
+        function showProjectBriefForm() {
+            if (chatRequestPending || document.getElementById('project-brief-card')) return;
+            const chatScreen = document.getElementById('ai-chat-messages');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 max-w-[96%] chat-message-enter';
+            wrapper.appendChild(createBotAvatar());
+
+            const card = document.createElement('div');
+            card.id = 'project-brief-card';
+            card.className = 'p-4 rounded-2xl rounded-tl-none bg-purple-950/25 border border-purple-900/30 text-xs w-full';
+            card.innerHTML = `
+                <div class="font-bold text-white text-sm mb-1">${currentLanguage === 'vi' ? 'Tạo project brief' : 'Create a project brief'}</div>
+                <p class="text-gray-400 mb-4">${currentLanguage === 'vi' ? 'Điền thông tin bên dưới. Brief được lưu an toàn và Gmail sẽ mở sẵn thư gửi đến Pikapeo.' : 'Complete the details below. Your brief is saved securely and Gmail opens a ready-to-send message to Pikapeo.'}</p>
+                <form id="project-brief-form" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="hidden" name="form-name" value="project-brief">
+                    <input type="hidden" name="subject" value="New Pikapeo project brief">
+                    <input type="hidden" name="recipient" value="jonhluu1998@gmail.com">
+                    <p class="hidden"><label>Do not fill: <input name="bot-field"></label></p>
+                    <input name="name" required class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="${currentLanguage === 'vi' ? 'Tên của bạn *' : 'Your name *'}">
+                    <input name="email" type="email" required class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="Email *">
+                    <input name="customer-phone" class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="${currentLanguage === 'vi' ? 'Số điện thoại' : 'Phone number'}">
+                    <select name="project-type" required class="bg-[#12091f] border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500">
+                        <option value="">${currentLanguage === 'vi' ? 'Loại dự án *' : 'Project type *'}</option>
+                        ${serviceCatalog.map((group) => `<option>${currentLanguage === 'vi' ? group.titleVi : group.titleEn}</option>`).join('')}
+                    </select>
+                    <input name="budget" class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500" placeholder="${currentLanguage === 'vi' ? 'Ngân sách dự kiến' : 'Estimated budget'}">
+                    <input name="deadline" type="date" class="bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500">
+                    <textarea name="project-details" required rows="4" class="sm:col-span-2 bg-black/30 border border-purple-500/25 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500 resize-none" placeholder="${currentLanguage === 'vi' ? 'Mô tả mục tiêu, sản phẩm cần bàn giao và yêu cầu quan trọng *' : 'Describe your goals, deliverables, and important requirements *'}"></textarea>
+                    <button type="submit" class="sm:col-span-2 px-4 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold hover:opacity-90 disabled:opacity-40">${currentLanguage === 'vi' ? 'LƯU BRIEF & MỞ GMAIL' : 'SAVE BRIEF & OPEN GMAIL'}</button>
+                    <div id="project-brief-status" class="sm:col-span-2 text-center text-[10px] text-gray-400" aria-live="polite"></div>
+                </form>`;
+            wrapper.appendChild(card);
+            chatScreen.appendChild(wrapper);
+            document.getElementById('project-brief-form').addEventListener('submit', submitProjectBrief);
+            chatScreen.scrollTop = chatScreen.scrollHeight;
+        }
+
+        async function submitProjectBrief(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const button = form.querySelector('button[type="submit"]');
+            const status = document.getElementById('project-brief-status');
+            const formData = new FormData(form);
+            const gmailWindow = window.open('about:blank', '_blank');
+            button.disabled = true;
+            status.textContent = currentLanguage === 'vi' ? 'Đang lưu brief...' : 'Saving your brief...';
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+                if (!response.ok) throw new Error('Brief submission failed');
+
+                const subject = `Project brief — ${formData.get('name')} — ${formData.get('project-type')}`;
+                const body = [
+                    `Tên / Name: ${formData.get('name')}`,
+                    `Email: ${formData.get('email')}`,
+                    `Điện thoại / Phone: ${formData.get('customer-phone') || '-'}`,
+                    `Loại dự án / Project type: ${formData.get('project-type')}`,
+                    `Ngân sách / Budget: ${formData.get('budget') || '-'}`,
+                    `Deadline: ${formData.get('deadline') || '-'}`,
+                    '',
+                    'Chi tiết / Details:',
+                    formData.get('project-details')
+                ].join('\n');
+                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=jonhluu1998@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                status.textContent = currentLanguage === 'vi' ? 'Đã lưu brief. Đang mở Gmail...' : 'Brief saved. Opening Gmail...';
+                if (gmailWindow) {
+                    gmailWindow.location.href = gmailUrl;
+                } else {
+                    window.location.href = gmailUrl;
+                }
+                form.reset();
+            } catch (error) {
+                console.error(error);
+                if (gmailWindow) gmailWindow.close();
+                status.textContent = currentLanguage === 'vi' ? 'Không thể lưu brief. Vui lòng thử lại.' : 'Unable to save the brief. Please try again.';
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        function resetChat() {
+            customerChatHistory.length = 0;
+            const chatScreen = document.getElementById('ai-chat-messages');
+            chatScreen.innerHTML = '';
+            appendMessageBubble(
+                'bot',
+                currentLanguage === 'vi'
+                    ? 'Xin chào, tôi là Pika — trợ lý AI của Pikapeo Labs. Bạn đang muốn thực hiện dự án gì?'
+                    : 'Hi, I’m Pika — Pikapeo Labs’ AI assistant. What are you looking to create?'
+            );
+        }
+
+        // 6. GLOBAL EFFECTS CONTROLLERS
+        // Moving Neon trail follow
+        document.addEventListener('mousemove', (e) => {
+            const sphere = document.querySelector('.id-glow-sphere');
+            if (sphere) {
+                sphere.style.left = e.clientX + window.scrollX + 'px';
+                sphere.style.top = e.clientY + window.scrollY + 'px';
+            }
+        });
+
+        // Scroll reveal controller
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(r => {
+                const windowHeight = window.innerHeight;
+                const elementTop = r.getBoundingClientRect().top;
+                const elementVisible = 120;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    r.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        
+        // 7. PAGE INITIALIZER
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const loaderProgress = document.getElementById('loader-progress');
+            const loaderPercent = document.getElementById('loader-percent');
+            const loaderStatus = document.getElementById('loader-status');
+            const loaderSkip = document.getElementById('loader-skip');
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const statusMessages = [
+                'Đang kết nối hệ thống',
+                'Đang tải kho tác phẩm',
+                'Đang đồng bộ AI',
+                'Hệ thống sẵn sàng'
+            ];
+            let loaderValue = 0;
+            let loaderTimer;
+
+            function finishLoading() {
+                clearInterval(loaderTimer);
+                loaderValue = 100;
+                loaderProgress.style.width = '100%';
+                loaderPercent.textContent = '100%';
+                loaderStatus.textContent = statusMessages[3];
+                setTimeout(() => {
+                    loadingScreen.classList.add('is-complete');
+                    document.body.classList.remove('is-loading');
+                }, reducedMotion ? 0 : 420);
+            }
+
+            loaderSkip.addEventListener('click', finishLoading);
+            loaderTimer = setInterval(() => {
+                loaderValue = Math.min(loaderValue + Math.ceil(Math.random() * 7), 100);
+                loaderProgress.style.width = `${loaderValue}%`;
+                loaderPercent.textContent = `${String(loaderValue).padStart(2, '0')}%`;
+                loaderStatus.textContent = statusMessages[Math.min(Math.floor(loaderValue / 29), 3)];
+                if (loaderValue >= 100) finishLoading();
+            }, reducedMotion ? 25 : 105);
+		  // Initiate Project items
+            initProjects();
+            
+            // Set default language UI state
+            setLanguage(currentLanguage);
+
+            // Execute scroll check on start
+            setTimeout(reveal, 300);
+        });
+
+        // Action: Smooth Scroll and highlight game console
+        function scrollToGameConsole() {
+            const consoleCard = document.getElementById('integrated-dino-console');
+            if (consoleCard) {
+                consoleCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                consoleCard.classList.add('neon-border-flash');
+                setTimeout(() => {
+                    consoleCard.classList.remove('neon-border-flash');
+                }, 2400);
+            }
+        }
+
+        // Integrated HTML5 Canvas T-Rex Dino Game Engine logic
+        const gameCanvas = document.getElementById('portfolioDinoCanvas');
+        const gameCtx = gameCanvas.getContext('2d');
+        gameCtx.imageSmoothingEnabled = false;
+
+        const uiHighScore = document.getElementById('gameHighScore');
+        const uiCurrentScore = document.getElementById('gameCurrentScore');
+        const overlayMain = document.getElementById('game-menu-main');
+        const overlayPause = document.getElementById('game-menu-pause');
+        const overlaySettings = document.getElementById('game-menu-settings');
+        const overlayGameOver = document.getElementById('game-menu-over');
+        const btnPause = document.getElementById('gamePauseBtn');
+
+        // Mobile Controls Nodes
+        const mobileJumpBtn = document.getElementById('mobileJumpBtn');
+        const mobileDuckBtn = document.getElementById('mobileDuckBtn');
+
+        const dinoGroundY = 190;
+        let gameActiveState = 'MENU'; // MENU, PLAYING, PAUSED, GAME_OVER, SETTINGS
+        let gameScore = 0;
+        let gameHighScoreVal = localStorage.getItem('portfolioDinoHighScore') || 0;
+        let gameSpeed = 4;
+        const gameBaseSpeed = 4;
+        let gameSpawnTimer = 0;
+        let isNightTheme = false;
+        let lastMilestoneScore = 0;
+
+        let gamePlayer;
+        let gameObstacles = [];
+        let gameClouds = [];
+        let gameGroundLines = [];
+
+        // Dynamic sound synth
+        const synthCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSynthSound(freqStart, freqEnd, duration, waveType) {
+            try {
+                if (synthCtx.state === 'suspended') synthCtx.resume();
+                const osc = synthCtx.createOscillator();
+                const gain = synthCtx.createGain();
+                osc.connect(gain);
+                gain.connect(synthCtx.destination);
+
+                osc.type = waveType || 'square';
+                const now = synthCtx.currentTime;
+
+                osc.frequency.setValueAtTime(freqStart, now);
+                if (freqEnd) {
+                    osc.frequency.exponentialRampToValueAtTime(freqEnd, now + duration);
+                }
+                
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+                osc.start(now);
+                osc.stop(now + duration);
+            } catch(e) { console.log(e); }
+        }
+
+        function formatGameScore(val) {
+            return Math.floor(val).toString().padStart(5, '0');
+        }
+        uiHighScore.innerText = formatGameScore(gameHighScoreVal);
+
+        // Player entity
+        class DinoPlayer {
+            constructor() {
+                this.x = 40;
+                this.y = dinoGroundY - 18;
+                this.width = 14;
+                this.height = 18;
+                this.vy = 0;
+                this.jumpStrength = 8.5;
+                this.gravity = 0.5;
+                this.grounded = true;
+                this.isDucking = false;
+                this.animFrame = 0;
+                this.animTimer = 0;
+            }
+            jump() {
+                if (this.grounded && !this.isDucking) {
+                    this.vy = -this.jumpStrength;
+                    this.grounded = false;
+                    playSynthSound(300, 600, 0.1, 'square');
+                }
+            }
+            duck(isDucking) {
+                if (this.grounded) {
+                    this.isDucking = isDucking;
+                }
+            }
+            update() {
+                this.vy += this.gravity;
+                this.y += this.vy;
+
+                if (this.y + this.height > dinoGroundY) {
+                    this.y = dinoGroundY - this.height;
+                    this.vy = 0;
+                    this.grounded = true;
+                }
+
+                if (!this.grounded) this.isDucking = false;
+
+                if (this.grounded) {
+                    this.animTimer += gameSpeed;
+                    if (this.animTimer > 30) {
+                        this.animFrame = (this.animFrame + 1) % 2;
+                        this.animTimer = 0;
+                    }
+                } else {
+                    this.animFrame = 0;
+                }
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? '#ecf0f1' : '#a855f7';
+                
+                if (this.isDucking) {
+                    gameCtx.fillRect(this.x, this.y + 8, 18, 10);
+                    gameCtx.fillStyle = isNightTheme ? '#2c3e50' : '#ffffff';
+                    gameCtx.fillRect(this.x + 14, this.y + 10, 2, 2);
+                    
+                    gameCtx.fillStyle = isNightTheme ? '#ecf0f1' : '#a855f7';
+                    if (this.animFrame === 0) {
+                        gameCtx.fillRect(this.x + 2, this.y + 18, 4, 2);
+                        gameCtx.fillRect(this.x + 12, this.y + 18, 4, 1);
+                    } else {
+                        gameCtx.fillRect(this.x + 2, this.y + 18, 4, 1);
+                        gameCtx.fillRect(this.x + 12, this.y + 18, 4, 2);
+                    }
+                } else {
+                    gameCtx.fillRect(this.x + 4, this.y, 10, 8);
+                    gameCtx.fillStyle = isNightTheme ? '#2c3e50' : '#ffffff';
+                    gameCtx.fillRect(this.x + 10, this.y + 2, 2, 2);
+                    
+                    gameCtx.fillStyle = isNightTheme ? '#ecf0f1' : '#a855f7';
+                    gameCtx.fillRect(this.x + 2, this.y + 8, 10, 6);
+                    gameCtx.fillRect(this.x, this.y + 10, 2, 4);
+                    
+                    if (this.grounded) {
+                        if (this.animFrame === 0) {
+                            gameCtx.fillRect(this.x + 2, this.y + 14, 4, 4);
+                            gameCtx.fillRect(this.x + 8, this.y + 14, 4, 2);
+                        } else {
+                            gameCtx.fillRect(this.x + 2, this.y + 14, 4, 2);
+                            gameCtx.fillRect(this.x + 8, this.y + 14, 4, 4);
+                        }
+                    } else {
+                        gameCtx.fillRect(this.x + 2, this.y + 14, 4, 2);
+                        gameCtx.fillRect(this.x + 8, this.y + 14, 4, 3);
+                    }
+                }
+            }
+        }
+
+        // Obstacle entities
+        class DinoObstacle {
+            constructor(type) {
+                this.type = type;
+                this.x = gameCanvas.width + 20;
+                this.markedForDeletion = false;
+                
+                if (type === 'cactus_sm') {
+                    this.width = 12;
+                    this.height = 20;
+                    this.y = dinoGroundY - this.height;
+                } else if (type === 'cactus_bg') {
+                    this.width = 18;
+                    this.height = 30;
+                    this.y = dinoGroundY - this.height;
+                } else if (type === 'bird') {
+                    this.width = 20;
+                    this.height = 10;
+                    const heights = [dinoGroundY - 15, dinoGroundY - 30, dinoGroundY - 45];
+                    this.y = heights[Math.floor(Math.random() * heights.length)];
+                    this.animFrame = 0;
+                    this.animTimer = 0;
+                }
+            }
+            update() {
+                this.x -= gameSpeed;
+                if (this.x + this.width < 0) {
+                    this.markedForDeletion = true;
+                }
+                if (this.type === 'bird') {
+                    this.animTimer += gameSpeed * 0.5;
+                    if (this.animTimer > 15) {
+                        this.animFrame = (this.animFrame + 1) % 2;
+                        this.animTimer = 0;
+                    }
+                }
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? '#db2777' : '#ec4899';
+                if (this.type === 'cactus_sm' || this.type === 'cactus_bg') {
+                    gameCtx.fillRect(this.x + this.width/2 - 2, this.y, 4, this.height);
+                    gameCtx.fillRect(this.x, this.y + this.height/3, 4, this.height/3);
+                    gameCtx.fillRect(this.x + 2, this.y + this.height/3 + 2, 2, 2);
+                    gameCtx.fillRect(this.x + this.width - 4, this.y + this.height/4, 4, this.height/3);
+                    gameCtx.fillRect(this.x + this.width - 6, this.y + this.height/4 + 2, 2, 2);
+                } else if (this.type === 'bird') {
+                    gameCtx.fillStyle = isNightTheme ? '#f472b6' : '#d8b4fe';
+                    gameCtx.fillRect(this.x + 4, this.y + 4, 12, 4);
+                    gameCtx.fillRect(this.x, this.y + 4, 4, 2);
+                    if (this.animFrame === 0) {
+                        gameCtx.fillRect(this.x + 8, this.y, 6, 4);
+                    } else {
+                        gameCtx.fillRect(this.x + 8, this.y + 8, 6, 4);
+                    }
+                }
+            }
+        }
+
+        class DinoCloud {
+            constructor() {
+                this.x = gameCanvas.width + 10;
+                this.y = Math.random() * 80 + 20;
+                this.speed = Math.random() * 0.4 + 0.1;
+                this.width = Math.random() * 30 + 30;
+            }
+            update() {
+                this.x -= this.speed;
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.6)';
+                gameCtx.fillRect(this.x, this.y, this.width, 10);
+                gameCtx.fillRect(this.x + 5, this.y - 5, this.width - 15, 5);
+            }
+        }
+
+        class GroundLine {
+            constructor(x) {
+                this.x = x !== undefined ? x : gameCanvas.width;
+                this.y = dinoGroundY + Math.random() * 20;
+                this.width = Math.random() * 3 + 1;
+            }
+            update() {
+                this.x -= gameSpeed;
+            }
+            draw() {
+                gameCtx.fillStyle = isNightTheme ? '#6b21a8' : '#a855f7';
+                gameCtx.fillRect(this.x, this.y, this.width, 1);
+            }
+        }
+
+        function initGameEngine() {
+            gamePlayer = new DinoPlayer();
+            gameObstacles = [];
+            gameClouds = [new DinoCloud(), new DinoCloud()];
+            gameClouds[0].x = 100;
+            gameClouds[1].x = 240;
+            
+            gameGroundLines = [];
+            for (let i = 0; i < gameCanvas.width; i += 15) {
+                if (Math.random() > 0.5) gameGroundLines.push(new GroundLine(i));
+            }
+            
+            gameScore = 0;
+            gameSpeed = gameBaseSpeed;
+            lastMilestoneScore = 0;
+            gameSpawnTimer = 60;
+            isNightTheme = false;
+            gameCanvas.style.backgroundColor = '#1e1b4b'; // Deep dark cyber sky
+            
+            uiCurrentScore.innerText = formatGameScore(0);
+        }
+
+        // TRIGGER JUMP
+        function triggerJumpEvent(e) {
+            if (e && e.cancelable) e.preventDefault();
+            if (synthCtx.state === 'suspended') synthCtx.resume();
+            
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.jump();
+            } else if (gameActiveState === 'MENU') {
+                startGameEngine();
+            } else if (gameActiveState === 'GAME_OVER') {
+                restartGameFromOver();
+            }
+        }
+
+        // PC Keypad Controls
+        window.addEventListener('keydown', (e) => {
+            if (gameActiveState === 'PLAYING') {
+                if (e.code === 'Space' || e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    gamePlayer.jump();
+                } else if (e.code === 'ArrowDown') {
+                    e.preventDefault();
+                    gamePlayer.duck(true);
+                }
+            } else if (gameActiveState === 'GAME_OVER' && e.code === 'Space') {
+                e.preventDefault();
+                restartGameFromOver();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (gameActiveState === 'PLAYING') {
+                if (e.code === 'ArrowDown') {
+                    e.preventDefault();
+                    gamePlayer.duck(false);
+                }
+            }
+        });
+
+        // --- NEW DEDICATED MOBILE VIRTUAL BUTTONS LOGIC (PERFECTLY SOLVES DUCK & JUMP DELAY) ---
+        
+        // Mobile Jump Button Event Bindings
+        mobileJumpBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            triggerJumpEvent(e);
+        }, { passive: false });
+
+        mobileJumpBtn.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            triggerJumpEvent(e);
+        });
+
+        // Mobile Duck Button Event Bindings (Press & Hold to Duck, release to stand)
+        mobileDuckBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.duck(true);
+            }
+        }, { passive: false });
+
+        mobileDuckBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.duck(false);
+            }
+        }, { passive: false });
+
+        mobileDuckBtn.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.duck(false);
+            }
+        });
+
+        // Fallbacks for Desktop emulation testing
+        mobileDuckBtn.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.duck(true);
+            }
+        });
+
+        mobileDuckBtn.addEventListener('mouseup', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.duck(false);
+            }
+        });
+
+        mobileDuckBtn.addEventListener('mouseleave', () => {
+            if (gameActiveState === 'PLAYING') {
+                gamePlayer.duck(false);
+            }
+        });
+
+        // Simple Canvas Tapping (Acts as JUMP in active gameplay to maintain classic T-Rex feel)
+        gameCanvas.addEventListener('touchstart', (e) => {
+            // Only trigger jump if user is not clicking the HUD controls or overlays
+            if (gameActiveState !== 'PLAYING') {
+                triggerJumpEvent(e);
+            }
+        }, { passive: true });
+
+        gameCanvas.addEventListener('mousedown', (e) => {
+            if (gameActiveState !== 'PLAYING') {
+                triggerJumpEvent(e);
+            }
+        });
+
+        function triggerGameLoss() {
+            playSynthSound(200, 50, 0.35, 'sawtooth');
+            gameActiveState = 'GAME_OVER';
+            
+            if (gameScore > gameHighScoreVal) {
+                gameHighScoreVal = Math.floor(gameScore);
+                localStorage.setItem('portfolioDinoHighScore', gameHighScoreVal);
+                uiHighScore.innerText = formatGameScore(gameHighScoreVal);
+            }
+
+            overlayGameOver.classList.remove('hidden');
+            overlayGameOver.style.display = 'flex';
+        }
+
+        function restartGameFromOver() {
+            overlayGameOver.classList.add('hidden');
+            overlayGameOver.style.display = 'none';
+            initGameEngine();
+            gameActiveState = 'PLAYING';
+        }
+
+        overlayGameOver.addEventListener('click', restartGameFromOver);
+
+        function startGameEngine() {
+            overlayMain.classList.add('hidden');
+            overlayMain.style.display = 'none';
+            initGameEngine();
+            gameActiveState = 'PLAYING';
+        }
+
+        function resumeGameEngine() {
+            overlayPause.classList.add('hidden');
+            overlayPause.style.display = 'none';
+            gameActiveState = 'PLAYING';
+        }
+
+        function toggleGameSettings(show) {
+            if (show) {
+                overlayMain.classList.add('hidden');
+                overlayMain.style.display = 'none';
+                overlayPause.classList.add('hidden');
+                overlayPause.style.display = 'none';
+                overlaySettings.classList.remove('hidden');
+                overlaySettings.style.display = 'flex';
+            } else {
+                overlaySettings.classList.add('hidden');
+                overlaySettings.style.display = 'none';
+                if (gameActiveState === 'PAUSED') {
+                    overlayPause.classList.remove('hidden');
+                    overlayPause.style.display = 'flex';
+                } else {
+                    overlayMain.classList.remove('hidden');
+                    overlayMain.style.display = 'flex';
+                }
+            }
+        }
+
+        btnPause.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (gameActiveState === 'PLAYING') {
+                gameActiveState = 'PAUSED';
+                overlayPause.classList.remove('hidden');
+                overlayPause.style.display = 'flex';
+            }
+        });
+
+        function resetGameEngine() {
+            initGameEngine();
+            overlayPause.classList.add('hidden');
+            overlayPause.style.display = 'none';
+            overlayGameOver.classList.add('hidden');
+            overlayGameOver.style.display = 'none';
+            overlayMain.classList.remove('hidden');
+            overlayMain.style.display = 'flex';
+            gameActiveState = 'MENU';
+        }
+
+        // Running engine loop tick
+        function mainGameLoopTick() {
+            if (gameActiveState === 'PLAYING') {
+                // Accelerate game speed slowly
+                gameSpeed += 0.0015;
+                if (gameSpeed > 10) gameSpeed = 10;
+
+                gameScore += gameSpeed * 0.02;
+                uiCurrentScore.innerText = formatGameScore(gameScore);
+
+                // Sound milestone beat
+                let scoreCeil = Math.floor(gameScore / 100) * 100;
+                if (scoreCeil > 0 && scoreCeil > lastMilestoneScore) {
+                    lastMilestoneScore = scoreCeil;
+                    playSynthSound(800, 1200, 0.15, 'sine');
+                }
+
+                // Check environment cycles (Day/Night shifts every 300 points)
+                let environmentIndex = Math.floor(gameScore / 300) % 2;
+                isNightTheme = environmentIndex === 1;
+                gameCanvas.style.backgroundColor = isNightTheme ? '#020005' : '#1e1b4b';
+
+                gamePlayer.update();
+
+                // Dynamic background spawns
+                if (Math.random() < 0.01) gameClouds.push(new DinoCloud());
+                if (Math.random() < 0.4) gameGroundLines.push(new GroundLine());
+
+                // Spawn obstacles
+                gameSpawnTimer--;
+                if (gameSpawnTimer <= 0) {
+                    let r = Math.random();
+                    let obsType = 'cactus_sm';
+                    if (gameSpeed > 5 && r > 0.7) obsType = 'bird';
+                    else if (r > 0.4) obsType = 'cactus_bg';
+                    
+                    gameObstacles.push(new DinoObstacle(obsType));
+                    gameSpawnTimer = Math.max(35, 75 - Math.floor(gameSpeed * 3)) + Math.random() * 40;
+                }
+
+                // Update obstacles
+                for (let i = gameObstacles.length - 1; i >= 0; i--) {
+                    gameObstacles[i].update();
+                    if (gameObstacles[i].markedForDeletion) {
+                        gameObstacles.splice(i, 1);
+                    }
+                }
+
+                gameClouds.forEach(c => c.update());
+                gameGroundLines.forEach(gl => gl.update());
+
+                // Box-to-Box collision detection
+                let pBox = gamePlayer.isDucking ? 
+                    { x: gamePlayer.x, y: gamePlayer.y + 8, w: 18, h: 10 } :
+                    { x: gamePlayer.x + 2, y: gamePlayer.y + 2, w: gamePlayer.width - 4, h: gamePlayer.height - 4 };
+
+                for (let obs of gameObstacles) {
+                    let oBox = { x: obs.x + 2, y: obs.y + 2, w: obs.width - 4, h: obs.height - 4 };
+                    if (pBox.x < oBox.x + oBox.w &&
+                        pBox.x + pBox.w > oBox.x &&
+                        pBox.y < oBox.y + oBox.h &&
+                        pBox.y + pBox.h > oBox.y) {
+                        triggerGameLoss();
+                        break;
+                    }
+                }
+            }
+
+            // Draw game frame layers
+            gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+            // Ground divider rule
+            gameCtx.fillStyle = isNightTheme ? '#db2777' : '#a855f7';
+            gameCtx.fillRect(0, dinoGroundY, gameCanvas.width, 2);
+
+            gameClouds.forEach(c => c.draw());
+            gameGroundLines.forEach(gl => gl.draw());
+            gameObstacles.forEach(o => o.draw());
+
+            if (gameActiveState !== 'MENU') {
+                gamePlayer.draw();
+            }
+
+            requestAnimationFrame(mainGameLoopTick);
+        }
+
+        // Start animation frame loop
+        mainGameLoopTick();
+    </script>
+</body>
+</html>
