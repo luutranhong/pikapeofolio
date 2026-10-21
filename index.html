@@ -967,7 +967,7 @@
 
         // 2. Project Database / Showcase Controllers
         const sanityConfig = {
-            projectId: 'YOUR_PROJECT_ID',
+            projectId: 't8fz3ups',
             dataset: 'production',
             useCdn: true,
             apiVersion: '2026-10-20'
@@ -981,13 +981,11 @@
             try {
                 const { createClient } = await import('https://esm.sh/@sanity/client@latest');
                 const client = createClient(sanityConfig);
-                const query = `*[_type == "project"] | order(order asc) {
+                const query = `*[_type == "project"]{
+                    _id,
                     title,
-                    slug,
                     excerpt,
                     category,
-                    featured,
-                    order,
                     link,
                     "image": image.asset->url
                 }`;
@@ -997,16 +995,21 @@
                     return false;
                 }
 
-                projects = sanityProjects.map((p, index) => ({
-                    titleVi: p.title || `Project ${index + 1}`,
-                    titleEn: p.title || `Project ${index + 1}`,
-                    category: p.category || 'Branding',
-                    year: String(new Date().getFullYear()),
-                    image: p.image || 'asset/img/logo.png',
-                    descVi: p.excerpt || '',
-                    descEn: p.excerpt || '',
-                    link: p.link || '#'
-                }));
+                projects = sanityProjects.map((p, index) => {
+                    const title = p.title || `Project ${index + 1}`;
+                    const description = p.excerpt || 'Project description';
+
+                    return {
+                        titleVi: title,
+                        titleEn: title,
+                        category: p.category || 'Branding',
+                        year: String(new Date().getFullYear()),
+                        image: p.image || 'asset/img/logo.png',
+                        descVi: description,
+                        descEn: description,
+                        link: p.link || '#'
+                    };
+                });
 
                 localStorage.setItem('pikapeo-projects', JSON.stringify(projects));
                 localStorage.setItem('pikapeo-projects-source', 'sanity');
